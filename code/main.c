@@ -5,8 +5,23 @@
 #define INPUT_BUFFER_SIZE 100
 #define MAX_WORD_SIZE 50
 
+/*
+ * Tenta converter uma array de char word[] para *to.
+ * Retorna 1 se conseguiu converter, 0 se não.
+ */
+int parse_number(char word[], int *to) {
+    return sscanf(word, "%d", to) == 1;
+}
+
 void parse(char word[]) {
-    printf("'%s'", word);
+    printf("Parsing: '%s'\n", word);
+
+    int i;
+    if (parse_number(word, &i)) {
+        printf("Parsed number: %d\n", i);
+    } else {
+        printf("Parsed symbol: %s\n", word);
+    }
 }
 
 int main() {
