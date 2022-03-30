@@ -21,7 +21,7 @@ void free_stack(Stack *stack) {
 void dump_stack(Stack *stack) {
     printf("Stack content is: ");
     for (int i = 0; i < length(stack); ++i) {
-        printf("%d ", i);
+        printf("%d ", stack->array[i]);
     }
     printf("\n");
 }
@@ -39,6 +39,5 @@ int pop(Stack *stack) {
 
 void push(Stack *stack, int x) {
     // TODO: resize array if no capacity
-
-    stack->array[stack->current_index++] = x;
+    stack->array[++(stack->current_index)] = x;
 }

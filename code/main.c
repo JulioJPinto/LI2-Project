@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "stack.h"
+#include "operations.h"
 
 #define INPUT_BUFFER_SIZE 100
 #define MAX_WORD_SIZE 50
@@ -15,6 +15,15 @@ int parse_number(char word[], int *to) {
     return sscanf(word, "%d", to) == 1;
 }
 
+void (*handle_operation(char operation))(Stack *) {
+    switch (operation) {
+        case '+':
+            return add_operation;
+        default:
+            return NULL;
+    }
+}
+
 void parse(Stack *stack, char word[]) {
     printf("Parsing: '%s'\n", word);
 
@@ -24,6 +33,9 @@ void parse(Stack *stack, char word[]) {
         push(stack, i);
     } else {
         printf("Parsed symbol: %s\n", word);
+
+        void (*function)(Stack *) = handle_operation(word[0]);
+        function(stack);
     }
 }
 
