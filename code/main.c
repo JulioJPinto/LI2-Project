@@ -19,6 +19,28 @@ void (*handle_operation(char operation))(Stack *) {
     switch (operation) {
         case '+':
             return add_operation;
+        case '-':
+            return minus_operation;
+        case '*':
+            return mult_operation;
+        case '/':
+            return div_operation;
+        case '(':
+            return decrement_operation;
+        case ')':
+            return increment_operation;
+        case '%':
+            return modulo_operation;
+        case '#':
+            return exponential_operation;
+        case '&':
+            return and_bitwise_operation;
+        case '|':
+            return or_bitwise_operation;
+        case '^':
+            return xor_bitwise_operation;
+        case '~':
+            return not_bitwise_operation;
         default:
             return NULL;
     }
@@ -34,8 +56,14 @@ void parse(Stack *stack, char word[]) {
     } else {
         printf("Parsed symbol: %s\n", word);
 
-        void (*function)(Stack *) = handle_operation(word[0]);
-        function(stack);
+        char function_name = word[0];
+
+        void (*function)(Stack *) = handle_operation(function_name);
+        if (function != NULL) {
+            function(stack);
+        } else {
+            printf("Couldn't find operator function for %c\n", function_name);
+        }
     }
 }
 
