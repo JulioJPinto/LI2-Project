@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "stack.h"
 
 #define INPUT_BUFFER_SIZE 100
 #define MAX_WORD_SIZE 50
+#define INITIAL_STACK_CAPACITY 100
 
 /*
  * Tenta converter uma array de char word[] para *to.
@@ -13,12 +15,13 @@ int parse_number(char word[], int *to) {
     return sscanf(word, "%d", to) == 1;
 }
 
-void parse(char word[]) {
+void parse(Stack *stack, char word[]) {
     printf("Parsing: '%s'\n", word);
 
     int i;
     if (parse_number(word, &i)) {
-        printf("Parsed number: %d\n", i);
+        printf("Pushing number: %d\n", i);
+        push(stack, i);
     } else {
         printf("Parsed symbol: %s\n", word);
     }
@@ -33,6 +36,8 @@ int main() {
 
     int length = (int) strlen(input);
 
+    Stack *stack = create_stack(INITIAL_STACK_CAPACITY);
+
     char current_word[MAX_WORD_SIZE];
     int current_word_index = 0;
 
@@ -43,10 +48,13 @@ int main() {
             current_word[current_word_index++] = current_char;
         } else if (current_word_index != 0) {
             current_word[current_word_index] = '\0';
-            parse(current_word);
+            parse(stack, current_word);
             current_word_index = 0;
         }
     }
+
+    dump_stack(stack);
+    free_stack(stack);
 
     return 0;
 }
