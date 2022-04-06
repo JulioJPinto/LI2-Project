@@ -38,6 +38,9 @@ int pop(Stack *stack) {
 }
 
 void push(Stack *stack, int x) {
-    // TODO: resize array if no capacity
-    stack->array[++(stack->current_index)] = x;
+    if (stack->current_index + 1 == stack->capacity){
+        stack->array = realloc(stack, 2* stack->capacity );
+        stack->capacity *= 2;
+    }
+        stack->array[++(stack->current_index)] = x;
 }
