@@ -4,9 +4,9 @@
 #include "operations.h"
 #include "logger.h"
 
-#define INPUT_BUFFER_SIZE 100
+#define INPUT_BUFFER_SIZE 1000
 #define MAX_WORD_SIZE 50
-#define INITIAL_STACK_CAPACITY 100
+#define INITIAL_STACK_CAPACITY 1000
 
 /*
  * Tenta converter uma array de char word[] para *to.
