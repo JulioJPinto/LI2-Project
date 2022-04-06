@@ -1,6 +1,7 @@
 #include "stack.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "logger.h"
 
 Stack *create_stack(int initial_capacity) {
     Stack *stack = malloc(sizeof(Stack));
@@ -19,9 +20,9 @@ void free_stack(Stack *stack) {
 }
 
 void dump_stack(Stack *stack) {
-    printf("Stack content is: ");
+    PRINT_DEBUG("Stack content is: ");
     for (int i = 0; i < length(stack); ++i) {
-        printf("%d ", stack->array[i]);
+        printf("%d", stack->array[i]);
     }
     printf("\n");
 }

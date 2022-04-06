@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "operations.h"
+#include "logger.h"
 
 #define INPUT_BUFFER_SIZE 100
 #define MAX_WORD_SIZE 50
@@ -47,14 +48,14 @@ void (*handle_operation(char operation))(Stack *) {
 }
 
 void parse(Stack *stack, char word[]) {
-    printf("Parsing: '%s'\n", word);
+    PRINT_DEBUG("Parsing: '%s'\n", word);
 
     int i;
     if (parse_number(word, &i)) {
-        printf("Pushing number: %d\n", i);
+        PRINT_DEBUG("Pushing number: %d\n", i);
         push(stack, i);
     } else {
-        printf("Parsed symbol: %s\n", word);
+        PRINT_DEBUG("Parsed symbol: %s\n", word);
 
         char function_name = word[0];
 
@@ -62,7 +63,7 @@ void parse(Stack *stack, char word[]) {
         if (function != NULL) {
             function(stack);
         } else {
-            printf("Couldn't find operator function for %c\n", function_name);
+            PRINT_DEBUG("Couldn't find operator function for %c\n", function_name);
         }
     }
 }
