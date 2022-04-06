@@ -3,4 +3,4 @@ project(_0M C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(_0M code/main.c code/stack.h code/stack.c code/operations.c code/operations.h)
+add_executable(_0M code/main.c code/stack.h code/stack.c code/operations.c code/operations.h code/logger.h)
