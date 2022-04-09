@@ -63,6 +63,10 @@ void push_long(Stack *stack, long value) {
     push(stack, create_long_element(value));
 }
 
+void push_char(Stack *stack, char value) {
+    push(stack, create_char_element(value));
+}
+
 StackElement create_long_element(long value) {
     StackElement element;
     element.type = LongType;

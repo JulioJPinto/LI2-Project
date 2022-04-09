@@ -52,6 +52,8 @@ void (*handle_operation(char operation))(Stack *) {
             return rotate_last_three_operation;
         case '$':
             return copy_nth_element_operation;
+        case 'c':
+            return convert_last_to_char_operation;
         default:
             return NULL;
     }

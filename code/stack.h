@@ -71,6 +71,13 @@ void push(Stack *stack, StackElement x);
 void push_long(Stack *stack, long value);
 
 /**
+ * Faz push de um char para a @param{stack}
+ * @param stack target
+ * @param value valor char
+ */
+void push_char(Stack *stack, char value);
+
+/**
  * @param stack target
  * @return O ultimo elemento adicionado à stack sem o remover
  */

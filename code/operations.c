@@ -114,5 +114,10 @@ void copy_nth_element_operation(Stack *stack) {
     long index = pop_long(stack);
 
     push(stack, get(stack, index));
+}
 
+void convert_last_to_char_operation(Stack *stack) {
+    long x = pop_long(stack);
+
+    push(stack, create_char_element((char) x));
 }
