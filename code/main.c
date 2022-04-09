@@ -12,8 +12,8 @@
  * Tenta converter uma array de char word[] para *to.
  * Retorna 1 se conseguiu converter, 0 se não.
  */
-int parse_number(char word[], int *to) {
-    return sscanf(word, "%d", to) == 1;
+int parse_number(char word[], long *to) {
+    return sscanf(word, "%ld", to) == 1;
 }
 
 void (*handle_operation(char operation))(Stack *) {
@@ -50,10 +50,10 @@ void (*handle_operation(char operation))(Stack *) {
 void parse(Stack *stack, char word[]) {
     PRINT_DEBUG("Parsing: '%s'\n", word);
 
-    int i;
+    long i;
     if (parse_number(word, &i)) {
-        PRINT_DEBUG("Pushing number: %d\n", i);
-        push(stack, i);
+        PRINT_DEBUG("Pushing number: %ld\n", i);
+        push_long(stack, i);
     } else {
         PRINT_DEBUG("Parsed symbol: %s\n", word);
 
