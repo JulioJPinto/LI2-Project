@@ -42,6 +42,16 @@ void (*handle_operation(char operation))(Stack *) {
             return xor_bitwise_operation;
         case '~':
             return not_bitwise_operation;
+        case '_':
+            return duplicate_operation;
+        case ';':
+            return pop_operation;
+        case '\\':
+            return swap_last_two_operation;
+        case '@':
+            return rotate_last_three_operation;
+        case '$':
+            return copy_nth_element_operation;
         default:
             return NULL;
     }

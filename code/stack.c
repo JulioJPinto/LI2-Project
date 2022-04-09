@@ -82,3 +82,7 @@ StackElement create_char_element(char value) {
 StackElement peek(Stack *stack) {
     return stack->array[stack->current_index];
 }
+
+StackElement get(Stack *stack, long index) {
+    return stack->array[stack->current_index - index];
+}

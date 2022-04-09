@@ -1,5 +1,6 @@
-#include "stack.h"
 #include "logger.h"
+#include "operations.h"
+
 #include <math.h>
 
 void add_operation(Stack *stack) {
@@ -81,4 +82,37 @@ void not_bitwise_operation(Stack *stack) {
     long x = pop_long(stack);
 
     push_long(stack, ~x);
+}
+
+void duplicate_operation(Stack *stack) {
+    push(stack, peek(stack));
+}
+
+void pop_operation(Stack *stack) {
+    pop(stack);
+}
+
+void swap_last_two_operation(Stack *stack) {
+    StackElement x1 = pop(stack);
+    StackElement x2 = pop(stack);
+
+    push(stack, x1);
+    push(stack, x2);
+}
+
+void rotate_last_three_operation(Stack *stack) {
+    StackElement x1 = pop(stack);
+    StackElement x2 = pop(stack);
+    StackElement x3 = pop(stack);
+
+    push(stack, x2);
+    push(stack, x1);
+    push(stack, x3);
+}
+
+void copy_nth_element_operation(Stack *stack) {
+    long index = pop_long(stack);
+
+    push(stack, get(stack, index));
+
 }

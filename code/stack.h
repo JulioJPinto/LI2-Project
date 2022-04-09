@@ -1,9 +1,9 @@
-typedef enum elementType {
+typedef enum {
     LongType, CharType
 } ElementType;
 
 typedef struct {
-    enum elementType type;
+    ElementType type;
     union {
         long long_value;
         char char_value;
@@ -75,6 +75,15 @@ void push_long(Stack *stack, long value);
  * @return O ultimo elemento adicionado à stack sem o remover
  */
 StackElement peek(Stack *stack);
+
+/**
+ * Retorna o elemento da stack que está no indice @param{index}
+ * O indice 0 é o ultimo elemento adicionado.
+ * @param stack target
+ * @param index indice
+ * @return O elemento do indice
+ */
+StackElement get(Stack *stack, long index);
 
 /**
  * Cria um elemento do tipo long.
