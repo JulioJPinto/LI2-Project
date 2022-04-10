@@ -60,14 +60,14 @@ void (*handle_operation(char operation))(Stack *) {
 }
 
 void parse(Stack *stack, char word[]) {
-    PRINT_DEBUG("Parsing: '%s'\n", word);
+    PRINT_DEBUG("Parsing: '%s'\n", word)
 
     long i;
     if (parse_number(word, &i)) {
-        PRINT_DEBUG("Pushing number: %ld\n", i);
+        PRINT_DEBUG("Pushing number: %ld\n", i)
         push_long(stack, i);
     } else {
-        PRINT_DEBUG("Parsed symbol: %s\n", word);
+        PRINT_DEBUG("Parsed symbol: %s\n", word)
 
         char function_name = word[0];
 
@@ -75,7 +75,7 @@ void parse(Stack *stack, char word[]) {
         if (function != NULL) {
             function(stack);
         } else {
-            PRINT_DEBUG("Couldn't find operator function for %c\n", function_name);
+            PRINT_DEBUG("Couldn't find operator function for %c\n", function_name)
         }
     }
 }

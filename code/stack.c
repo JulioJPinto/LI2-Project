@@ -8,7 +8,7 @@ Stack *create_stack(int initial_capacity) {
 
     stack->capacity = initial_capacity;
     stack->current_index = -1;
-    stack->array = calloc(initial_capacity, sizeof(StackElement));
+    stack->array = calloc((unsigned long) initial_capacity, sizeof(StackElement));
 
     return stack;
 }
@@ -52,7 +52,7 @@ long pop_long(Stack *stack) {
 void push(Stack *stack, StackElement x) {
     if (length(stack) >= stack->capacity) {
         stack->capacity *= 2;
-        stack->array = realloc(stack, stack->capacity);
+        stack->array = realloc(stack, (unsigned long) stack->capacity);
         PRINT_DEBUG("REALLOCATED STACK (new capacity = %d)", stack->capacity)
     }
 
