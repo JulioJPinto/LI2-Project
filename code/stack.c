@@ -24,10 +24,10 @@ void dump_stack(Stack *stack) {
         StackElement element = stack->array[i];
 
         switch (element.type) {
-            case LongType:
+            case LONG_TYPE:
                 printf("%ld", element.content.long_value);
                 break;
-            case CharType:
+            case CHAR_TYPE:
                 printf("%c", element.content.char_value);
         }
     }
@@ -69,7 +69,7 @@ void push_char(Stack *stack, char value) {
 
 StackElement create_long_element(long value) {
     StackElement element;
-    element.type = LongType;
+    element.type = LONG_TYPE;
     element.content.long_value = value;
 
     return element;
@@ -77,7 +77,7 @@ StackElement create_long_element(long value) {
 
 StackElement create_char_element(char value) {
     StackElement element;
-    element.type = CharType;
+    element.type = CHAR_TYPE;
     element.content.char_value = value;
 
     return element;

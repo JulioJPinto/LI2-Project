@@ -1,5 +1,7 @@
+#pragma once
+
 typedef enum {
-    LongType, CharType
+    LONG_TYPE, CHAR_TYPE
 } ElementType;
 
 typedef struct {

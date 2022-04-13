@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "stack.h"
 #include "operations.h"
+#include "conversions.h"
 #include "logger.h"
 
 #define INPUT_BUFFER_SIZE 1000
@@ -53,7 +55,7 @@ void (*handle_operation(char operation))(Stack *) {
         case '$':
             return copy_nth_element_operation;
         case 'c':
-            return convert_last_to_char_operation;
+            return convert_last_element_to_char;
         default:
             return NULL;
     }
