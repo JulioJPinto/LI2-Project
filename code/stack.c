@@ -29,6 +29,10 @@ void dump_stack(Stack *stack) {
                 break;
             case CHAR_TYPE:
                 printf("%c", element.content.char_value);
+                break;
+            case DOUBLE_TYPE:
+                printf("%f", element.content.double_value);
+                break;
         }
     }
     printf("\n");
@@ -59,12 +63,24 @@ void push(Stack *stack, StackElement x) {
     stack->array[++(stack->current_index)] = x;
 }
 
+void push_double(Stack *stack, double value) {
+    push(stack, create_double_element(value));
+}
+
 void push_long(Stack *stack, long value) {
     push(stack, create_long_element(value));
 }
 
 void push_char(Stack *stack, char value) {
     push(stack, create_char_element(value));
+}
+
+StackElement create_double_element(double value) {
+    StackElement element;
+    element.type = DOUBLE_TYPE;
+    element.content.double_value = value;
+
+    return element;
 }
 
 StackElement create_long_element(long value) {

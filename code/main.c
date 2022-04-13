@@ -56,6 +56,10 @@ void (*handle_operation(char operation))(Stack *) {
             return copy_nth_element_operation;
         case 'c':
             return convert_last_element_to_char;
+        case 'i':
+            return convert_last_element_to_long;
+        case 'f':
+            return convert_last_element_to_double;
         default:
             return NULL;
     }
@@ -77,7 +81,7 @@ void parse(Stack *stack, char word[]) {
         if (function != NULL) {
             function(stack);
         } else {
-            PRINT_DEBUG("Couldn't find operator function for %c\n", function_name)
+            fprintf(stderr, "Couldn't find operator function for %c\n", function_name);
         }
     }
 }

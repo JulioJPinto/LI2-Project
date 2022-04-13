@@ -1,12 +1,13 @@
 #pragma once
 
 typedef enum {
-    LONG_TYPE, CHAR_TYPE
+    DOUBLE_TYPE, LONG_TYPE, CHAR_TYPE
 } ElementType;
 
 typedef struct {
     ElementType type;
     union {
+        double double_value;
         long long_value;
         char char_value;
     } content;
@@ -66,6 +67,13 @@ long pop_long(Stack *stack);
 void push(Stack *stack, StackElement x);
 
 /**
+ * Faz push de um double para a @param{stack}
+ * @param stack target
+ * @param value valor double
+ */
+void push_double(Stack *stack, double value);
+
+/**
  * Faz push de um long para a @param{stack}
  * @param stack target
  * @param value valor long
@@ -93,6 +101,13 @@ StackElement peek(Stack *stack);
  * @return O elemento do indice
  */
 StackElement get(Stack *stack, long index);
+
+/**
+ * Cria um elemento do tipo double.
+ * @param value double
+ * @return O elemento criado
+ */
+StackElement create_double_element(double value);
 
 /**
  * Cria um elemento do tipo long.
