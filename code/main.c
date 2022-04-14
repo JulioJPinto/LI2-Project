@@ -10,26 +10,6 @@
 #define MAX_WORD_SIZE 50
 #define INITIAL_STACK_CAPACITY 1000
 
-int parse_long(char word[], long *to) {
-    char *remainder;
-    long result = strtol(word, &remainder, 10);
-    if (strlen(remainder) <= 0) {
-        *to = result;
-        return 1;
-    }
-    return 0;
-}
-
-int parse_double(char word[], double *to) {
-    char *remainder;
-    double result = strtod(word, &remainder);
-    if (strlen(remainder) <= 0) {
-        *to = result;
-        return 1;
-    }
-    return 0;
-}
-
 void (*handle_operation(char operation))(Stack *) {
     switch (operation) {
         case '+':
@@ -72,6 +52,8 @@ void (*handle_operation(char operation))(Stack *) {
             return convert_last_element_to_long;
         case 'f':
             return convert_last_element_to_double;
+        case 'l':
+            return read_input_from_console_operation;
         default:
             return NULL;
     }

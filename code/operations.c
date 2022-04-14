@@ -2,24 +2,27 @@
 #include "operations.h"
 
 #include <math.h>
+#include <string.h>
+
+#define READ_INPUT_FROM_CONSOLE_MAX_LENGTH 100
 
 void operate_promoting_number_type(Stack *stack,
                                    void (*double_operation_function_pointer)(Stack *, double, double),
                                    void (*long_operation_function_pointer)(Stack *, long, long)) {
-    StackElement x = pop(stack);
     StackElement y = pop(stack);
+    StackElement x = pop(stack);
 
     ElementType x_type = x.type;
     ElementType y_type = y.type;
 
     if (x_type == DOUBLE_TYPE && y_type == DOUBLE_TYPE) {
-        double_operation_function_pointer(stack, y.content.double_value, x.content.double_value);
+        double_operation_function_pointer(stack, x.content.double_value, y.content.double_value);
     } else if (x_type == DOUBLE_TYPE && y_type == LONG_TYPE) {
-        double_operation_function_pointer(stack, (double) y.content.long_value, x.content.double_value);
+        double_operation_function_pointer(stack, x.content.double_value, (double) y.content.long_value);
     } else if (x_type == LONG_TYPE && y_type == DOUBLE_TYPE) {
-        double_operation_function_pointer(stack, y.content.double_value, (double) x.content.long_value);
+        double_operation_function_pointer(stack, (double) x.content.long_value, y.content.double_value);
     } else if (x_type == LONG_TYPE && y_type == LONG_TYPE) {
-        long_operation_function_pointer(stack, y.content.long_value, x.content.long_value);
+        long_operation_function_pointer(stack, x.content.long_value, y.content.long_value);
     } else {
         fprintf(stderr, "Trying to operate non number elements. (x_type: %d, y_type: %d)", x_type, y_type);
     }
@@ -173,4 +176,21 @@ void copy_nth_element_operation(Stack *stack) {
     long index = pop_long(stack);
 
     push(stack, get(stack, index));
+}
+
+void read_input_from_console_operation(Stack *stack) {
+    char input[READ_INPUT_FROM_CONSOLE_MAX_LENGTH];
+    if (fgets(input, READ_INPUT_FROM_CONSOLE_MAX_LENGTH, stdin) == NULL) {
+        fprintf(stderr, "Couldn't read input operation from console: fgets returned null pointer\n");
+        return;
+    }
+
+    // fgets returns string ending in \n\0
+    // temos que filtrar o \n
+    unsigned long length = strlen(input);
+    if (length > 0 && input[length - 1] == '\n') {
+        input[--length] = '\0';
+    }
+
+    push_string(stack, input);
 }

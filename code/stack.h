@@ -1,7 +1,7 @@
 #pragma once
 
 typedef enum {
-    DOUBLE_TYPE, LONG_TYPE, CHAR_TYPE
+    DOUBLE_TYPE, LONG_TYPE, CHAR_TYPE, STRING_TYPE
 } ElementType;
 
 typedef struct {
@@ -10,6 +10,7 @@ typedef struct {
         double double_value;
         long long_value;
         char char_value;
+        char *string_value;
     } content;
 } StackElement;
 
@@ -88,6 +89,13 @@ void push_long(Stack *stack, long value);
 void push_char(Stack *stack, char value);
 
 /**
+ * Faz push de uma string para a @param{stack}
+ * @param stack target
+ * @param value valor string
+ */
+void push_string(Stack *stack, char *value);
+
+/**
  * @param stack target
  * @return O ultimo elemento adicionado à stack sem o remover
  */
@@ -122,3 +130,11 @@ StackElement create_long_element(long value);
  * @return O elemento criado
  */
 StackElement create_char_element(char value);
+
+/**
+ * Cria um elemento do tipo string.
+ * É guardado um pointer para uma copia do @param{value} alocada na heap.
+ * @param value string
+ * @return O elemento criado
+ */
+StackElement create_string_element(char *value);

@@ -1,6 +1,7 @@
 #include "stack.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <strings.h>
 #include "logger.h"
 
 Stack *create_stack(int initial_capacity) {
@@ -32,6 +33,9 @@ void dump_stack(Stack *stack) {
                 break;
             case DOUBLE_TYPE:
                 printf("%f", element.content.double_value);
+                break;
+            case STRING_TYPE:
+                printf("%s", element.content.string_value);
                 break;
         }
     }
@@ -75,6 +79,10 @@ void push_char(Stack *stack, char value) {
     push(stack, create_char_element(value));
 }
 
+void push_string(Stack *stack, char *value) {
+    push(stack, create_string_element(value));
+}
+
 StackElement create_double_element(double value) {
     StackElement element;
     element.type = DOUBLE_TYPE;
@@ -95,6 +103,19 @@ StackElement create_char_element(char value) {
     StackElement element;
     element.type = CHAR_TYPE;
     element.content.char_value = value;
+
+    return element;
+}
+
+StackElement create_string_element(char *value) {
+    StackElement element;
+    element.type = STRING_TYPE;
+
+    unsigned long length = strlen(value) + 1;
+    char *copied_string = calloc(length, sizeof(char));
+    strcpy(copied_string, value);
+
+    element.content.string_value = copied_string;
 
     return element;
 }

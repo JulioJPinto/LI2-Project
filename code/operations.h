@@ -33,3 +33,5 @@ void swap_last_two_operation(Stack *stack);
 void rotate_last_three_operation(Stack *stack);
 
 void copy_nth_element_operation(Stack *stack);
+
+void read_input_from_console_operation(Stack *stack);
