@@ -104,24 +104,16 @@ void modulo_operation(Stack *stack) {
     push_long(stack, y % x);
 }
 
+void exponential_double_operation(Stack *stack, double a, double b) {
+    push_double(stack, pow(a, b));
+}
+
+void exponential_long_operation(Stack *stack, long a, long b) {
+    push_long(stack, (long) pow((double) a, (double) b));
+}
+
 void exponential_operation(Stack *stack) {
-    StackElement x = pop(stack);
-    StackElement y = pop(stack);
-
-    ElementType x_type = x.type;
-    ElementType y_type = y.type;
-
-    if (x_type == DOUBLE_TYPE && y_type == DOUBLE_TYPE) {
-        push_double(stack, pow(x.content.double_value, y.content.double_value));
-    } else if (x_type == DOUBLE_TYPE && y_type == LONG_TYPE) {
-        push_double(stack, pow(x.content.double_value, (double) y.content.long_value));
-    } else if (x_type == LONG_TYPE && y_type == DOUBLE_TYPE) {
-        push_long(stack, (long) pow((double) x.content.long_value, y.content.double_value));
-    } else if (x_type == LONG_TYPE && y_type == LONG_TYPE) {
-        push_long(stack, (long) pow((double) x.content.long_value, (double) y.content.long_value));
-    } else {
-        fprintf(stderr, "Trying to exp non number elements. (x_type: %d, y_type: %d)", x_type, y_type);
-    }
+    operate_promoting_number_type(stack, exponential_double_operation, exponential_long_operation);
 }
 
 void and_bitwise_operation(Stack *stack) {
