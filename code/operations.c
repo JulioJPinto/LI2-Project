@@ -13,13 +13,13 @@ void operate_promoting_number_type(Stack *stack,
     ElementType y_type = y.type;
 
     if (x_type == DOUBLE_TYPE && y_type == DOUBLE_TYPE) {
-        double_operation_function_pointer(stack, x.content.double_value, y.content.double_value);
+        double_operation_function_pointer(stack, y.content.double_value, x.content.double_value);
     } else if (x_type == DOUBLE_TYPE && y_type == LONG_TYPE) {
-        double_operation_function_pointer(stack, x.content.double_value, (double) y.content.long_value);
+        double_operation_function_pointer(stack, (double) y.content.long_value, x.content.double_value);
     } else if (x_type == LONG_TYPE && y_type == DOUBLE_TYPE) {
-        double_operation_function_pointer(stack, (double) x.content.long_value, y.content.double_value);
+        double_operation_function_pointer(stack, y.content.double_value, (double) x.content.long_value);
     } else if (x_type == LONG_TYPE && y_type == LONG_TYPE) {
-        long_operation_function_pointer(stack, x.content.long_value, y.content.long_value);
+        long_operation_function_pointer(stack, y.content.long_value, x.content.long_value);
     } else {
         fprintf(stderr, "Trying to operate non number elements. (x_type: %d, y_type: %d)", x_type, y_type);
     }

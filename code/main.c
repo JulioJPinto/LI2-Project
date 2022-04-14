@@ -10,12 +10,24 @@
 #define MAX_WORD_SIZE 50
 #define INITIAL_STACK_CAPACITY 1000
 
-/*
- * Tenta converter uma array de char word[] para *to.
- * Retorna 1 se conseguiu converter, 0 se não.
- */
-int parse_number(char word[], long *to) {
-    return sscanf(word, "%ld", to) == 1;
+int parse_long(char word[], long *to) {
+    char *remainder;
+    long result = strtol(word, &remainder, 10);
+    if (strlen(remainder) <= 0) {
+        *to = result;
+        return 1;
+    }
+    return 0;
+}
+
+int parse_double(char word[], double *to) {
+    char *remainder;
+    double result = strtod(word, &remainder);
+    if (strlen(remainder) <= 0) {
+        *to = result;
+        return 1;
+    }
+    return 0;
 }
 
 void (*handle_operation(char operation))(Stack *) {
@@ -68,10 +80,15 @@ void (*handle_operation(char operation))(Stack *) {
 void parse(Stack *stack, char word[]) {
     PRINT_DEBUG("Parsing: '%s'\n", word)
 
-    long i;
-    if (parse_number(word, &i)) {
-        PRINT_DEBUG("Pushing number: %ld\n", i)
-        push_long(stack, i);
+    long l;
+    double d;
+
+    if (parse_long(word, &l)) {
+        PRINT_DEBUG("Pushing long: %ld\n", l)
+        push_long(stack, l);
+    } else if (parse_double(word, &d)) {
+        PRINT_DEBUG("Pushing double: %g\n", d)
+        push_double(stack, d);
     } else {
         PRINT_DEBUG("Parsed symbol: %s\n", word)
 
