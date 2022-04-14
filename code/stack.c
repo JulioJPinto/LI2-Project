@@ -32,7 +32,7 @@ void dump_stack(Stack *stack) {
                 printf("%c", element.content.char_value);
                 break;
             case DOUBLE_TYPE:
-                printf("%f", element.content.double_value);
+                printf("%g", element.content.double_value);
                 break;
             case STRING_TYPE:
                 printf("%s", element.content.string_value);

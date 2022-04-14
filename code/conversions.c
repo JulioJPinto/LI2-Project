@@ -4,6 +4,8 @@
 #include "conversions.h"
 #include "logger.h"
 
+#define MAX_CONVERT_TO_STRING_SIZE 100
+
 int parse_long(char word[], long *to) {
     char *remainder;
     long result = strtol(word, &remainder, 10);
@@ -113,4 +115,28 @@ void convert_last_element_to_long(Stack *stack) {
     push_long(stack, x);
 }
 
+void convert_last_element_to_string(Stack *stack) {
+    StackElement stack_element = pop(stack);
 
+    char x[MAX_CONVERT_TO_STRING_SIZE];
+
+    switch (stack_element.type) {
+        case DOUBLE_TYPE:
+            sprintf(x, "%g", stack_element.content.double_value);
+            break;
+        case LONG_TYPE:
+            sprintf(x, "%ld", stack_element.content.long_value);
+            break;
+        case CHAR_TYPE:
+            sprintf(x, "%c", stack_element.content.char_value);
+            break;
+        case STRING_TYPE:
+            strcpy(x, stack_element.content.string_value);
+            break;
+        default:
+            fprintf(stderr, "Couldn't convert to string from type %d", stack_element.type);
+            return;
+    }
+
+    push_string(stack, x);
+}

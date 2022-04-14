@@ -54,6 +54,8 @@ void (*handle_operation(char operation))(Stack *) {
             return convert_last_element_to_double;
         case 'l':
             return read_input_from_console_operation;
+        case 's':
+            return convert_last_element_to_string;
         default:
             return NULL;
     }
