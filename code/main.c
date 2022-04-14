@@ -8,7 +8,7 @@
 #define MAX_WORD_SIZE 50
 #define INITIAL_STACK_CAPACITY 1000
 
-/*
+/**
  * Tenta converter uma array de char word[] para *to.
  * Retorna 1 se conseguiu converter, 0 se não.
  */
@@ -16,6 +16,10 @@ int parse_number(char word[], long *to) {
     return sscanf(word, "%ld", to) == 1;
 }
 
+/**
+ * \brief A função utiliza um switch para determinar o tipo de operação que irá ocorrer.
+ * Caso o operador não conste da lista de operações esta devolverá um NULL.
+ */
 void (*handle_operation(char operation))(Stack *) {
     switch (operation) {
         case '+':
@@ -59,6 +63,11 @@ void (*handle_operation(char operation))(Stack *) {
     }
 }
 
+/**
+ * \brief Nesta função fazemos parse do que se encontra na stack.
+ * Nesta função transforma se o input no seu devido tipo.
+ * Números transformam se em Int/Double, e Caracteres mantem se Caracteres ou Strings
+ */
 void parse(Stack *stack, char word[]) {
     PRINT_DEBUG("Parsing: '%s'\n", word)
 
@@ -80,6 +89,9 @@ void parse(Stack *stack, char word[]) {
     }
 }
 
+/**
+ * \brief A função que faz a stack funcionar.
+ */
 int main() {
     char input[INPUT_BUFFER_SIZE];
 
