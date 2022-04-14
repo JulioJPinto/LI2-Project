@@ -1,13 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "stack.h"
 #include "operations.h"
+#include "conversions.h"
 #include "logger.h"
 
 #define INPUT_BUFFER_SIZE 1000
 #define MAX_WORD_SIZE 50
 #define INITIAL_STACK_CAPACITY 1000
 
+<<<<<<< HEAD
 /**
  * Tenta converter uma array de char word[] para *to.
  * Retorna 1 se conseguiu converter, 0 se não.
@@ -20,6 +23,8 @@ int parse_number(char word[], long *to) {
  * \brief A função utiliza um switch para determinar o tipo de operação que irá ocorrer.
  * Caso o operador não conste da lista de operações esta devolverá um NULL.
  */
+=======
+>>>>>>> 2e907ddfa2206718af2ff71ebf0746381a16b8ef
 void (*handle_operation(char operation))(Stack *) {
     switch (operation) {
         case '+':
@@ -57,7 +62,15 @@ void (*handle_operation(char operation))(Stack *) {
         case '$':
             return copy_nth_element_operation;
         case 'c':
-            return convert_last_to_char_operation;
+            return convert_last_element_to_char;
+        case 'i':
+            return convert_last_element_to_long;
+        case 'f':
+            return convert_last_element_to_double;
+        case 'l':
+            return read_input_from_console_operation;
+        case 's':
+            return convert_last_element_to_string;
         default:
             return NULL;
     }
@@ -71,10 +84,15 @@ void (*handle_operation(char operation))(Stack *) {
 void parse(Stack *stack, char word[]) {
     PRINT_DEBUG("Parsing: '%s'\n", word)
 
-    long i;
-    if (parse_number(word, &i)) {
-        PRINT_DEBUG("Pushing number: %ld\n", i)
-        push_long(stack, i);
+    long l;
+    double d;
+
+    if (parse_long(word, &l)) {
+        PRINT_DEBUG("Pushing long: %ld\n", l)
+        push_long(stack, l);
+    } else if (parse_double(word, &d)) {
+        PRINT_DEBUG("Pushing double: %g\n", d)
+        push_double(stack, d);
     } else {
         PRINT_DEBUG("Parsed symbol: %s\n", word)
 
@@ -84,7 +102,7 @@ void parse(Stack *stack, char word[]) {
         if (function != NULL) {
             function(stack);
         } else {
-            PRINT_DEBUG("Couldn't find operator function for %c\n", function_name)
+            fprintf(stderr, "Couldn't find operator function for %c\n", function_name);
         }
     }
 }

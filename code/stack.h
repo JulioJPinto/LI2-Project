@@ -1,12 +1,16 @@
+#pragma once
+
 typedef enum {
-    LongType, CharType
+    DOUBLE_TYPE, LONG_TYPE, CHAR_TYPE, STRING_TYPE
 } ElementType;
 
 typedef struct {
     ElementType type;
     union {
+        double double_value;
         long long_value;
         char char_value;
+        char *string_value;
     } content;
 } StackElement;
 
@@ -64,6 +68,13 @@ long pop_long(Stack *stack);
 void push(Stack *stack, StackElement x);
 
 /**
+ * Faz push de um double para a @param{stack}
+ * @param stack target
+ * @param value valor double
+ */
+void push_double(Stack *stack, double value);
+
+/**
  * Faz push de um long para a @param{stack}
  * @param stack target
  * @param value valor long
@@ -76,6 +87,13 @@ void push_long(Stack *stack, long value);
  * @param value valor char
  */
 void push_char(Stack *stack, char value);
+
+/**
+ * Faz push de uma string para a @param{stack}
+ * @param stack target
+ * @param value valor string
+ */
+void push_string(Stack *stack, char *value);
 
 /**
  * @param stack target
@@ -93,6 +111,13 @@ StackElement peek(Stack *stack);
 StackElement get(Stack *stack, long index);
 
 /**
+ * Cria um elemento do tipo double.
+ * @param value double
+ * @return O elemento criado
+ */
+StackElement create_double_element(double value);
+
+/**
  * Cria um elemento do tipo long.
  * @param value long
  * @return O elemento criado
@@ -105,3 +130,11 @@ StackElement create_long_element(long value);
  * @return O elemento criado
  */
 StackElement create_char_element(char value);
+
+/**
+ * Cria um elemento do tipo string.
+ * É guardado um pointer para uma copia do @param{value} alocada na heap.
+ * @param value string
+ * @return O elemento criado
+ */
+StackElement create_string_element(char *value);
