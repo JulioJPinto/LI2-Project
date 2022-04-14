@@ -10,7 +10,6 @@
 #define MAX_WORD_SIZE 50
 #define INITIAL_STACK_CAPACITY 1000
 
-<<<<<<< HEAD
 /**
  * Tenta converter uma array de char word[] para *to.
  * Retorna 1 se conseguiu converter, 0 se não.
@@ -23,8 +22,6 @@ int parse_number(char word[], long *to) {
  * \brief A função utiliza um switch para determinar o tipo de operação que irá ocorrer.
  * Caso o operador não conste da lista de operações esta devolverá um NULL.
  */
-=======
->>>>>>> 2e907ddfa2206718af2ff71ebf0746381a16b8ef
 void (*handle_operation(char operation))(Stack *) {
     switch (operation) {
         case '+':

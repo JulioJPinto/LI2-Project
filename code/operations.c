@@ -131,18 +131,16 @@ void modulo_operation(Stack *stack) {
     push_long(stack, y % x);
 }
 
-<<<<<<< HEAD
 /**
  * \brief Nesta função retornamos o módulo do número no topo da stack um.
  */
 void exponential_operation(Stack *stack) {
     long x = pop_long(stack);
     long y = pop_long(stack);
-=======
+}
 void exponential_double_operation(Stack *stack, double a, double b) {
     push_double(stack, pow(a, b));
 }
->>>>>>> 2e907ddfa2206718af2ff71ebf0746381a16b8ef
 
 void exponential_long_operation(Stack *stack, long a, long b) {
     push_long(stack, (long) pow((double) a, (double) b));
@@ -236,14 +234,13 @@ void copy_nth_element_operation(Stack *stack) {
 
     push(stack, get(stack, index));
 }
-<<<<<<< HEAD
+
 /**
  * \brief Nesta função convertemos o ultimo elemento da stack num char.
  */
 void convert_last_to_char_operation(Stack *stack) {
     long x = pop_long(stack);
-=======
-
+}
 void read_input_from_console_operation(Stack *stack) {
     char input[READ_INPUT_FROM_CONSOLE_MAX_LENGTH];
     if (fgets(input, READ_INPUT_FROM_CONSOLE_MAX_LENGTH, stdin) == NULL) {
@@ -255,9 +252,6 @@ void read_input_from_console_operation(Stack *stack) {
     // temos que filtrar o \n
     unsigned long length = strlen(input);
     if (length > 0 && input[length - 1] == '\n') {
-        input[--length] = '\0';
-    }
->>>>>>> 2e907ddfa2206718af2ff71ebf0746381a16b8ef
-
+        input[--length] = '\0';}
     push_string(stack, input);
 }
