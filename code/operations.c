@@ -82,8 +82,8 @@ void div_double_operation(Stack *stack, double a, double b) {
 void div_operation(Stack *stack) {
     long x = pop_long(stack);
     long y = pop_long(stack);
-    
-void div_long_operation(Stack *stack, long a, long b) {
+}
+void div_long_operation(Stack *stack, long a, long b){
     push_long(stack, a / b);
 }
 
