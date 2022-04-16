@@ -22,6 +22,7 @@ typedef struct {
 
 typedef void (*StackOperation)(Stack *);
 
+
 /**
  * Cria e aloca uma stack na memória
  * @param initial_capacity capacidade incial
@@ -140,3 +141,5 @@ StackElement create_char_element(char value);
  * @return O elemento criado
  */
 StackElement create_string_element(char *value);
+
+int is_truthy(StackElement *a);

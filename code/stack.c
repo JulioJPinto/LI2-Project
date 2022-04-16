@@ -179,3 +179,19 @@ StackElement peek(Stack *stack) {
 StackElement get(Stack *stack, long index) {
     return stack->array[stack->current_index - index];
 }
+
+int is_truthy(StackElement* a){
+    switch (a->type){
+        case LONG_TYPE:
+            return a->content.long_value != 0;
+        case CHAR_TYPE:
+            return a->content.char_value != '\0';
+        case STRING_TYPE:
+            return strlen(a->content.string_value) != 0;
+        case DOUBLE_TYPE:
+            return a->content.double_value != .0;
+        default:
+            fprintf(stderr,"Invalid Element Type\n");
+            return 0;
+    }
+}

@@ -69,11 +69,11 @@ StackOperation handle_operation(char operation) {
         case 's':
             return convert_last_element_to_string;
         case '>':
-            return lesser_then_operation;
+            return lesser_than_operation;
         case '<':
-            return bigger_then_operation;
+            return bigger_than_operation;
         case '=':
-            return equal_operation;
+            return is_equal_operation;
         default:
             return NULL;
     }
@@ -89,6 +89,7 @@ void parse(Stack *stack, char word[]) {
 
     long l;
     double d;
+
 
     if (parse_long(word, &l)) {
         PRINT_DEBUG("Pushing long: %ld\n", l)

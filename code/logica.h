@@ -1,14 +1,14 @@
 #include "stack.h"
 
-void lesser_then_operation(Stack *stack);
+void lesser_than_operation(Stack *stack);
 
-void bigger_then_operation(Stack *stack);
+void bigger_than_operation(Stack *stack);
 
-void equal_operation(Stack *stack);
+void is_equal_operation(Stack *stack);
 
-void e_operation(Stack *stack);
+void and_operation(Stack *stack);
 
-void ou_operation(Stack *stack);
+void or_operation(Stack *stack);
 
 void lesser_value_operation(Stack *stack);
 
