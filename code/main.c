@@ -3,6 +3,7 @@
 #include <string.h>
 #include "stack.h"
 #include "operations.h"
+#include "logica.h"
 #include "conversions.h"
 #include "logger.h"
 
@@ -17,12 +18,11 @@
 int parse_number(char word[], long *to) {
     return sscanf(word, "%ld", to) == 1;
 }
-
 /**
  * \brief A função utiliza um switch para determinar o tipo de operação que irá ocorrer.
  * Caso o operador não conste da lista de operações esta devolverá um NULL.
  */
-void (*handle_operation(char operation))(Stack *) {
+StackOperation handle_operation(char operation) {
     switch (operation) {
         case '+':
             return add_operation;
@@ -68,6 +68,12 @@ void (*handle_operation(char operation))(Stack *) {
             return read_input_from_console_operation;
         case 's':
             return convert_last_element_to_string;
+        case '>':
+            return lesser_then_operation;
+        case '<':
+            return bigger_then_operation;
+        case '=':
+            return equal_operation;
         default:
             return NULL;
     }

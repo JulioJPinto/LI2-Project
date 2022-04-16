@@ -1,7 +1,7 @@
 #include "stack.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <strings.h>
+#include <string.h>
 #include "logger.h"
 /**
  * @brief Create a stack object
@@ -47,6 +47,8 @@ void dump_stack(Stack *stack) {
             case STRING_TYPE:
                 printf("%s", element.content.string_value);
                 break;
+            default:
+                fprintf(stderr,"Couldn't match type for %c\n", element.content.char_value);            
         }
     }
     printf("\n");
