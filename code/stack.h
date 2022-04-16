@@ -20,6 +20,8 @@ typedef struct {
     StackElement *array;
 } Stack;
 
+typedef void (*StackOperation)(Stack *);
+
 /**
  * Cria e aloca uma stack na memória
  * @param initial_capacity capacidade incial

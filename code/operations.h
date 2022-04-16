@@ -86,13 +86,14 @@ void rotate_last_three_operation(Stack *stack);
  * @param stack A stack que contem os valores/operadores.
  */
 void copy_nth_element_operation(Stack *stack);
-<<<<<<< HEAD
 /**
  * @brief Converte o ultimo elemento da stack para um tipo char
  * @param stack A stack que contem os valores/operadores.
  */
 void convert_last_to_char_operation(Stack *stack);
-=======
 
 void read_input_from_console_operation(Stack *stack);
->>>>>>> 2e907ddfa2206718af2ff71ebf0746381a16b8ef
+
+void operate_promoting_number_type(Stack *stack,
+                                   void (*double_operation_function_pointer)(Stack *, double, double),
+                                   void (*long_operation_function_pointer)(Stack *, long, long));

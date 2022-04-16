@@ -72,19 +72,14 @@ void mult_operation(Stack *stack) {
     operate_promoting_number_type(stack, mult_double_operation, mult_long_operation);
 }
 
-void div_double_operation(Stack *stack, double a, double b) {
-    push_double(stack, a / b);
-}
-
 /**
  * \brief Nesta função fazemos a divisão do número último número da stack pelo penúltimo número da stack.
  */
-void div_operation(Stack *stack) {
-    long x = pop_long(stack);
-    long y = pop_long(stack);
-}
 void div_long_operation(Stack *stack, long a, long b){
     push_long(stack, a / b);
+}
+void div_double_operation(Stack *stack, double a, double b) {
+    push_double(stack, a / b);
 }
 
 void div_operation(Stack *stack) {
@@ -134,10 +129,6 @@ void modulo_operation(Stack *stack) {
 /**
  * \brief Nesta função retornamos o módulo do número no topo da stack um.
  */
-void exponential_operation(Stack *stack) {
-    long x = pop_long(stack);
-    long y = pop_long(stack);
-}
 void exponential_double_operation(Stack *stack, double a, double b) {
     push_double(stack, pow(a, b));
 }
@@ -240,6 +231,7 @@ void copy_nth_element_operation(Stack *stack) {
  */
 void convert_last_to_char_operation(Stack *stack) {
     long x = pop_long(stack);
+    push_char(stack, (char) x);
 }
 void read_input_from_console_operation(Stack *stack) {
     char input[READ_INPUT_FROM_CONSOLE_MAX_LENGTH];
