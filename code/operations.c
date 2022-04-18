@@ -23,7 +23,7 @@ void operate_promoting_number_type(Stack *stack,
     } else if (x_type == LONG_TYPE && y_type == LONG_TYPE) {
         long_operation_function_pointer(stack, x.content.long_value, y.content.long_value);
     } else {
-        fprintf(stderr, "Trying to operate non number elements. (x_type: %d, y_type: %d)", x_type, y_type);
+        PANIC("Trying to operate non number elements. (x_type: %d, y_type: %d)", x_type, y_type)
     }
 }
 
@@ -75,9 +75,10 @@ void mult_operation(Stack *stack) {
 /**
  * \brief Nesta função fazemos a divisão do número último número da stack pelo penúltimo número da stack.
  */
-void div_long_operation(Stack *stack, long a, long b){
+void div_long_operation(Stack *stack, long a, long b) {
     push_long(stack, a / b);
 }
+
 void div_double_operation(Stack *stack, double a, double b) {
     push_double(stack, a / b);
 }
@@ -97,7 +98,7 @@ void decrement_operation(Stack *stack) {
     } else if (element.type == LONG_TYPE) {
         push_long(stack, element.content.long_value--);
     } else {
-        fprintf(stderr, "Trying to decrement non number element. (type: %d)", element.type);
+        PANIC("Trying to decrement non number element. (type: %d)", element.type)
     }
 }
 
@@ -112,7 +113,7 @@ void increment_operation(Stack *stack) {
     } else if (element.type == LONG_TYPE) {
         push_long(stack, element.content.long_value++);
     } else {
-        fprintf(stderr, "Trying to increment non number element. (type: %d)", element.type);
+        PANIC("Trying to increment non number element. (type: %d)", element.type)
     }
 }
 
@@ -217,6 +218,7 @@ void rotate_last_three_operation(Stack *stack) {
     push(stack, x1);
     push(stack, x3);
 }
+
 /**
  * \brief Nesta função copiamos o valor da posição n para o topo da stack.
  */
@@ -226,24 +228,17 @@ void copy_nth_element_operation(Stack *stack) {
     push(stack, get(stack, index));
 }
 
-/**
- * \brief Nesta função convertemos o ultimo elemento da stack num char.
- */
-void convert_last_to_char_operation(Stack *stack) {
-    long x = pop_long(stack);
-    push_char(stack, (char) x);
-}
 void read_input_from_console_operation(Stack *stack) {
     char input[READ_INPUT_FROM_CONSOLE_MAX_LENGTH];
     if (fgets(input, READ_INPUT_FROM_CONSOLE_MAX_LENGTH, stdin) == NULL) {
-        fprintf(stderr, "Couldn't read input operation from console: fgets returned null pointer\n");
-        return;
+        PANIC("Couldn't read input operation from console: fgets returned null pointer\n");
     }
 
     // fgets returns string ending in \n\0
     // temos que filtrar o \n
     unsigned long length = strlen(input);
     if (length > 0 && input[length - 1] == '\n') {
-        input[--length] = '\0';}
+        input[--length] = '\0';
+    }
     push_string(stack, input);
 }

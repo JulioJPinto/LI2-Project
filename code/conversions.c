@@ -51,9 +51,7 @@ void convert_last_element_to_char(Stack *stack) {
                 x = stack_element.content.string_value[0];
             }
             break;
-        default:
-            fprintf(stderr, "Couldn't convert to char from type %d", stack_element.type);
-            return;
+        default: PANIC("Couldn't convert to char from type %d", stack_element.type)
     }
 
     push_char(stack, x);
@@ -77,11 +75,8 @@ void convert_last_element_to_double(Stack *stack) {
         case STRING_TYPE:
             if (parse_double(stack_element.content.string_value, &x))
                 break;
-            fprintf(stderr, "Couldn't convert to double from string %s", stack_element.content.string_value);
-            return;
-        default:
-            fprintf(stderr, "Couldn't convert to double from type %d", stack_element.type);
-            return;
+            PANIC("Couldn't convert to double from string %s", stack_element.content.string_value)
+        default: PANIC("Couldn't convert to double from type %d", stack_element.type)
     }
 
     push_double(stack, x);
@@ -105,11 +100,8 @@ void convert_last_element_to_long(Stack *stack) {
         case STRING_TYPE:
             if (parse_long(stack_element.content.string_value, &x))
                 break;
-            fprintf(stderr, "Couldn't convert to long from string %s", stack_element.content.string_value);
-            return;
-        default:
-            fprintf(stderr, "Couldn't convert to long from type %d", stack_element.type);
-            return;
+            PANIC("Couldn't convert to long from string %s", stack_element.content.string_value)
+        default: PANIC("Couldn't convert to long from type %d", stack_element.type)
     }
 
     push_long(stack, x);
@@ -133,9 +125,7 @@ void convert_last_element_to_string(Stack *stack) {
         case STRING_TYPE:
             strcpy(x, stack_element.content.string_value);
             break;
-        default:
-            fprintf(stderr, "Couldn't convert to string from type %d", stack_element.type);
-            return;
+        default: PANIC("Couldn't convert to string from type %d", stack_element.type)
     }
 
     push_string(stack, x);

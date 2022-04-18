@@ -50,8 +50,7 @@ void dump_stack(Stack *stack) {
             case STRING_TYPE:
                 printf("%s", element.content.string_value);
                 break;
-            default:
-                fprintf(stderr, "Couldn't match type for %c\n", element.content.char_value);
+            default: PANIC("Couldn't match type for %c when dumping\n", element.content.char_value)
         }
     }
     printf("\n");
@@ -208,8 +207,6 @@ int is_truthy(StackElement *a) {
             return strlen(a->content.string_value) != 0;
         case DOUBLE_TYPE:
             return a->content.double_value != .0;
-        default:
-            fprintf(stderr, "Invalid Element Type\n");
-            return 0;
+        default: PANIC("Couldn't retrieve truthy value from type %d\n", a->type);
     }
 }
