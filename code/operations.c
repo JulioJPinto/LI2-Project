@@ -235,7 +235,7 @@ void copy_nth_element_operation(Stack *stack) {
 void read_input_from_console_operation(Stack *stack) {
     char input[READ_INPUT_FROM_CONSOLE_MAX_LENGTH];
     if (fgets(input, READ_INPUT_FROM_CONSOLE_MAX_LENGTH, stdin) == NULL) {
-        PANIC("Couldn't read input operation from console: fgets returned null pointer\n");
+        PANIC("Couldn't read input operation from console: fgets returned null pointer\n")
     }
 
     // fgets returns string ending in \n\0

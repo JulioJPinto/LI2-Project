@@ -66,7 +66,7 @@ void parse(Stack *stack, char word[]) {
     if (operation_function != NULL) {
         operation_function(stack);
     } else {
-        PANIC("Couldn't find operator operation_function for %s\n", word);
+        PANIC("Couldn't find operator operation_function for %s\n", word)
     }
 }
 
