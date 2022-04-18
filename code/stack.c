@@ -211,6 +211,6 @@ int is_truthy(StackElement *a) {
             return strlen(a->content.string_value) != 0;
         case DOUBLE_TYPE:
             return a->content.double_value != .0;
-        default: PANIC("Couldn't retrieve truthy value from type %d\n", a->type);
+        default: PANIC("Couldn't retrieve truthy value from type %d\n", a->type)
     }
 }

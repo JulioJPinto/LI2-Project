@@ -9,7 +9,11 @@
  * Caso o operador não tenha correspondente operação esta devolverá NULL.
  */
 StackOperationFunction get_operation(char op[]) {
+<<<<<<< HEAD
     const StackOperationTableEntry entries[] = {
+=======
+    static const StackOperationTableEntry entries[] = {
+>>>>>>> 2bfb1b16ec330ac30f7a972a72ebf9ce026a00b9
             {"+",  add_operation},
             {"-",  minus_operation},
             {"*",  mult_operation},
