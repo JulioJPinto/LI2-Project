@@ -225,3 +225,5 @@ build/
 build
 build/_0M
 /build
+
+*.zip

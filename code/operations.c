@@ -97,6 +97,8 @@ void decrement_operation(Stack *stack) {
         push_double(stack, element.content.double_value - 1);
     } else if (element.type == LONG_TYPE) {
         push_long(stack, element.content.long_value - 1);
+    } else if (element.type == CHAR_TYPE) {
+        push_char(stack, (char) (element.content.char_value - 1));
     } else {
         PANIC("Trying to decrement non number element. (type: %d)", element.type)
     }
@@ -112,6 +114,8 @@ void increment_operation(Stack *stack) {
         push_double(stack, element.content.double_value + 1);
     } else if (element.type == LONG_TYPE) {
         push_long(stack, element.content.long_value + 1);
+    } else if (element.type == CHAR_TYPE) {
+        push_char(stack, (char) (element.content.char_value + 1));
     } else {
         PANIC("Trying to increment non number element. (type: %d)", element.type)
     }
