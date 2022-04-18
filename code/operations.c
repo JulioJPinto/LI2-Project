@@ -94,9 +94,9 @@ void decrement_operation(Stack *stack) {
     StackElement element = pop(stack);
 
     if (element.type == DOUBLE_TYPE) {
-        push_double(stack, element.content.double_value--);
+        push_double(stack, element.content.double_value - 1);
     } else if (element.type == LONG_TYPE) {
-        push_long(stack, element.content.long_value--);
+        push_long(stack, element.content.long_value - 1);
     } else {
         PANIC("Trying to decrement non number element. (type: %d)", element.type)
     }
@@ -109,9 +109,9 @@ void increment_operation(Stack *stack) {
     StackElement element = pop(stack);
 
     if (element.type == DOUBLE_TYPE) {
-        push_double(stack, element.content.double_value++);
+        push_double(stack, element.content.double_value + 1);
     } else if (element.type == LONG_TYPE) {
-        push_long(stack, element.content.long_value++);
+        push_long(stack, element.content.long_value + 1);
     } else {
         PANIC("Trying to increment non number element. (type: %d)", element.type)
     }
