@@ -4,6 +4,8 @@
 #include <string.h>
 #include "logger.h"
 
+void dump_element(StackElement *element);
+
 /**
  * @brief Create a stack object
  * @param initial_capacity capacidade inicial da stack
@@ -29,29 +31,31 @@ void free_stack(Stack *stack) {
     }
 }
 
+void dump_element(StackElement *element) {
+    switch ((*element).type) {
+        case LONG_TYPE:
+            printf("%ld", (*element).content.long_value);
+            return;
+        case CHAR_TYPE:
+            printf("%c", (*element).content.char_value);
+            return;
+        case DOUBLE_TYPE:
+            printf("%g", (*element).content.double_value);
+            return;
+        case STRING_TYPE:
+            printf("%s", (*element).content.string_value);
+            return;
+        default: PANIC("Couldn't match type for %c when dumping\n", (*element).content.char_value)
+    }
+}
+
 /**
  * @brief Imprime todos os valores da stack
  * @param stack target
  */
 void dump_stack(Stack *stack) {
     for (int i = 0; i < length(stack); ++i) {
-        StackElement element = stack->array[i];
-
-        switch (element.type) {
-            case LONG_TYPE:
-                printf("%ld", element.content.long_value);
-                break;
-            case CHAR_TYPE:
-                printf("%c", element.content.char_value);
-                break;
-            case DOUBLE_TYPE:
-                printf("%g", element.content.double_value);
-                break;
-            case STRING_TYPE:
-                printf("%s", element.content.string_value);
-                break;
-            default: PANIC("Couldn't match type for %c when dumping\n", element.content.char_value)
-        }
+        dump_element(&stack->array[i]);
     }
     printf("\n");
 }
