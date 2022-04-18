@@ -3,7 +3,7 @@ project(_0M C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(_0M code/main.c code/stack.h code/stack.c code/operations.c code/operations.h code/logger.h code/conversions.c code/conversions.h code/logica.c code/logica.h code/operations_manager.c code/operations_manager.h)
+add_executable(_0M code/main.c code/stack.h code/stack.c code/operations.c code/operations.h code/logger.h code/conversions.c code/conversions.h code/logica.c code/logica.h code/operations_storage.c code/operations_storage.h)
 
 if (DEBUG_MODE)
     add_definitions(-DDEBUG_MODE=1)

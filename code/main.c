@@ -6,7 +6,7 @@
 #include "logica.h"
 #include "conversions.h"
 #include "logger.h"
-#include "operations_manager.h"
+#include "operations_storage.h"
 
 #define INPUT_BUFFER_SIZE 1000
 #define MAX_WORD_SIZE 50
