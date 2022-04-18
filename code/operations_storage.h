@@ -3,7 +3,7 @@
 typedef void (*StackOperationFunction)(Stack *);
 
 typedef struct {
-    char operator[2];
+    char operator[5];
     StackOperationFunction operation;
 } StackOperationTableEntry;
 
