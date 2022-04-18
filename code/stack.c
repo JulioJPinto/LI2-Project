@@ -3,10 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "logger.h"
+
 /**
  * @brief Create a stack object
- * @param initial_capacity tamanho da string que recebemos
- * @return Stack* Cria uma stack com a capacidade necessária para guardar os conteudos da string
+ * @param initial_capacity capacidade inicial da stack
+ * @return Pointer para a stack criada
  */
 Stack *create_stack(int initial_capacity) {
     Stack *stack = malloc(sizeof(Stack));
@@ -17,18 +18,20 @@ Stack *create_stack(int initial_capacity) {
 
     return stack;
 }
+
 /**
- * @brief Dá free a todos os conteudos da stack.
- * @param stack A stack que contem os valores/operadores.
+ * @brief Dá free à memória alocada pela stack
+ * @param stack target
  */
 void free_stack(Stack *stack) {
     if (stack != NULL) {
         free(stack);
     }
 }
+
 /**
- * @brief 
- * @param stack A stack que contem os valores/operadores.
+ * @brief Imprime todos os valores da stack
+ * @param stack target
  */
 void dump_stack(Stack *stack) {
     for (int i = 0; i < length(stack); ++i) {
@@ -48,22 +51,24 @@ void dump_stack(Stack *stack) {
                 printf("%s", element.content.string_value);
                 break;
             default:
-                fprintf(stderr,"Couldn't match type for %c\n", element.content.char_value);            
+                fprintf(stderr, "Couldn't match type for %c\n", element.content.char_value);
         }
     }
     printf("\n");
 }
+
 /**
- * @brief 
- * @param stack A stack que contem os valores/operadores.
- * @return int Devolve o tamanho da stack.
+ * @brief Devolve o tamanho da stack.
+ * @param stack target
+ * @return tamanho da stack
  */
 int length(Stack *stack) {
     return stack->current_index + 1;
 }
+
 /**
- * @brief Dá pop a stack 
- * @param stack A stack que contem os valores/operadores.
+ * @brief Retira o elemento que se encontra no topo da stack
+ * @param stack target
  * @return StackElement 
  */
 StackElement pop(Stack *stack) {
@@ -72,17 +77,19 @@ StackElement pop(Stack *stack) {
 
     return result;
 }
+
 /**
- * @brief Retira os elementos que se encontram no topo da stack
- * @param stack A stack que contem os valores/operadores.
- * @return long 
+ * @brief Retira o elemento que se encontra no topo da stack e acessa o valor long dele
+ * @param stack target
+ * @return valor long acessado
  */
 long pop_long(Stack *stack) {
     return pop(stack).content.long_value;
 }
+
 /**
  * @brief Põem no topo da stack o elemento da x
- * @param stack A stack que contem os valores/operadores.
+ * @param stack target
  * @param x O elemento que vamos inserir no topo da stack
  */
 void push(Stack *stack, StackElement x) {
@@ -94,33 +101,37 @@ void push(Stack *stack, StackElement x) {
 
     stack->array[++(stack->current_index)] = x;
 }
-/**
- * @brief Realiza o mesmo que a função push porém para tipos long 
- */
 
+/**
+ * @brief Push para tipos double
+ */
 void push_double(Stack *stack, double value) {
     push(stack, create_double_element(value));
 }
 
+/**
+ * @brief Push para tipos long
+ */
 void push_long(Stack *stack, long value) {
     push(stack, create_long_element(value));
 }
+
 /**
- * @brief Realiza o mesmo que a função push porém para tipos char 
+ * @brief Push para tipos char
  */
 void push_char(Stack *stack, char value) {
     push(stack, create_char_element(value));
 }
-/**
- * @brief Cria um elemento do tipo long consoante o elemento inserido
- * @param value O elemento que será transformado no tipo long
- * @return StackElement O elemento após ser transformdo no tipo long
- */
 
 void push_string(Stack *stack, char *value) {
     push(stack, create_string_element(value));
 }
 
+/**
+ * @brief Cria um elemento do tipo double
+ * @param value o valor do elemento
+ * @return StackElement criado
+ */
 StackElement create_double_element(double value) {
     StackElement element;
     element.type = DOUBLE_TYPE;
@@ -129,6 +140,11 @@ StackElement create_double_element(double value) {
     return element;
 }
 
+/**
+ * @brief Cria um elemento do tipo long
+ * @param value o valor do elemento
+ * @return StackElement criado
+ */
 StackElement create_long_element(long value) {
     StackElement element;
     element.type = LONG_TYPE;
@@ -136,10 +152,11 @@ StackElement create_long_element(long value) {
 
     return element;
 }
+
 /**
- * @brief Cria um elemento do tipo char consoante o elemento inserido
- * @param value O elemento que será transformado no tipo char
- * @return StackElement O elemento após ser transformdo no tipo char
+ * @brief Cria um elemento do tipo cbar
+ * @param value o valor do elemento
+ * @return StackElement criado
  */
 StackElement create_char_element(char value) {
     StackElement element;
@@ -148,12 +165,12 @@ StackElement create_char_element(char value) {
 
     return element;
 }
-/**
- * @brief 
- * @param stack 
- * @return StackElement 
- */
 
+/**
+ * @brief Cria um elemento do tipo string
+ * @param value o valor do elemento
+ * @return StackElement criado
+ */
 StackElement create_string_element(char *value) {
     StackElement element;
     element.type = STRING_TYPE;
@@ -170,6 +187,7 @@ StackElement create_string_element(char *value) {
 StackElement peek(Stack *stack) {
     return stack->array[stack->current_index];
 }
+
 /**
  * @brief 
  * @param stack 
@@ -180,8 +198,8 @@ StackElement get(Stack *stack, long index) {
     return stack->array[stack->current_index - index];
 }
 
-int is_truthy(StackElement* a){
-    switch (a->type){
+int is_truthy(StackElement *a) {
+    switch (a->type) {
         case LONG_TYPE:
             return a->content.long_value != 0;
         case CHAR_TYPE:
@@ -191,7 +209,7 @@ int is_truthy(StackElement* a){
         case DOUBLE_TYPE:
             return a->content.double_value != .0;
         default:
-            fprintf(stderr,"Invalid Element Type\n");
+            fprintf(stderr, "Invalid Element Type\n");
             return 0;
     }
 }
