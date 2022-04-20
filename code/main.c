@@ -7,6 +7,7 @@
 #include "conversions.h"
 #include "logger.h"
 #include "operations_storage.h"
+#include "variable_operations.h"
 
 #define INPUT_BUFFER_SIZE 1000
 #define MAX_WORD_SIZE 50
@@ -46,7 +47,6 @@ void parse(Stack *stack, char word[]) {
     long l;
     double d;
 
-
     if (parse_long(word, &l)) {
         PRINT_DEBUG("Pushing long: %ld\n", l)
         push_long(stack, l);
@@ -57,8 +57,18 @@ void parse(Stack *stack, char word[]) {
         PRINT_DEBUG("Pushing double: %g\n", d)
         push_double(stack, d);
         return;
-
     }
+
+    if (parse_push_variable(stack, word)) {
+        PRINT_DEBUG("Pushing variable '%s'\n", word)
+        return;
+    }
+
+    if (parse_set_variable(stack, word)) {
+        PRINT_DEBUG("Setting variable '%s'\n", word)
+        return;
+    }
+
     PRINT_DEBUG("Parsed symbol: %s\n", word)
 
     StackOperationFunction operation_function = get_operation(word);
