@@ -197,7 +197,7 @@ StackElement create_string_element(char *value) {
     StackElement element;
     element.type = STRING_TYPE;
 
-    unsigned long length = strlen(value) + 1;
+    size_t length = strlen(value) + 1;
     char *copied_string = calloc(length, sizeof(char));
     strcpy(copied_string, value);
 

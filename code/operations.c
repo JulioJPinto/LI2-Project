@@ -240,7 +240,7 @@ void read_input_from_console_operation(Stack *stack) {
 
     // fgets returns string ending in \n\0
     // temos que filtrar o \n
-    unsigned long length = strlen(input);
+    size_t length = strlen(input);
     if (length > 0 && input[length - 1] == '\n') {
         input[--length] = '\0';
     }

@@ -13,7 +13,7 @@
 #define MAX_WORD_SIZE 50
 #define INITIAL_STACK_CAPACITY 1000
 
-void parse_input(Stack *stack, const char *input, int input_length);
+void parse_input(Stack *stack, char *input);
 
 /**
  * \brief A função que faz a stack funcionar.
@@ -25,11 +25,9 @@ int main() {
         return EXIT_FAILURE;
     }
 
-    int length = (int) strlen(input);
-
     Stack *stack = create_stack(INITIAL_STACK_CAPACITY);
 
-    parse_input(stack, input, length);
+    parse_input(stack, input);
 
     dump_stack(stack);
     free_stack(stack);
@@ -76,23 +74,19 @@ void parse(Stack *stack, char word[]) {
     if (operation_function != NULL) {
         operation_function(stack);
     } else {
-        PANIC("Couldn't find operator operation_function for %s\n", word)
+        PANIC("Couldn't find operator operation_function for '%s'\n", word)
     }
 }
 
-void parse_input(Stack *stack, const char *input, int input_length) {
-    char current_word[MAX_WORD_SIZE];
-    int current_word_index = 0;
+void parse_input(Stack *stack, char *input) {
+    char *token;
+    char p[] = " \t\r\n\f\v";
 
-    for (int i = 0; i < input_length; ++i) {
-        char current_char = input[i];
+    token = strtok(input, p);
 
-        if (current_char != ' ' && current_char != '\0' && current_char != '\n') {
-            current_word[current_word_index++] = current_char;
-        } else if (current_word_index != 0) {
-            current_word[current_word_index] = '\0';
-            parse(stack, current_word);
-            current_word_index = 0;
-        }
+    while (token != NULL) {
+        parse(stack, token);
+
+        token = strtok(NULL, p);
     }
 }
