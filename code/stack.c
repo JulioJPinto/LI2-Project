@@ -3,8 +3,23 @@
 #include <stdlib.h>
 #include <string.h>
 #include "logger.h"
+#include "variable_operations.h"
 
-void dump_element(StackElement *element);
+#define VARIABLE_COUNT 26
+
+void init_variables(Stack *stack) {
+    set_long_variable(stack, 'A', 10);
+    set_long_variable(stack, 'B', 11);
+    set_long_variable(stack, 'C', 12);
+    set_long_variable(stack, 'D', 13);
+    set_long_variable(stack, 'E', 14);
+    set_long_variable(stack, 'F', 15);
+    set_char_variable(stack, 'N', '\n');
+    set_char_variable(stack, 'S', ' ');
+    set_long_variable(stack, 'X', 0);
+    set_long_variable(stack, 'Y', 1);
+    set_long_variable(stack, 'Z', 2);
+}
 
 /**
  * @brief Create a stack object
@@ -18,6 +33,10 @@ Stack *create_stack(int initial_capacity) {
     stack->current_index = -1;
     stack->array = calloc((unsigned long) initial_capacity, sizeof(StackElement));
 
+    stack->variables = calloc(VARIABLE_COUNT, sizeof(StackElement));
+
+    init_variables(stack);
+
     return stack;
 }
 
@@ -26,9 +45,9 @@ Stack *create_stack(int initial_capacity) {
  * @param stack target
  */
 void free_stack(Stack *stack) {
-    if (stack != NULL) {
-        free(stack);
-    }
+    free(stack->array);
+    free(stack->variables);
+    free(stack);
 }
 
 void dump_element(StackElement *element) {
