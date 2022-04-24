@@ -5,11 +5,11 @@
 #include "logica.h"
 
 void lesser_than_long_operation(Stack *stack, long a, long b) {
-    push_long(stack, a < b);
+    push_long(stack, a > b);
 }
 
 void lesser_than_double_operation(Stack *stack, double a, double b) {
-    push_long(stack, a < b);
+    push_long(stack, a > b);
 }
 
 void lesser_than_operation(Stack *stack) {
@@ -17,11 +17,11 @@ void lesser_than_operation(Stack *stack) {
 }
 
 void bigger_than_long_operation(Stack *stack, long a, long b) {
-    push_long(stack, a > b);
+    push_long(stack, a < b);
 }
 
 void bigger_than_double_operation(Stack *stack, double a, double b) {
-    push_long(stack, a > b);
+    push_long(stack, a < b);
 }
 
 void bigger_than_operation(Stack *stack) {

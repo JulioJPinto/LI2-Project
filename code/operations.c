@@ -5,6 +5,32 @@
 
 #define READ_INPUT_FROM_CONSOLE_MAX_LENGTH 100
 
+static double get_element_as_double(StackElement *element) {
+    ElementType type = element->type;
+    if (type == DOUBLE_TYPE) {
+        return element->content.double_value;
+    } else if (type == LONG_TYPE) {
+        return (double) element->content.long_value;
+    } else if (type == CHAR_TYPE) {
+        return (double) element->content.char_value;
+    } else {
+        PANIC("Trying to get double value from non-number element (type: %d)", type)
+    }
+}
+
+static long get_element_as_long(StackElement *element) {
+    ElementType type = element->type;
+    if (type == DOUBLE_TYPE) {
+        return (long) element->content.double_value;
+    } else if (type == LONG_TYPE) {
+        return element->content.long_value;
+    } else if (type == CHAR_TYPE) {
+        return (long) element->content.char_value;
+    } else {
+        PANIC("Trying to get long value from non-number element (type: %d)", type)
+    }
+}
+
 void operate_promoting_number_type(Stack *stack,
                                    void (*double_operation_function_pointer)(Stack *, double, double),
                                    void (*long_operation_function_pointer)(Stack *, long, long)) {
@@ -14,14 +40,10 @@ void operate_promoting_number_type(Stack *stack,
     ElementType x_type = x.type;
     ElementType y_type = y.type;
 
-    if (x_type == DOUBLE_TYPE && y_type == DOUBLE_TYPE) {
-        double_operation_function_pointer(stack, x.content.double_value, y.content.double_value);
-    } else if (x_type == DOUBLE_TYPE && y_type == LONG_TYPE) {
-        double_operation_function_pointer(stack, x.content.double_value, (double) y.content.long_value);
-    } else if (x_type == LONG_TYPE && y_type == DOUBLE_TYPE) {
-        double_operation_function_pointer(stack, (double) x.content.long_value, y.content.double_value);
-    } else if (x_type == LONG_TYPE && y_type == LONG_TYPE) {
-        long_operation_function_pointer(stack, x.content.long_value, y.content.long_value);
+    if (x_type == DOUBLE_TYPE || y_type == DOUBLE_TYPE) {
+        double_operation_function_pointer(stack, get_element_as_double(&x), get_element_as_double(&y));
+    } else if (x_type == LONG_TYPE || y_type == LONG_TYPE) {
+        long_operation_function_pointer(stack, get_element_as_long(&x), get_element_as_long(&y));
     } else {
         PANIC("Trying to operate non number elements. (x_type: %d, y_type: %d)", x_type, y_type)
     }
