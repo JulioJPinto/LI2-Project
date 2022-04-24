@@ -39,7 +39,8 @@ StackOperationFunction get_operation(char op[]) {
             {"e|", or_operation},
             {"e>", lesser_value_operation},
             {"e<", bigger_value_operation},
-            {"?",  if_then_else_operation}
+            {"?",  if_then_else_operation},
+            {"!",  not_operation}
     };
 
     size_t size = sizeof(entries) / sizeof(StackOperationTableEntry);

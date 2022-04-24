@@ -2,6 +2,7 @@
 #include "operations.h"
 #include "conversions.h"
 #include "stack.h"
+#include "logica.h"
 
 void lesser_than_long_operation(Stack *stack, long a, long b) {
     push_long(stack, a < b);
@@ -61,6 +62,13 @@ void or_double_operation(Stack *stack, double a, double b) {
 
 void or_operation(Stack *stack) {
     operate_promoting_number_type(stack, or_double_operation, or_long_operation);
+}
+
+void not_operation(Stack *stack) {
+    StackElement element = pop(stack);
+
+    int truthy = is_truthy(&element);
+    push_long(stack, !truthy);
 }
 
 void lesser_value_long_operation(Stack *stack, long a, long b) {

@@ -10,6 +10,8 @@ void and_operation(Stack *stack);
 
 void or_operation(Stack *stack);
 
+void not_operation(Stack *stack);
+
 void lesser_value_operation(Stack *stack);
 
 void bigger_value_operation(Stack *stack); 
