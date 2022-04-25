@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "stack.h"
 #include "operations.h"
 #include "logica.h"
@@ -8,10 +9,10 @@
 #include "logger.h"
 #include "operations_storage.h"
 #include "variable_operations.h"
+#include "string_operations.h"
 
 #define INPUT_BUFFER_SIZE 1000
-#define MAX_WORD_SIZE 50
-#define INITIAL_STACK_CAPACITY 1000
+#define INITIAL_STACK_CAPACITY 10
 
 void parse_input(Stack *stack, char *input);
 
@@ -21,7 +22,7 @@ void parse_input(Stack *stack, char *input);
 int main() {
     char input[INPUT_BUFFER_SIZE];
 
-    if (fgets(input, INPUT_BUFFER_SIZE, stdin) != input) {
+    if (fgets(input, sizeof input, stdin) != input) {
         return EXIT_FAILURE;
     }
 
@@ -67,6 +68,11 @@ void parse(Stack *stack, char word[]) {
         return;
     }
 
+    if (parse_string(stack, word)) {
+        PRINT_DEBUG("Pushing string '%s'\n", word + 1)
+        return;
+    }
+
     PRINT_DEBUG("Parsed symbol: %s\n", word)
 
     StackOperationFunction operation_function = get_operation(word);
@@ -79,14 +85,51 @@ void parse(Stack *stack, char word[]) {
 }
 
 void parse_input(Stack *stack, char *input) {
-    char *token;
-    char p[] = " \t\r\n\f\v";
+//    char p[] = " \t\r\n\f\v";
+//
+//    char *token = strtok(input, p);
+//
+//    while (token != NULL) {
+//        parse(stack, token);
+//
+//        token = strtok(NULL, p);
+//    }
 
-    token = strtok(input, p);
+    enum parseState {
+        PARSING_NORMAL_TEXT,
+        PARSING_INSIDE_QUOTE,
+        PARSING_INSIDE_BRACKETS,
+        PARSING_INSIDE_CURLY_BRACKETS
+    };
 
-    while (token != NULL) {
-        parse(stack, token);
+    enum parseState state = PARSING_NORMAL_TEXT;
 
-        token = strtok(NULL, p);
+    size_t input_length = strlen(input);
+
+    char word[input_length];
+
+    int current_word_index = 0;
+
+    for (size_t i = 0; i < input_length; ++i) {
+        char current_char = input[i];
+
+        if (state == PARSING_NORMAL_TEXT) {
+            word[current_word_index++] = current_char;
+            if (isspace(current_char)) {
+                word[current_word_index - 1] = '\0';
+                current_word_index = 0;
+
+                if (*word) {
+                    parse(stack, word);
+                }
+            } else if (current_char == '"') { // iniciar parse de string
+                state = PARSING_INSIDE_QUOTE;
+            }
+        } else if (state == PARSING_INSIDE_QUOTE) {
+            if (current_char == '"') { // fim do parse de string
+                state = PARSING_NORMAL_TEXT;
+            }
+            word[current_word_index++] = current_char;
+        }
     }
 }
