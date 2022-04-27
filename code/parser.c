@@ -1,42 +1,18 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "stack.h"
-#include "operations.h"
-#include "logica.h"
-#include "conversions.h"
-#include "logger.h"
-#include "operations_storage.h"
+#include <ctype.h>
+#include <string.h>
 #include "parser.h"
-
-#define INPUT_BUFFER_SIZE 1000
-#define INITIAL_STACK_CAPACITY 10
-
-/**
- * @brief A função main, a função que conecta tudo na stack e a faz funcionar.
- */
-int main() {
-    char input[INPUT_BUFFER_SIZE];
-
-    if (fgets(input, sizeof input, stdin) != input) {
-        return EXIT_FAILURE;
-    }
-
-    Stack *stack = create_stack(INITIAL_STACK_CAPACITY);
-
-    tokenize_and_parse(stack, input);
-
-    dump_stack(stack);
-    free_stack(stack);
-
-    return 0;
-}
+#include "logger.h"
+#include "conversions.h"
+#include "variable_operations.h"
+#include "operations_storage.h"
+#include "string_operations.h"
 
 /**
- * @brief A Função que dá parse a dos elementos da stack para os seus respetivos tipos.
- * @param stack A Stack que dá e recebe os elementos.
- * @param word Uma string que permite a separação de palavras.
+ * \brief Dá parse_word a uma word.
+ * Transforma a word no seu devido tipo ou função correspondente.
  */
-void parse(Stack *stack, char word[]) {
+
+void parse_word(Stack *stack, char word[]) {
     PRINT_DEBUG("Parsing: '%s'\n", word)
 
     long l;
@@ -80,18 +56,13 @@ void parse(Stack *stack, char word[]) {
     }
 }
 
-/**
- * @brief  
- * @param stack 
- * @param input 
- */
-void parse_input(Stack *stack, char *input) {
+void tokenize_and_parse(Stack *stack, char *input) {
 //    char p[] = " \t\r\n\f\v";
 //
 //    char *token = strtok(input, p);
 //
 //    while (token != NULL) {
-//        parse(stack, token);
+//        parse_word(stack, token);
 //
 //        token = strtok(NULL, p);
 //    }
@@ -121,13 +92,13 @@ void parse_input(Stack *stack, char *input) {
                 current_word_index = 0;
 
                 if (*word) {
-                    parse(stack, word);
+                    parse_word(stack, word);
                 }
-            } else if (current_char == '"') { // iniciar parse de string
+            } else if (current_char == '"') { // iniciar parse_word de string
                 state = PARSING_INSIDE_QUOTE;
             }
         } else if (state == PARSING_INSIDE_QUOTE) {
-            if (current_char == '"') { // fim do parse de string
+            if (current_char == '"') { // fim do parse_word de string
                 state = PARSING_NORMAL_TEXT;
             }
             word[current_word_index++] = current_char;
