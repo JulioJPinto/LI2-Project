@@ -2,6 +2,6 @@
 
 #include "stack.h"
 
-void tokenize_and_parse(Stack *stack, char *input);
+void tokenize_and_parse(Stack *stack, StackElement *variables, char *input);
 
-void parse_word(Stack *stack, char word[]);
+void parse_word(Stack *stack, StackElement *variables, char word[]);

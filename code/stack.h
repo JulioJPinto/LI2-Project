@@ -18,7 +18,6 @@ typedef struct {
     int capacity;
     int current_index;
     StackElement *array;
-    StackElement *variables;
 } Stack;
 
 /**

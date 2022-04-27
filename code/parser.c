@@ -12,7 +12,7 @@
  * Transforma a word no seu devido tipo ou função correspondente.
  */
 
-void parse_word(Stack *stack, char word[]) {
+void parse_word(Stack *stack, StackElement *variables, char word[]) {
     PRINT_DEBUG("Parsing: '%s'\n", word)
 
     long l;
@@ -30,12 +30,12 @@ void parse_word(Stack *stack, char word[]) {
         return;
     }
 
-    if (parse_push_variable(stack, word)) {
+    if (parse_push_variable(stack, variables, word)) {
         PRINT_DEBUG("Pushing variable '%s'\n", word)
         return;
     }
 
-    if (parse_set_variable(stack, word)) {
+    if (parse_set_variable(stack, variables, word)) {
         PRINT_DEBUG("Setting variable '%s'\n", word)
         return;
     }
@@ -58,7 +58,7 @@ void parse_word(Stack *stack, char word[]) {
 /**
  * @brief 
  */
-void tokenize_and_parse(Stack *stack, char *input) {
+void tokenize_and_parse(Stack *stack, StackElement *variables, char *input) {
 //    char p[] = " \t\r\n\f\v";
 //
 //    char *token = strtok(input, p);
@@ -94,7 +94,7 @@ void tokenize_and_parse(Stack *stack, char *input) {
                 current_word_index = 0;
 
                 if (*word) {
-                    parse_word(stack, word);
+                    parse_word(stack, variables, word);
                 }
             } else if (current_char == '"') { // iniciar parse_word de string
                 state = PARSING_INSIDE_QUOTE;

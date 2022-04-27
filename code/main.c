@@ -7,6 +7,7 @@
 #include "logger.h"
 #include "operations_storage.h"
 #include "parser.h"
+#include "variable_operations.h"
 
 #define INPUT_BUFFER_SIZE 1000
 #define INITIAL_STACK_CAPACITY 10
@@ -22,11 +23,13 @@ int main() {
     }
 
     Stack *stack = create_stack(INITIAL_STACK_CAPACITY);
+    StackElement *variables = create_variable_array();
 
-    tokenize_and_parse(stack, input);
+    tokenize_and_parse(stack, variables, input);
 
     dump_stack(stack);
     free_stack(stack);
+    free(variables);
 
     return 0;
 }

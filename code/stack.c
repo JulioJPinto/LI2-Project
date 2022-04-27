@@ -3,27 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "logger.h"
-#include "variable_operations.h"
-
-#define VARIABLE_COUNT 26
-
-/**
- * @brief Declaração de variáveis e dos seus respetivos valores por omissão
- * @param stack A Stack onde poderemos encontrar estas variáveis
- */
-void init_variables(Stack *stack) {
-    set_long_variable(stack, 'A', 10);
-    set_long_variable(stack, 'B', 11);
-    set_long_variable(stack, 'C', 12);
-    set_long_variable(stack, 'D', 13);
-    set_long_variable(stack, 'E', 14);
-    set_long_variable(stack, 'F', 15);
-    set_char_variable(stack, 'N', '\n');
-    set_char_variable(stack, 'S', ' ');
-    set_long_variable(stack, 'X', 0);
-    set_long_variable(stack, 'Y', 1);
-    set_long_variable(stack, 'Z', 2);
-}
 
 /**
  * @brief Create a stack object
@@ -37,10 +16,6 @@ Stack *create_stack(int initial_capacity) {
     stack->current_index = -1;
     stack->array = calloc((unsigned long) initial_capacity, sizeof(StackElement));
 
-    stack->variables = calloc(VARIABLE_COUNT, sizeof(StackElement));
-
-    init_variables(stack);
-
     return stack;
 }
 
@@ -50,7 +25,6 @@ Stack *create_stack(int initial_capacity) {
  */
 void free_stack(Stack *stack) {
     free(stack->array);
-    free(stack->variables);
     free(stack);
 }
 /**
@@ -71,7 +45,7 @@ void dump_element(StackElement *element) {
         case STRING_TYPE:
             printf("%s", (*element).content.string_value);
             return;
-        default: PANIC("Couldn't match type for %c when dumping\n", (*element).content.char_value)
+        default: PANIC("Couldn't match type for %d when dumping\n", (*element).content.char_value)
     }
 }
 
@@ -128,8 +102,8 @@ long pop_long(Stack *stack) {
 void push(Stack *stack, StackElement x) {
     if (length(stack) >= stack->capacity) {
         stack->capacity *= 2;
-        stack->array = realloc(stack, (unsigned long) stack->capacity);
-        PRINT_DEBUG("REALLOCATED STACK (new capacity = %d)", stack->capacity)
+        stack->array = realloc(stack->array, (unsigned long) stack->capacity * sizeof(StackElement));
+        PRINT_DEBUG("REALLOCATED STACK (new capacity = %d)\n", stack->capacity)
     }
 
     stack->array[++(stack->current_index)] = x;
