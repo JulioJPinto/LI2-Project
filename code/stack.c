@@ -113,7 +113,11 @@ StackElement pop(Stack *stack) {
  * @return valor long acessado
  */
 long pop_long(Stack *stack) {
-    return pop(stack).content.long_value;
+    StackElement element = pop(stack);
+    long value = element.content.long_value;
+
+    free_element(element);
+    return value;
 }
 
 /**
@@ -246,4 +250,17 @@ int is_truthy(StackElement *a) {
             return a->content.double_value != .0;
         default: PANIC("Couldn't retrieve truthy value from type %d\n", a->type)
     }
+}
+
+void free_element(StackElement element) {
+    if (element.type == STRING_TYPE) {
+        free(element.content.string_value);
+    }
+}
+
+StackElement duplicate_element(StackElement element) {
+    if (element.type == STRING_TYPE) {
+        return create_string_element(element.content.string_value);
+    }
+    return element;
 }

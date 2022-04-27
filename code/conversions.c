@@ -106,18 +106,24 @@ void convert_last_element_to_char(Stack *stack) {
     StackElement stack_element = pop(stack);
 
     push_char(stack, convert_element_to_char(&stack_element));
+
+    free_element(stack_element);
 }
 
 void convert_last_element_to_double(Stack *stack) {
     StackElement stack_element = pop(stack);
 
     push_double(stack, convert_element_to_double(&stack_element));
+
+    free_element(stack_element);
 }
 
 void convert_last_element_to_long(Stack *stack) {
     StackElement stack_element = pop(stack);
 
     push_long(stack, convert_element_to_long(&stack_element));
+
+    free_element(stack_element);
 }
 
 void convert_last_element_to_string(Stack *stack) {
@@ -127,4 +133,6 @@ void convert_last_element_to_string(Stack *stack) {
     convert_element_to_string(&stack_element, x);
 
     push_string(stack, x);
+
+    free_element(stack_element);
 }

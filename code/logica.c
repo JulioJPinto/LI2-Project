@@ -95,6 +95,7 @@ void not_operation(Stack *stack) {
     StackElement element = pop(stack);
 
     int truthy = is_truthy(&element);
+    free_element(element);
     push_long(stack, !truthy);
 }
 
@@ -128,6 +129,8 @@ void if_then_else_operation(Stack *stack) {
     StackElement a = pop(stack);
 
     int cond = is_truthy(&a);
-
     push(stack, cond ? b : c);
+
+    free_element(a);
+    free_element(!cond ? b : c);
 }
