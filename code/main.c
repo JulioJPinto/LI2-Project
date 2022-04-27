@@ -17,7 +17,7 @@
 void parse_input(Stack *stack, char *input);
 
 /**
- * \brief A função que faz a stack funcionar.
+ * @brief A função main, a função que conecta tudo na stack e a faz funcionar.
  */
 int main() {
     char input[INPUT_BUFFER_SIZE];
@@ -37,8 +37,9 @@ int main() {
 }
 
 /**
- * \brief Dá parse a uma word.
- * Transforma a word no seu devido tipo ou função correspondente.
+ * @brief A Função que dá parse a dos elementos da stack para os seus respetivos tipos.
+ * @param stack A Stack que dá e recebe os elementos.
+ * @param word Uma string que permite a separação de palavras.
  */
 void parse(Stack *stack, char word[]) {
     PRINT_DEBUG("Parsing: '%s'\n", word)
@@ -84,6 +85,11 @@ void parse(Stack *stack, char word[]) {
     }
 }
 
+/**
+ * @brief  
+ * @param stack 
+ * @param input 
+ */
 void parse_input(Stack *stack, char *input) {
 //    char p[] = " \t\r\n\f\v";
 //

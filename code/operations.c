@@ -4,7 +4,11 @@
 #include <string.h>
 
 #define READ_INPUT_FROM_CONSOLE_MAX_LENGTH 100
-
+/**
+ * @brief Recebe um elemento da stack e retorna este como double.
+ * @param element O elemento da stack que irá ser transformado.
+ * @return double O elemento após ter sido transformado em double.
+ */
 static double get_element_as_double(StackElement *element) {
     ElementType type = element->type;
     if (type == DOUBLE_TYPE) {
@@ -17,7 +21,11 @@ static double get_element_as_double(StackElement *element) {
         PANIC("Trying to get double value from non-number element (type: %d)", type)
     }
 }
-
+/**
+ * @brief Recebe um elemento da stack e retorna este como long.
+ * @param element O elemento da stack que irá ser transformado.
+ * @return double O elemento após ter sido transformado em long.
+ */
 static long get_element_as_long(StackElement *element) {
     ElementType type = element->type;
     if (type == DOUBLE_TYPE) {
@@ -31,6 +39,12 @@ static long get_element_as_long(StackElement *element) {
     }
 }
 
+/**
+ * @brief Função que recebe a stack e dois apontadores para as funções do tipo númericas dos operadores.
+ * @param stack A stack que contem os elementos.
+ * @param double_operation_function_pointer Apontador para a função do tipo double.
+ * @param long_operation_function_pointer Apontador para a função do tipo long.
+ */
 void operate_promoting_number_type(Stack *stack,
                                    void (*double_operation_function_pointer)(Stack *, double, double),
                                    void (*long_operation_function_pointer)(Stack *, long, long)) {
@@ -48,11 +62,15 @@ void operate_promoting_number_type(Stack *stack,
         PANIC("Trying to operate non number elements. (x_type: %d, y_type: %d)", x_type, y_type)
     }
 }
-
+/**
+ * \brief Nesta função fazemos a soma dos dois números no topo da stack do tipo double.
+ */
 void add_double_operation(Stack *stack, double a, double b) {
     push_double(stack, a + b);
 }
-
+/**
+ * \brief Nesta função fazemos a soma dos dois números no topo da stack do tipo long.
+ */
 void add_long_operation(Stack *stack, long a, long b) {
     push_long(stack, a + b);
 }
@@ -64,10 +82,15 @@ void add_operation(Stack *stack) {
     operate_promoting_number_type(stack, add_double_operation, add_long_operation);
 }
 
+/**
+ * \brief Nesta função fazemos a diferença dos dois ultimos números na stack do tipo double.
+ */
 void minus_double_operation(Stack *stack, double a, double b) {
     push_double(stack, a - b);
 }
-
+/**
+ * \brief Nesta função fazemos a diferença dos dois ultimos números na stack do tipo long.
+ */
 void minus_long_operation(Stack *stack, long a, long b) {
     push_long(stack, a - b);
 }
@@ -78,11 +101,15 @@ void minus_long_operation(Stack *stack, long a, long b) {
 void minus_operation(Stack *stack) {
     operate_promoting_number_type(stack, minus_double_operation, minus_long_operation);
 }
-
+/**
+ * \brief Nesta função fazemos o produto dos dois ultimos números na stack do tipo double.
+ */
 void mult_double_operation(Stack *stack, double a, double b) {
     push_double(stack, a * b);
 }
-
+/**
+ * \brief Nesta função fazemos o produto dos dois ultimos números na stack do tipo long.
+ */
 void mult_long_operation(Stack *stack, long a, long b) {
     push_long(stack, a * b);
 }
@@ -95,16 +122,20 @@ void mult_operation(Stack *stack) {
 }
 
 /**
- * \brief Nesta função fazemos a divisão do número último número da stack pelo penúltimo número da stack.
+ * \brief Nesta função fazemos a divisão do número último número da stack pelo penúltimo número da stack do long.
  */
 void div_long_operation(Stack *stack, long a, long b) {
     push_long(stack, a / b);
 }
-
+/**
+ * \brief Nesta função fazemos a divisão do número último número da stack pelo penúltimo número da stack do double.
+ */
 void div_double_operation(Stack *stack, double a, double b) {
     push_double(stack, a / b);
 }
-
+/**
+ * \brief Nesta função fazemos a divisão do número último número da stack pelo penúltimo número da stack.
+ */
 void div_operation(Stack *stack) {
     operate_promoting_number_type(stack, div_double_operation, div_long_operation);
 }
@@ -154,16 +185,20 @@ void modulo_operation(Stack *stack) {
 }
 
 /**
- * \brief Nesta função retornamos o módulo do número no topo da stack um.
+ * \brief Nesta função retornamos o expoente do número no topo da stack um do tipo double.
  */
 void exponential_double_operation(Stack *stack, double a, double b) {
     push_double(stack, pow(a, b));
 }
-
+/**
+ * \brief Nesta função retornamos o módulo do número no topo da stack um do tipo long.
+ */
 void exponential_long_operation(Stack *stack, long a, long b) {
     push_long(stack, (long) pow((double) a, (double) b));
 }
-
+/**
+ * \brief Nesta função retornamos o módulo do número no topo da stack um.
+ */
 void exponential_operation(Stack *stack) {
     operate_promoting_number_type(stack, exponential_double_operation, exponential_long_operation);
 }
@@ -253,7 +288,9 @@ void copy_nth_element_operation(Stack *stack) {
 
     push(stack, get(stack, index));
 }
-
+/**
+ * \brief Nesta função lemos o input inserido na consola
+ */
 void read_input_from_console_operation(Stack *stack) {
     char input[READ_INPUT_FROM_CONSOLE_MAX_LENGTH];
     if (fgets(input, READ_INPUT_FROM_CONSOLE_MAX_LENGTH, stdin) == NULL) {

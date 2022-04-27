@@ -7,6 +7,10 @@
 
 #define VARIABLE_COUNT 26
 
+/**
+ * @brief Declaração de variáveis e dos seus respetivos valores por omissão
+ * @param stack A Stack onde poderemos encontrar estas variáveis
+ */
 void init_variables(Stack *stack) {
     set_long_variable(stack, 'A', 10);
     set_long_variable(stack, 'B', 11);
@@ -49,7 +53,10 @@ void free_stack(Stack *stack) {
     free(stack->variables);
     free(stack);
 }
-
+/**
+ * @brief  
+ * @param element 
+ */
 void dump_element(StackElement *element) {
     switch ((*element).type) {
         case LONG_TYPE:
@@ -144,7 +151,9 @@ void push_long(Stack *stack, long value) {
 void push_char(Stack *stack, char value) {
     push(stack, create_char_element(value));
 }
-
+/**
+ * @brief Push para tipos string
+ */
 void push_string(Stack *stack, char *value) {
     push(stack, create_string_element(value));
 }
@@ -205,21 +214,26 @@ StackElement create_string_element(char *value) {
 
     return element;
 }
-
+/**
+ * @brief Função que devolve o elemento da posição em que nos encontramos na stack 
+ */
 StackElement peek(Stack *stack) {
     return stack->array[stack->current_index];
 }
 
 /**
- * @brief 
- * @param stack 
- * @param index 
- * @return StackElement 
+ * @brief Função que devolve um elemento da stack consoante o indice e o sitio onde nos encontramos nesta
+ * @return StackElement O elemento devolvido
  */
 StackElement get(Stack *stack, long index) {
     return stack->array[stack->current_index - index];
 }
 
+/**
+ * @brief Função que testa se um elemento pertence ao grupo truthy ou não
+ * @param a Elemento que vamos testar
+ * @return int Valor que vamos retornar caso este pertenca ao grupo truthy ou não (1 ou 0)
+ */
 int is_truthy(StackElement *a) {
     switch (a->type) {
         case LONG_TYPE:
