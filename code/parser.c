@@ -8,7 +8,7 @@
 #include "string_operations.h"
 
 /**
- * \brief Dá parse_word a uma word.
+ * @brief Dá parse_word a uma word.
  * Transforma a word no seu devido tipo ou função correspondente.
  */
 
@@ -55,7 +55,9 @@ void parse_word(Stack *stack, char word[]) {
         PANIC("Couldn't find operator operation_function for '%s'\n", word)
     }
 }
-
+/**
+ * @brief 
+ */
 void tokenize_and_parse(Stack *stack, char *input) {
 //    char p[] = " \t\r\n\f\v";
 //
