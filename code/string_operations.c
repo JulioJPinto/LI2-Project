@@ -1,6 +1,9 @@
 #include <string.h>
 #include "string_operations.h"
 
+/**
+ * @brief Função que recebe a stack e caso encontre '"' insere no @param{*word} a string.
+ */
 int parse_string(Stack *stack, char *word) {
     size_t word_length = strlen(word);
 

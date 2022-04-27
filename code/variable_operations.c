@@ -29,9 +29,8 @@ int parse_push_variable(Stack *stack, const char *input) {
     if (!is_variable_key(variable)) return 0;
 
     StackElement element = get_variable_value(stack, variable);
-    // TODO: copy string pointer (fazer função de duplicar para elements de pointers)
 
-    push(stack, element);
+    push(stack, duplicate_element(element));
     return 1;
 }
 
@@ -43,8 +42,7 @@ int parse_set_variable(Stack *stack, const char *input) {
 
     StackElement element = pop(stack);
     set_variable_element(stack, variable, element);
-    // TODO: copy string pointer
 
-    push(stack, element);
+    push(stack, duplicate_element(element));
     return 1;
 }
