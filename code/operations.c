@@ -61,6 +61,9 @@ void operate_promoting_number_type(Stack *stack,
     } else {
         PANIC("Trying to operate non number elements. (x_type: %d, y_type: %d)", x_type, y_type)
     }
+
+    free_element(y);
+    free_element(x);
 }
 /**
  * \brief Nesta função fazemos a soma dos dois números no topo da stack do tipo double.
@@ -155,6 +158,8 @@ void decrement_operation(Stack *stack) {
     } else {
         PANIC("Trying to decrement non number element. (type: %d)", element.type)
     }
+
+    free_element(element);
 }
 
 /**
@@ -172,6 +177,8 @@ void increment_operation(Stack *stack) {
     } else {
         PANIC("Trying to increment non number element. (type: %d)", element.type)
     }
+
+    free_element(element);
 }
 
 /**
@@ -253,7 +260,7 @@ void duplicate_operation(Stack *stack) {
  * \brief Nesta função retiramos o valor que se encontra no topo da stack da mesma.
  */
 void pop_operation(Stack *stack) {
-    pop(stack);
+    free_element(pop(stack));
 }
 
 /**

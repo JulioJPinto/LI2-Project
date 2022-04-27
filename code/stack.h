@@ -141,3 +141,10 @@ StackElement create_char_element(char value);
 StackElement create_string_element(char *value);
 
 int is_truthy(StackElement *a);
+
+void free_element(StackElement element);
+
+StackElement duplicate_element(StackElement element);
+
+
+
