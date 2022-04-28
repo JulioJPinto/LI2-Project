@@ -24,9 +24,14 @@ Stack *create_stack(int initial_capacity) {
  * @param stack target
  */
 void free_stack(Stack *stack) {
+    for (int i = 0; i < length(stack); ++i) {
+        free_element(stack->array[i]);
+    }
+
     free(stack->array);
     free(stack);
 }
+
 /**
  * @brief  
  * @param element 
@@ -129,6 +134,7 @@ void push_long(Stack *stack, long value) {
 void push_char(Stack *stack, char value) {
     push(stack, create_char_element(value));
 }
+
 /**
  * @brief Push para tipos string
  */
@@ -192,6 +198,7 @@ StackElement create_string_element(char *value) {
 
     return element;
 }
+
 /**
  * @brief Função que devolve o elemento da posição em que nos encontramos na stack 
  */
