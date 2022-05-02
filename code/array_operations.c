@@ -96,6 +96,32 @@ void concat(Stack *stack){
     }*/
 }
 
+void push_elements_array(Stack *stack){
+    StackElement array = pop(stack);
+
+    int elements_array;
+
+    /* elements_array = sizeof(array.content.array_value) / sizeof(array.content.array_value[0]);
+
+    for(int i = 0; i < elements_array; i++){
+
+        push_long(stack, array.content.array_value[i]);
+    }
+
+    free_element(array);  */
+}
+
+void get_index(Stack *stack){
+
+    StackElement array = pop(stack);
+    StackElement index = pop(stack);
+
+    //push_long(stack, array.content.array_value[index.content.long_value]);
+
+    free_element(array);
+    free_element(index);
+}
+
 
 
 void separate_string_by_substrings(Stack *stack) {
