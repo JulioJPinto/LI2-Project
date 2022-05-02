@@ -55,6 +55,7 @@ char convert_element_to_char(StackElement *stack_element) {
             } else {
                 return (*stack_element).content.string_value[0];
             }
+        case ARRAY_TYPE:
         default: PANIC("Couldn't convert to char from type %d", (*stack_element).type)
     }
 }
@@ -76,6 +77,7 @@ double convert_element_to_double(StackElement *stack_element) {
             if (parse_double((*stack_element).content.string_value, &x))
                 return x;
             PANIC("Couldn't convert to double from string %s", (*stack_element).content.string_value)
+        case ARRAY_TYPE:
         default: PANIC("Couldn't convert to double from type %d", (*stack_element).type)
     }
 }
@@ -97,6 +99,7 @@ long convert_element_to_long(StackElement *stack_element) {
             if (parse_long((*stack_element).content.string_value, &x))
                 return x;
             PANIC("Couldn't convert to long from string %s", (*stack_element).content.string_value)
+        case ARRAY_TYPE:
         default: PANIC("Couldn't convert to long from type %d", (*stack_element).type)
     }
 }
@@ -117,6 +120,9 @@ void convert_element_to_string(StackElement *stack_element, char *dest) {
             return;
         case STRING_TYPE:
             strcpy(dest, (*stack_element).content.string_value);
+            return;
+        case ARRAY_TYPE:
+            // TODO:
             return;
         default: PANIC("Couldn't convert to string from type %d", (*stack_element).type)
     }

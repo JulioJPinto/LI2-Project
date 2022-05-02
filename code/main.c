@@ -28,6 +28,8 @@ int main() {
     tokenize_and_parse(stack, variables, input);
 
     dump_stack(stack);
+    printf("\n");
+
     free_stack(stack);
     free(variables);
 

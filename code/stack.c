@@ -39,16 +39,19 @@ void free_stack(Stack *stack) {
 void dump_element(StackElement *element) {
     switch ((*element).type) {
         case LONG_TYPE:
-            printf("%ld", (*element).content.long_value);
+            printf("%ld", element->content.long_value);
             return;
         case CHAR_TYPE:
-            printf("%c", (*element).content.char_value);
+            printf("%c", element->content.char_value);
             return;
         case DOUBLE_TYPE:
-            printf("%g", (*element).content.double_value);
+            printf("%g", element->content.double_value);
             return;
         case STRING_TYPE:
-            printf("%s", (*element).content.string_value);
+            printf("%s", element->content.string_value);
+            return;
+        case ARRAY_TYPE:
+            dump_stack(element->content.array_value);
             return;
         default: PANIC("Couldn't match type for %d when dumping\n", (*element).content.char_value)
     }
@@ -62,7 +65,6 @@ void dump_stack(Stack *stack) {
     for (int i = 0; i < length(stack); ++i) {
         dump_element(&stack->array[i]);
     }
-    printf("\n");
 }
 
 /**
@@ -142,6 +144,10 @@ void push_string(Stack *stack, char *value) {
     push(stack, create_string_element(value));
 }
 
+void push_array(Stack *stack, Stack *value) {
+    push(stack, create_array_element(value));
+}
+
 /**
  * @brief Cria um elemento do tipo double
  * @param value o valor do elemento
@@ -199,6 +205,14 @@ StackElement create_string_element(char *value) {
     return element;
 }
 
+StackElement create_array_element(Stack *value) {
+    StackElement element;
+    element.type = ARRAY_TYPE;
+    element.content.array_value = value;
+
+    return element;
+}
+
 /**
  * @brief Função que devolve o elemento da posição em que nos encontramos na stack 
  */
@@ -229,6 +243,8 @@ int is_truthy(StackElement *a) {
             return strlen(a->content.string_value) != 0;
         case DOUBLE_TYPE:
             return a->content.double_value != .0;
+        case ARRAY_TYPE:
+            return length(a->content.array_value) != 0;
         default: PANIC("Couldn't retrieve truthy value from type %d\n", a->type)
     }
 }

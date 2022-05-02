@@ -6,6 +6,7 @@
 #include "variable_operations.h"
 #include "operations_storage.h"
 #include "string_operations.h"
+#include "array_operations.h"
 
 enum parseState {
     PARSING_NORMAL_TEXT,
@@ -14,10 +15,6 @@ enum parseState {
     PARSING_INSIDE_CURLY_BRACKETS
 };
 
-/**
- * @brief Dá parse_word a uma word.
- * Transforma a word no seu devido tipo ou função correspondente.
- */
 void parse_word(Stack *stack, StackElement *variables, char word[]) {
     PRINT_DEBUG("Parsing: '%s'\n", word)
 
@@ -51,6 +48,11 @@ void parse_word(Stack *stack, StackElement *variables, char word[]) {
         return;
     }
 
+    if (parse_array(stack, variables, word)) {
+        PRINT_DEBUG("Pushing array '%s'\n", word + 1)
+        return;
+    }
+
     PRINT_DEBUG("Parsed symbol: %s\n", word)
 
     StackOperationFunction operation_function = get_operation(word);
@@ -76,13 +78,13 @@ void tokenize_and_parse(Stack *stack, StackElement *variables, char *input) {
 
     int bracket_count = 0;
 
-    for (size_t i = 0; i < input_length; ++i) {
+    for (size_t i = 0; i < input_length + 1; ++i) {
         char current_char = input[i];
 
         word[current_word_index++] = current_char;
 
         if (state == PARSING_NORMAL_TEXT) {
-            if (isspace(current_char)) {
+            if (isspace(current_char) || current_char == '\0') {
                 word[current_word_index - 1] = '\0';
                 current_word_index = 0;
 
