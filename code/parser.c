@@ -7,11 +7,17 @@
 #include "operations_storage.h"
 #include "string_operations.h"
 
+enum parseState {
+    PARSING_NORMAL_TEXT,
+    PARSING_INSIDE_QUOTE,
+    PARSING_INSIDE_BRACKETS,
+    PARSING_INSIDE_CURLY_BRACKETS
+};
+
 /**
  * @brief Dá parse_word a uma word.
  * Transforma a word no seu devido tipo ou função correspondente.
  */
-
 void parse_word(Stack *stack, StackElement *variables, char word[]) {
     PRINT_DEBUG("Parsing: '%s'\n", word)
 
@@ -55,27 +61,11 @@ void parse_word(Stack *stack, StackElement *variables, char word[]) {
         PANIC("Couldn't find operator operation_function for '%s'\n", word)
     }
 }
+
 /**
  * @brief 
  */
 void tokenize_and_parse(Stack *stack, StackElement *variables, char *input) {
-//    char p[] = " \t\r\n\f\v";
-//
-//    char *token = strtok(input, p);
-//
-//    while (token != NULL) {
-//        parse_word(stack, token);
-//
-//        token = strtok(NULL, p);
-//    }
-
-    enum parseState {
-        PARSING_NORMAL_TEXT,
-        PARSING_INSIDE_QUOTE,
-        PARSING_INSIDE_BRACKETS,
-        PARSING_INSIDE_CURLY_BRACKETS
-    };
-
     enum parseState state = PARSING_NORMAL_TEXT;
 
     size_t input_length = strlen(input);
@@ -84,11 +74,14 @@ void tokenize_and_parse(Stack *stack, StackElement *variables, char *input) {
 
     int current_word_index = 0;
 
+    int bracket_count = 0;
+
     for (size_t i = 0; i < input_length; ++i) {
         char current_char = input[i];
 
+        word[current_word_index++] = current_char;
+
         if (state == PARSING_NORMAL_TEXT) {
-            word[current_word_index++] = current_char;
             if (isspace(current_char)) {
                 word[current_word_index - 1] = '\0';
                 current_word_index = 0;
@@ -98,12 +91,37 @@ void tokenize_and_parse(Stack *stack, StackElement *variables, char *input) {
                 }
             } else if (current_char == '"') { // iniciar parse_word de string
                 state = PARSING_INSIDE_QUOTE;
+            } else if (current_char == '[') { // iniciar parse de arrays
+                state = PARSING_INSIDE_BRACKETS;
+                bracket_count++;
+            } else if (current_char == '{') { // iniciar parse de blocos
+                state = PARSING_INSIDE_CURLY_BRACKETS;
+                bracket_count++;
             }
         } else if (state == PARSING_INSIDE_QUOTE) {
             if (current_char == '"') { // fim do parse_word de string
                 state = PARSING_NORMAL_TEXT;
             }
-            word[current_word_index++] = current_char;
+        } else if (state == PARSING_INSIDE_BRACKETS) {
+            if (current_char == '[') { // encontrou array dentro de array
+                bracket_count++;
+            } else if (current_char == ']') { // fechou array
+                bracket_count--;
+            }
+
+            if (bracket_count <= 0) {
+                state = PARSING_NORMAL_TEXT;
+            }
+        } else /* if (state == PARSING_INSIDE_CURLY_BRACKETS) */ {
+            if (current_char == '{') { // encontrou bloco dentro de bloco
+                bracket_count++;
+            } else if (current_char == '}') { // fechou bloco
+                bracket_count--;
+            }
+
+            if (bracket_count <= 0) {
+                state = PARSING_NORMAL_TEXT;
+            }
         }
     }
 }
