@@ -103,6 +103,9 @@ long convert_element_to_long(StackElement *stack_element) {
         default: PANIC("Couldn't convert to long from type %d", (*stack_element).type)
     }
 }
+
+void printf_array(char *str, struct stack *array_stack);
+
 /**
  * @brief Função que vai transformar um elemento na stack no tipo string.
  * Esta Função vai receber o @param{*stack_element} e vai transformá-lo num string, string este que é devolvido.
@@ -122,11 +125,23 @@ void convert_element_to_string(StackElement *stack_element, char *dest) {
             strcpy(dest, (*stack_element).content.string_value);
             return;
         case ARRAY_TYPE:
-            // TODO:
-            return;
+            printf_array(dest, (*stack_element).content.array_value);
+          return;
         default: PANIC("Couldn't convert to string from type %d", (*stack_element).type)
     }
 }
+
+void printf_array(char *str, struct stack *array_stack){
+    for(int i = 0; i < (*array_stack).capacity; i++){
+        StackElement array_elem = (*array_stack).array[i];
+        char dest[(*array_stack).capacity + 1];
+        convert_element_to_string(&array_elem, dest);
+        strcat(str, ""); 
+    }
+    
+}
+
+
 /**
  * @brief Esta função converte o último elemento da stack para o tipo char.
  */
@@ -157,6 +172,19 @@ void convert_last_element_to_long(Stack *stack) {
 
     free_element(stack_element);
 }
+/*
+void convert_array_to_string(struct stack list, char x[]){
+    for(int i = 0; i < list.capacity; i++){
+        char dest[MAX_CONVERT_TO_STRING_SIZE];
+        convert_array_to_string(&(list.array[i]), dest);
+        if (i == 0){
+            strcpy(x, dest);
+        } else {
+            strcat(x,dest);
+        }
+    }
+}
+*/
 /**
  * @brief Esta função converte o último elemento da stack para o tipo string.
  */
@@ -164,8 +192,8 @@ void convert_last_element_to_string(Stack *stack) {
     StackElement stack_element = pop(stack);
 
     char x[MAX_CONVERT_TO_STRING_SIZE];
-    convert_element_to_string(&stack_element, x);
 
+    convert_element_to_string(&stack_element, x); 
     push_string(stack, x);
 
     free_element(stack_element);

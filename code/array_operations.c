@@ -29,18 +29,23 @@ int parse_array(Stack *stack, StackElement *variables, char *word) {
 void size_range_operation(Stack *stack) {
     StackElement x = pop(stack);
     ElementType x_type = x.type;
-
+    
     if (x_type == LONG_TYPE) {
-        int array[x.content.long_value - 1];
-        for (int i = 0; i != x.content.long_value; i++) {
-            array[i] = i;
+        Stack *array = create_stack(INITIAL_ARRAY_CAPACITY);
+        for (int i = 0; i < x.content.long_value; i++) {
+            push_long(array, (long) i);
         }
-        //push_array(stack, array);
+        push_array(stack, array);
+
+    } else if(x_type == ARRAY_TYPE) {
+        push_long(stack, (long) length(x.content.array_value));
+
+    } else {
+        push_long(stack, (long) strlen(x.content.string_value));        
     }
-    //else fazer push do tamanho do array
     free_element(x);
 }
-
+/*
 void concat_x_times_string(Stack *stack) {
     StackElement string_element = pop(stack);
 
@@ -56,6 +61,7 @@ void concat_x_times_string(Stack *stack) {
 
     free_element(string_element);
 }
+*/
 
 void create_string(Stack *stack) {
     StackElement new_string = pop(stack);

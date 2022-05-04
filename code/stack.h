@@ -4,7 +4,7 @@ typedef enum {
     DOUBLE_TYPE, LONG_TYPE, CHAR_TYPE, STRING_TYPE, ARRAY_TYPE
 } ElementType;
 
-struct stack;
+typedef struct stack Stack;
 
 typedef struct {
     ElementType type;
@@ -13,7 +13,7 @@ typedef struct {
         long long_value;
         char char_value;
         char *string_value;
-        struct stack *array_value;
+        Stack *array_value;
     } content;
 } StackElement;
 
