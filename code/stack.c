@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include "logger.h"
+#include "conversions.h"
+#include "parser.h"
+
+#define MAX_STR_ARRAY 100
 
 /**
  * @brief Create a stack object
@@ -269,9 +273,26 @@ ElementType get_last_element_type(Stack *stack) {
     return peek(stack).type;
 }
 
-StackElement duplicate_element(StackElement element) {
-    if (element.type == STRING_TYPE) {
-        return create_string_element(element.content.string_value);
+StackElement duplicate_array(StackElement element) {
+    Stack *old_array = element.content.array_value;
+    Stack *new_array = create_stack(old_array->capacity);
+    for(int i = 0; i < length(old_array); i++) {
+        push(new_array, duplicate_element(old_array->array[i]));
     }
-    return element;
+        return create_array_element(new_array);
+}
+
+StackElement duplicate_element(StackElement element) {
+    switch (element.type) {
+        case STRING_TYPE:
+            return create_string_element(element.content.string_value);
+        case ARRAY_TYPE:
+            return duplicate_array(element);
+        case LONG_TYPE:
+        case CHAR_TYPE:
+        case DOUBLE_TYPE:
+        default:
+            return element;
+            
+    }
 }
