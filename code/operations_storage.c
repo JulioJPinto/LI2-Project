@@ -1,6 +1,7 @@
 #include "operations_storage.h"
 #include "operations.h"
 #include "conversions.h"
+#include "array_operations.h"
 #include "logica.h"
 #include <string.h>
 
@@ -41,7 +42,8 @@ StackOperationFunction get_operation(char op[]) {
             {"e>", lesser_value_operation},
             {"e<", bigger_value_operation},
             {"?",  if_then_else_operation},
-            {"!",  not_operation}
+            {"!",  not_operation},
+            {"," , size_range_operation}
     };
 
     size_t size = sizeof(entries) / sizeof(StackOperationTableEntry);
