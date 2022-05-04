@@ -5,6 +5,8 @@
 
 #define INITIAL_ARRAY_CAPACITY 5
 
+void create_range_array_operation(Stack *stack, long range);
+
 int parse_array(Stack *stack, StackElement *variables, char *word) {
     size_t word_length = strlen(word);
 
@@ -29,22 +31,26 @@ int parse_array(Stack *stack, StackElement *variables, char *word) {
 void size_range_operation(Stack *stack) {
     StackElement x = pop(stack);
     ElementType x_type = x.type;
-    
+
     if (x_type == LONG_TYPE) {
-        Stack *array = create_stack(INITIAL_ARRAY_CAPACITY);
-        for (int i = 0; i < x.content.long_value; i++) {
-            push_long(array, (long) i);
-        }
-        push_array(stack, array);
-
-    } else if(x_type == ARRAY_TYPE) {
+        create_range_array_operation(stack, x.content.long_value);
+    } else if (x_type == ARRAY_TYPE) {
         push_long(stack, (long) length(x.content.array_value));
-
-    } else {
-        push_long(stack, (long) strlen(x.content.string_value));        
+    } else if (x_type == STRING_TYPE) {
+        push_long(stack, (long) strlen(x.content.string_value));
     }
+
     free_element(x);
 }
+
+void create_range_array_operation(Stack *stack, long range) {
+    Stack *array = create_stack(INITIAL_ARRAY_CAPACITY);
+    for (int i = 0; i < range; i++) {
+        push_long(array, (long) i);
+    }
+    push_array(stack, array);
+}
+
 /*
 void concat_x_times_string(Stack *stack) {
     StackElement string_element = pop(stack);
@@ -132,17 +138,17 @@ void concat(Stack *stack) {
 //
 //    int elements_array;
 
-    /* elements_array = sizeof(array.content.array_value) / sizeof(array.content.array_value[0]);
+/* elements_array = sizeof(array.content.array_value) / sizeof(array.content.array_value[0]);
 
-    for(int i = 0; i < elements_array; i++){
+for(int i = 0; i < elements_array; i++){
 
-        push_long(stack, array.content.array_value[i]);
-    }
+    push_long(stack, array.content.array_value[i]);
+}
 
-    free_element(array);  */
+free_element(array);  */
 //}
 
-void get_index(Stack *stack){
+void get_index(Stack *stack) {
 
     StackElement array = pop(stack);
     StackElement index = pop(stack);

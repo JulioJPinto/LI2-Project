@@ -250,24 +250,23 @@ int is_truthy(StackElement *a) {
 }
 
 void free_element(StackElement element) {
-    switch (element.type) 
-    {
-    case STRING_TYPE:
-        free(element.content.string_value);
-        return;
-    case ARRAY_TYPE:
-        free_stack(element.content.array_value);
-        return;
-    case LONG_TYPE:
-    
-    case CHAR_TYPE:
-
-    case DOUBLE_TYPE:
-
-    default:
-        return;
+    switch (element.type) {
+        case STRING_TYPE:
+            free(element.content.string_value);
+            return;
+        case ARRAY_TYPE:
+            free_stack(element.content.array_value);
+            return;
+        case LONG_TYPE:
+        case CHAR_TYPE:
+        case DOUBLE_TYPE:
+        default:
+            return;
     }
-    
+}
+
+ElementType get_last_element_type(Stack *stack) {
+    return peek(stack).type;
 }
 
 StackElement duplicate_element(StackElement element) {
