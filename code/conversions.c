@@ -104,7 +104,14 @@ long convert_element_to_long(StackElement *stack_element) {
     }
 }
 
-void printf_array(char *str, struct stack *array_stack);
+static void printf_array(char *str, Stack *array_stack){
+    for(int i = 0; i < length(array_stack); i++){
+        StackElement array_elem = array_stack->array[i];
+        char dest[MAX_CONVERT_TO_STRING_SIZE];
+        convert_element_to_string(&array_elem, dest);
+        strcat(str, dest);
+    }
+}
 
 /**
  * @brief Função que vai transformar um elemento na stack no tipo string.
@@ -130,17 +137,6 @@ void convert_element_to_string(StackElement *stack_element, char *dest) {
         default: PANIC("Couldn't convert to string from type %d", (*stack_element).type)
     }
 }
-
-void printf_array(char *str, struct stack *array_stack){
-    for(int i = 0; i < (*array_stack).capacity; i++){
-        StackElement array_elem = (*array_stack).array[i];
-        char dest[(*array_stack).capacity + 1];
-        convert_element_to_string(&array_elem, dest);
-        strcat(str, ""); 
-    }
-    
-}
-
 
 /**
  * @brief Esta função converte o último elemento da stack para o tipo char.

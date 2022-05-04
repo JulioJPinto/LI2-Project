@@ -250,9 +250,24 @@ int is_truthy(StackElement *a) {
 }
 
 void free_element(StackElement element) {
-    if (element.type == STRING_TYPE) {
+    switch (element.type) 
+    {
+    case STRING_TYPE:
         free(element.content.string_value);
+        return;
+    case ARRAY_TYPE:
+        free_stack(element.content.array_value);
+        return;
+    case LONG_TYPE:
+    
+    case CHAR_TYPE:
+
+    case DOUBLE_TYPE:
+
+    default:
+        return;
     }
+    
 }
 
 StackElement duplicate_element(StackElement element) {

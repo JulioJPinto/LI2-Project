@@ -11,3 +11,5 @@ void convert_last_element_to_double(Stack *stack);
 void convert_last_element_to_long(Stack *stack);
 
 void convert_last_element_to_string(Stack *stack);
+
+void convert_element_to_string(StackElement *stack_element, char *dest);
