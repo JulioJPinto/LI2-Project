@@ -16,7 +16,7 @@ int parse_array(Stack *stack, StackElement *variables, char *word) {
 
     PRINT_DEBUG("Starting parsing array:\n")
 
-    // remover brackets
+    // remover brackets:
     word[word_length - 1] = '\0';
     word++;
 
@@ -51,60 +51,40 @@ void create_range_array_operation(Stack *stack, long range) {
     push_array(stack, array);
 }
 
-
-void concat_x_times_string_or_array(Stack *stack) {
+void repeat_string_operation(Stack *stack) {
     long times = pop_long(stack);
+    StackElement string_element = pop(stack);
 
-    StackElement elements = pop(stack);
-    ElementType element_type = elements.type;
+    char *result = string_element.content.string_value;
 
-    if (element_type == STRING_TYPE) {
-        char *result = elements.content.string_value;
-        char *copy = elements.content.string_value;
+    long length = (long) strlen(result);
 
-        for (int i = 0; i < times; ++i) {
-
-            strcat(result, copy);
-        }
-        push_string(stack, result);
+    int i;
+    for (i = 0; i < times * length; ++i) {
+        result[i] = result[i % length];
     }
-    else if (element_type == ARRAY_TYPE){
-        Stack *array = elements.content.array_value;
-
-        long array_size = length(array);
-
-        for (int i = 0; i < times; ++i) {
-            for (int j = 0; j < array_size ; ++j) {
-                push(array, duplicate_element(array->array[j]));
-            }
-        }
-        push_array(stack, array);
-    }
-
-    free_element(elements);
-}
-
-
-void create_string(Stack *stack) {
-    StackElement new_string = pop(stack);
-
-    char *result = new_string.content.string_value;
+    result[i] = 0;
 
     push_string(stack, result);
-
-    free_element(new_string);
+    free_element(string_element);
 }
 
-//void create_array(Stack *stack){
-//    StackElement new_array = pop(stack);
-//
-//
-//     /* int *result = new_array.content.array_value; fazer array_value
-//
-//     push_array(stack, result);
-//
-//    free_element(new_array); */
-//}
+void repeat_array_operation(Stack *stack) {
+    long times = pop_long(stack) - 1;
+    StackElement array_element = pop(stack);
+
+    Stack *array = array_element.content.array_value;
+
+    long array_size = length(array);
+
+    for (int i = 0; i < times; ++i) {
+        for (int j = 0; j < array_size; ++j) {
+            push(array, duplicate_element(array->array[j]));
+        }
+    }
+
+    push_array(stack, array);
+}
 
 void concat(Stack *stack) {
     StackElement x = pop(stack);
@@ -164,58 +144,28 @@ for(int i = 0; i < elements_array; i++){
 free_element(array);  */
 //}
 
-void get_index(Stack *stack) {
-
-    StackElement array = pop(stack);
-    StackElement index = pop(stack);
-
-    //push_long(stack, array.content.array_value[index.content.long_value]);
-
-    free_element(array);
-    free_element(index);
-}
-
-void prefix(Stack *stack){
-
+void prefix(Stack *stack) {
     StackElement element = pop(stack); //string ou array
-    StackElement range   = pop(stack); //quantos elementos o prefixo irá ter
+    StackElement range = pop(stack); //quantos elementos o prefixo irá ter
 
     ElementType element_type = element.type;
 
-    if (element_type == STRING_TYPE){
+    if (element_type == STRING_TYPE) {
 
-        char result [range.content.long_value];
+        char result[range.content.long_value];
 
         for (int i = 0; i < range.content.long_value; i++) {
 
-            result [i] = element.content.string_value [i];
+            result[i] = element.content.string_value[i];
         }
 
         push_string(stack, result);
 
         free_element(element);
-        free_element( range);
+        free_element(range);
 
-    }
-
-    else {
-
-
-
+    } else {
 
 
     }
-
-
-
-
 }
-
-
-
-
-//void separate_string_by_substrings(Stack *stack) {
-//
-//}
-
-

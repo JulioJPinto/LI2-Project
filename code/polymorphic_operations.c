@@ -13,10 +13,12 @@ void plus_operation(Stack *stack) {
 }
 
 void asterisk_operation(Stack *stack) {
-    ElementType type = get_last_element_type(stack);
+    ElementType left_element_type = get(stack, 1).type;
 
-    if (type == ARRAY_TYPE) {
-        concat_x_times_string_or_array(stack);
+    if (left_element_type == ARRAY_TYPE) {
+        repeat_array_operation(stack);
+    } else if(left_element_type == STRING_TYPE) {
+        repeat_string_operation(stack);
     } else {
         mult_operation(stack);
     }

@@ -8,4 +8,14 @@ int parse_array(Stack *stack, StackElement *variables, char *word);
 
 void size_range_operation(Stack *stack);
 
-void concat_x_times_string_or_array(Stack *stack);
+/**
+ * @brief Operação de repetir string x vezes
+ * @param stack target
+ */
+void repeat_string_operation(Stack *stack);
+
+/**
+ * @brief Operação de repetir array x vezes
+ * @param stack target
+ */
+void repeat_array_operation(Stack *stack);

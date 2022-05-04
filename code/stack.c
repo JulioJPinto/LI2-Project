@@ -217,17 +217,10 @@ StackElement create_array_element(Stack *value) {
     return element;
 }
 
-/**
- * @brief Função que devolve o elemento da posição em que nos encontramos na stack 
- */
 StackElement peek(Stack *stack) {
     return stack->array[stack->current_index];
 }
 
-/**
- * @brief Função que devolve um elemento da stack consoante o indice e o sitio onde nos encontramos nesta
- * @return StackElement O elemento devolvido
- */
 StackElement get(Stack *stack, long index) {
     return stack->array[stack->current_index - index];
 }
