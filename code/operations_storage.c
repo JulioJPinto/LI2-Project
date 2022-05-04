@@ -31,6 +31,7 @@ StackOperationFunction get_operation(char op[]) {
             {"i",  convert_last_element_to_long},
             {"f",  convert_last_element_to_double},
             {"l",  read_input_from_console_operation},
+            {"t",  read_all_input_from_console_operation},
             {"s",  convert_last_element_to_string},
             {">",  lesser_than_operation},
             {"<",  bigger_than_operation},
