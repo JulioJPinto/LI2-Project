@@ -3,6 +3,7 @@
 #include "conversions.h"
 #include "array_operations.h"
 #include "logica.h"
+#include "polymorphic_operations.h"
 #include <string.h>
 
 /**
@@ -11,9 +12,9 @@
  */
 StackOperationFunction get_operation(char op[]) {
     static const StackOperationTableEntry entries[] = {
-            {"+",  add_operation},
+            {"+",  plus_operation},
             {"-",  minus_operation},
-            {"*",  mult_operation},
+            {"*",  asterisk_operation},
             {"/",  div_operation},
             {"%",  modulo_operation},
             {"(",  decrement_operation},

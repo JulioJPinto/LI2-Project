@@ -51,23 +51,39 @@ void create_range_array_operation(Stack *stack, long range) {
     push_array(stack, array);
 }
 
-/*
-void concat_x_times_string(Stack *stack) {
-    StackElement string_element = pop(stack);
 
-    char *result = string_element.content.string_value;
-
+void concat_x_times_string_or_array(Stack *stack) {
     long times = pop_long(stack);
 
-    for (int i = 0; i < times; ++i) {
-        strcat(result, result);    //se a strcat não resultar para arrays, falta fazer a concatenação para arrays
+    StackElement elements = pop(stack);
+    ElementType element_type = elements.type;
+
+    if (element_type == STRING_TYPE) {
+        char *result = elements.content.string_value;
+        char *copy = elements.content.string_value;
+
+        for (int i = 0; i < times; ++i) {
+
+            strcat(result, copy);
+        }
+        push_string(stack, result);
+    }
+    else if (element_type == ARRAY_TYPE){
+        Stack *array = elements.content.array_value;
+
+        long array_size = length(array);
+
+        for (int i = 0; i < times; ++i) {
+            for (int j = 0; j < array_size ; ++j) {
+                push(array, duplicate_element(array->array[j]));
+            }
+        }
+        push_array(stack, array);
     }
 
-    push_string(stack, result);
-
-    free_element(string_element);
+    free_element(elements);
 }
-*/
+
 
 void create_string(Stack *stack) {
     StackElement new_string = pop(stack);
@@ -158,6 +174,43 @@ void get_index(Stack *stack) {
     free_element(array);
     free_element(index);
 }
+
+void prefix(Stack *stack){
+
+    StackElement element = pop(stack); //string ou array
+    StackElement range   = pop(stack); //quantos elementos o prefixo irá ter
+
+    ElementType element_type = element.type;
+
+    if (element_type == STRING_TYPE){
+
+        char result [range.content.long_value];
+
+        for (int i = 0; i < range.content.long_value; i++) {
+
+            result [i] = element.content.string_value [i];
+        }
+
+        push_string(stack, result);
+
+        free_element(element);
+        free_element( range);
+
+    }
+
+    else {
+
+
+
+
+
+    }
+
+
+
+
+}
+
 
 
 
