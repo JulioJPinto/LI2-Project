@@ -55,18 +55,23 @@ void repeat_string_operation(Stack *stack) {
     long times = pop_long(stack);
     StackElement string_element = pop(stack);
 
-    char *result = string_element.content.string_value;
+    char *from = string_element.content.string_value;
+    long from_length = (long) strlen(from);
 
-    long length = (long) strlen(result);
+    char *dest = calloc((unsigned long) (from_length * times), sizeof(char));
 
-    int i;
-    for (i = 0; i < times * length; ++i) {
-        result[i] = result[i % length];
+    if(times > 0) {
+        int i;
+        for (i = 0; i < times - 1; ++i) {
+            memcpy(dest + i * from_length, from, from_length);
+        }
+        memcpy(dest + i * from_length, from, from_length + 1);
     }
-    result[i] = 0;
 
-    push_string(stack, result);
+    push_string(stack, dest);
+
     free_element(string_element);
+    free(dest);
 }
 
 void repeat_array_operation(Stack *stack) {
