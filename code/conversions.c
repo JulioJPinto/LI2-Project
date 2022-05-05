@@ -4,8 +4,6 @@
 #include "conversions.h"
 #include "logger.h"
 
-#define MAX_CONVERT_TO_STRING_SIZE 100
-
 /**
  * @brief Função que vai atribuir ao elemento da stack o respetivo tipo long.
  * @param word O elemento que vai ser transformado num long.
@@ -38,10 +36,6 @@ int parse_double(char word[], double *to) {
     return 0;
 }
 
-/**
- * @brief Função que vai transformar um elemento na stack no tipo char.
- * Esta Função vai receber o @param{*stack_element} e vai transformá-lo num char, char este que é devolvido.
- */
 char convert_element_to_char(StackElement *stack_element) {
     long l;
 
@@ -184,19 +178,7 @@ void convert_last_element_to_long(Stack *stack) {
 
     free_element(stack_element);
 }
-/*
-void convert_array_to_string(struct stack list, char x[]){
-    for(int i = 0; i < list.capacity; i++){
-        char dest[MAX_CONVERT_TO_STRING_SIZE];
-        convert_array_to_string(&(list.array[i]), dest);
-        if (i == 0){
-            strcpy(x, dest);
-        } else {
-            strcat(x,dest);
-        }
-    }
-}
-*/
+
 /**
  * @brief Esta função converte o último elemento da stack para o tipo string.
  */

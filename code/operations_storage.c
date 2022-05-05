@@ -12,7 +12,7 @@
  */
 StackOperationFunction get_operation(char op[]) {
     static const StackOperationTableEntry entries[] = {
-            {"+",  plus_operation},
+            {"+",  add_operation},
             {"-",  minus_operation},
             {"*",  asterisk_operation},
             {"/",  div_operation},

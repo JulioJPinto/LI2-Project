@@ -1,5 +1,6 @@
 #include "logger.h"
 #include "operations.h"
+#include "conversions.h"
 #include <math.h>
 #include <string.h>
 
@@ -41,6 +42,18 @@ static long get_element_as_long(StackElement *element) {
     }
 }
 
+static Stack *get_element_as_array(StackElement *element) {
+    ElementType type = element->type;
+    if (type == ARRAY_TYPE) {
+        return element->content.array_value;
+    }
+
+    Stack *new_array = create_stack(1);
+    push(new_array, *element);
+
+    return new_array;
+}
+
 /**
  * @brief Função que recebe a stack e dois apontadores para as funções do tipo númericas dos operadores.
  * @param stack A stack que contem os elementos.
@@ -68,25 +81,73 @@ void operate_promoting_number_type(Stack *stack,
     free_element(x);
 }
 
-/**
- * \brief Nesta função fazemos a soma dos dois números no topo da stack do tipo double.
- */
+void add_array_operation(Stack *stack, StackElement *a, StackElement *b) {
+    Stack *a_array = get_element_as_array(a);
+    Stack *b_array = get_element_as_array(b);
+
+    for (int i = 0; i < length(b_array); ++i) {
+        push(a_array, duplicate_element(b_array->array[i]));
+    }
+
+    push_array(stack, a_array);
+
+    free_element(*b);
+}
+
+void add_string_operation(Stack *stack, StackElement *a, StackElement *b) {
+    char *a_string = a->content.string_value;
+    char *b_string = b->content.string_value;
+
+    char x_string[MAX_CONVERT_TO_STRING_SIZE];
+    char y_string[MAX_CONVERT_TO_STRING_SIZE];
+
+    convert_element_to_string(a, y_string);
+    convert_element_to_string(b, x_string);
+
+    size_t a_length = strlen(a_string);
+    size_t b_length = strlen(b_string);
+
+    char *concat = calloc(a_length + b_length + 1, sizeof(char));
+
+    memcpy(concat, a_string, a_length);
+    memcpy(concat + a_length, b_string, b_length + 1);
+
+    push_string(stack, concat);
+
+    free(concat);
+    free_element(*a);
+    free_element(*b);
+}
+
 void add_double_operation(Stack *stack, double a, double b) {
     push_double(stack, a + b);
 }
 
-/**
- * \brief Nesta função fazemos a soma dos dois números no topo da stack do tipo long.
- */
 void add_long_operation(Stack *stack, long a, long b) {
     push_long(stack, a + b);
 }
 
-/**
- * \brief Nesta função fazemos a soma dos dois números no topo da stack.
- */
+void add_char_operation(Stack *stack, char a, char b) {
+    push_long(stack, a + b);
+}
+
 void add_operation(Stack *stack) {
-    operate_promoting_number_type(stack, add_double_operation, add_long_operation);
+    StackElement x = pop(stack);
+    StackElement y = pop(stack);
+
+    if (x.type == ARRAY_TYPE || y.type == ARRAY_TYPE) {
+        add_array_operation(stack, &y, &x);
+    } else if (x.type == STRING_TYPE || y.type == STRING_TYPE) {
+        add_string_operation(stack, &y, &x);
+    } else if (x.type == DOUBLE_TYPE || y.type == DOUBLE_TYPE) {
+        add_double_operation(stack, get_element_as_double(&y), get_element_as_double(&x));
+    } else if (x.type == LONG_TYPE || y.type == LONG_TYPE) {
+        add_long_operation(stack, get_element_as_long(&y), get_element_as_long(&x));
+    } else if (x.type == CHAR_TYPE || y.type == CHAR_TYPE) {
+        add_char_operation(stack, convert_element_to_char(&y), convert_element_to_char(&x));
+    } else {
+        PANIC("Couldn't find add operation for types x=%d, y=%d", x.type, y.type)
+    }
 }
 
 /**
