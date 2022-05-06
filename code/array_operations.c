@@ -110,14 +110,13 @@ void push_all_elements_from_array(Stack *stack){
 
 void remove_first_from_array(Stack *stack) {
     StackElement array = pop(stack);
-    ElementType array_type = array.type;
     int length_array = length(array.content.array_value);
 
     Stack *new_array = create_stack(length_array - 1);
     for (int i = 0; i < length_array; i++) {
         new_array->array[i] = array.content.array_value->array[i + 1];
     }
-    create_array_element(&new_array);
+    create_array_element(new_array);
     push_array(stack, new_array);
 
     free_element(array);
@@ -126,26 +125,23 @@ void remove_first_from_array(Stack *stack) {
 
 void remove_last_from_array(Stack *stack){
         StackElement array = pop(stack);
-        ElementType array_type = array.type;
 
-        if (array_type == ARRAY_TYPE) {
+        if (array.type == ARRAY_TYPE) {
             pop(array.content.array_value);
         }
         push (stack,array);
 }
-
+/*
 int search_substring (Stack *stack, char *string, char *result, char *x) {
-    int position;
-
     result = strstr(string, x);
     if (result == NULL) return -1;
-    position = *result - *string;
+    int position = *result - *string;
+    
 }
 
 void separate_string_by_substrings (Stack *stack, int v[]) {
 
 }
-
 void separate_string_by_whitespaces (Stack *stack, int v[]) {
     char *buff = v;
     char *word = strtok(buff," ");
@@ -182,28 +178,29 @@ void separate_string_by_newlines (Stack *stack, int v[]){
     }
 
 }
+*/
 
-void take_first_n_elements_from_array(Stack *stack, StackElement *list, long x) {
-    Stack *new_array = create_stack(x);
+void take_first_n_elements_from_array(Stack *stack, StackElement *list_element, long x) {
+    Stack *new_array = create_stack((int) x);
     
     for(int i = 0; i < x; i++){
-        push(new_array, list->content.array_value->array[i]);
+        push(new_array, list_element->content.array_value->array[i]);
     }
 
-    free_element(*list);
+    free_element(*list_element);
     push(stack, create_array_element(new_array));
 }
 
-void take_first_n_elements_from_string(Stack *stack, StackElement *list, long x) {
-    int lenght_string = strlen(list->content.string_value);
+void take_first_n_elements_from_string(Stack *stack, StackElement *list_element, long x) {
+    size_t lenght_string = strlen(list_element->content.string_value);
     char new_str[lenght_string];
-    strcpy(new_str, list);
+    strcpy(new_str, list_element->content.string_value);
 
-    for(int i = lenght_string ; i >= x; i--) {
+    for(size_t i = lenght_string ; i >= (size_t) x; i--) {
         new_str[i] = '\0';
     }
 
-    free_element(*list);
+    free_element(*list_element);
     push_string(stack, new_str);
 }
 
@@ -219,27 +216,27 @@ void take_first_n_elements_operation(Stack *stack){
    }
 }
 
-void take_last_n_elements_from_array(Stack *stack, StackElement *list, long x) {
-    Stack *new_array = create_stack(x);
+void take_last_n_elements_from_array(Stack *stack, StackElement *list_element, long x) {
+    Stack *new_array = create_stack((int) x);
 
-    for(int i = x; i < length(list->content.array_value); i++) {
-        push(new_array, list->content.array_value->array[i]);                
+    for(size_t i = (size_t) x; i < (size_t) length(list_element->content.array_value); i++) {
+        push(new_array, list_element->content.array_value->array[i]);                
     }
 
-    free_element(*list);
+    free_element(*list_element);
     push(stack, create_array_element(new_array));
 }
 
-void take_last_n_elements_from_string(Stack *stack, StackElement *list, long x) {
-    int lenght_string = strlen(list->content.string_value);
+void take_last_n_elements_from_string(Stack *stack, StackElement *list_element, long x) {
+    size_t lenght_string = strlen(list_element->content.string_value);
     char new_str[lenght_string];
-    strcpy(new_str, list);
+    strcpy(new_str, list_element->content.string_value);
 
-    for(int i = 0, j = lenght_string - x ; j <= x; i++, j++) {
+    for(size_t i = 0, j = lenght_string - (size_t) x ; j <= (size_t) x; i++, j++) {
         new_str[i] = new_str[j];
     }
 
-    free_element(*list);
+    free_element(*list_element);
     push_string(stack, new_str);
     
 }
@@ -250,18 +247,18 @@ void take_last_n_elements_operation(Stack *stack){
     ElementType element_type = element.type;
 
    if (element_type == ARRAY_TYPE) {
-       take_last_n_array_elements(stack, &element, x);
+       take_last_n_elements_from_array(stack, &element, x);
    } else if (element_type == STRING_TYPE) {
-       take_last_n_string_elements(stack, &element, x);
+       take_last_n_elements_from_string(stack, &element, x);
    }
 }
 
-void elem_index_array_elements(Stack *stack, StackElement *list, long x) {
-    push(stack, list->content.array_value->array[x]);
+void elem_index_array_elements(Stack *stack, StackElement *list_element, long x) {
+    push(stack, list_element->content.array_value->array[x]);
 }
 
-void elem_index_string_elements(Stack *stack, StackElement *list, long x) { 
-    push_char(stack, list->content.string_value[x]);
+void elem_index_string_elements(Stack *stack, StackElement *list_element, long x) { 
+    push_char(stack, list_element->content.string_value[x]);
 }
 
 void elem_index_operation(Stack *stack) {
@@ -274,5 +271,71 @@ void elem_index_operation(Stack *stack) {
 
     } else if (element_type == STRING_TYPE) {
         elem_index_string_elements(stack, &element, x);
+    }
+}
+
+void remove_first_element_from_array(Stack *stack, StackElement element) {
+    Stack *new_array = create_stack(element.content.array_value->capacity);
+
+    for(int i = 1; i < element.content.array_value->capacity; i++){
+        push(new_array, element.content.array_value->array[i]);
+    }
+
+    free_element(element);
+    push(stack, create_array_element(new_array));
+    push(stack,element.content.array_value->array[0]);
+}
+
+void remove_first_element_from_string(Stack *stack, StackElement element) {
+    char new_str[MAX_STR_ARRAY];
+    strcpy(new_str,element.content.string_value);
+
+    for(size_t i = 0; i < strlen(new_str); i++) {
+        new_str[i] = new_str[i+1];
+    }
+
+    free_element(element);
+    push_string(stack, new_str);
+}
+
+void remove_first_element_operation(Stack *stack){
+    StackElement element = pop(stack);
+    ElementType element_type = element.type;
+
+    if (element_type == ARRAY_TYPE) {
+        remove_first_element_from_array(stack, element);
+    } else if (element_type == STRING_TYPE) {
+        remove_first_element_from_string(stack, element);
+    }
+
+}
+
+void remove_last_element_from_array(Stack *stack, StackElement element) {
+    StackElement last_element = pop(element.content.array_value);
+    free_element(last_element);
+
+    push_array(stack, element.content.array_value);
+}
+
+void remove_last_element_from_string(Stack *stack, StackElement element) {
+    char new_string[MAX_STR_ARRAY];
+    strcpy(new_string, element.content.string_value);
+    size_t lenght_str = strlen(new_string);
+
+    new_string[lenght_str - 1] = '\0';
+
+    free_element(element);
+    push_string(stack, new_string);
+}
+
+
+void remove_last_element_operation(Stack *stack) {
+    StackElement element = pop(stack);
+    ElementType element_type = element.type;
+
+    if (element_type == ARRAY_TYPE) {
+        remove_last_element_from_array(stack, element);
+    } else if (element_type == STRING_TYPE) {
+        remove_last_element_from_string(stack, element);
     }
 }

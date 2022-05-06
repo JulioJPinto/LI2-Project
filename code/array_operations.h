@@ -38,10 +38,10 @@ void separate_string_by_whitespaces (Stack *stack, int v[]);
 
 void separate_string_by_newlines (Stack *stack, int v[]);
 
-int elems_inicio (Stack *stack, int v[], int N, int x);
+void take_first_n_elements_operation(Stack *stack);
 
-int elems_fim (Stack *stack, int v[], int N, int x);
+void take_last_n_elements_operation(Stack *stack);
 
-void elem_indice (Stack *stack, StackElement v[], int N, int x);
+void elem_index_operation(Stack *stack);
 
 
