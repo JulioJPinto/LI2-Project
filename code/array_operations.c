@@ -1,9 +1,11 @@
 #include "array_operations.h"
 #include "parser.h"
 #include "logger.h"
+#include "stack.h"
 #include <string.h>
 
 #define INITIAL_ARRAY_CAPACITY 5
+#define MAX_STR_ARRAY 100
 
 void create_range_array_operation(Stack *stack, long range);
 
@@ -111,11 +113,11 @@ void remove_first_from_array(Stack *stack) {
     ElementType array_type = array.type;
     int length_array = length(array.content.array_value);
 
+    Stack *new_array = create_stack(length_array - 1);
     for (int i = 0; i < length_array; i++) {
-        Stack *new_array = create_stack(length_array - 1);
         new_array->array[i] = array.content.array_value->array[i + 1];
     }
-    create_array_element (stack, new_array);
+    create_array_element(&new_array);
     push_array(stack, new_array);
 
     free_element(array);
@@ -156,6 +158,18 @@ void separate_string_by_whitespaces (Stack *stack, int v[]) {
     }
 }
 
+void separate_string_by_whitespaces (Stack *stack) {
+    StackElement str = pop(stack);
+
+    if (str.type == STRING_TYPE) {
+        for(int i = 0; str.content.string_value; i++){
+            char old_string[MAX_STR_ARRAY];
+            strcpy(old_string, str.content.string_value);
+
+        }
+    }
+}
+
 void separate_string_by_newlines (Stack *stack, int v[]){
     char *buff = v;
     char *word = strtok(buff,"\n");
@@ -169,21 +183,111 @@ void separate_string_by_newlines (Stack *stack, int v[]){
 
 }
 
-int elems_inicio (Stack *stack, int v[], int N, int x){
-    int i;
-    for (i=0; i<x; i++){
-        return v[i];
+void take_first_n_array_elements(Stack *stack, StackElement *list, long x) {
+    Stack *new_array = create_stack(x);
+    
+    for(int i = 0; i < x; i++){
+        push(new_array, list->content.array_value->array[i]);
+    }
+
+    push(stack, create_array_element(new_array));
+}
+
+void take_first_n_string_elements(Stack *stack, StackElement *list, long x) {
+    char new_str[x+1];
+
+    for(int i = 0; i < x; list->content.string_value++, i++) {
+        new_str[i] = *list->content.string_value;
+        new_str[i+1] = '\0';
+    }
+
+
+    push_string(stack, new_str);
+}
+
+void take_first_n_elements(Stack *stack){
+    long x = pop_long(stack);
+    StackElement element = pop(stack);
+    ElementType element_type = element.type;
+
+    switch(element_type) {
+        case ARRAY_TYPE:
+            take_first_n_array_elements(stack, &element, x);
+            return;
+        case STRING_TYPE:
+            take_first_n_string_elements(stack, &element, x);
+            return;
+        case LONG_TYPE:
+        case DOUBLE_TYPE:
+        case CHAR_TYPE:
+        default:
+            return;
     }
 }
 
-int elems_fim (Stack *stack, int v[], int N, int x){
-    int i;
-    for (i=N; i>x ;i--){
-        return v[i];
+void take_last_n_array_elements(Stack *stack, StackElement *list, long x) {
+    Stack *new_array = create_stack(x);
+
+    for(int i = x; i < length(list->content.array_value); i++) {
+        push(new_array, list->content.array_value->array[i]);                
     }
 
+    push(stack, create_array_element(new_array));
 }
 
-void elem_indice (Stack *stack, StackElement v[], int N, int x) {
-        push(stack->array[x]);
+void take_last_n_string_elements(Stack *stack, StackElement *list, long x) {
+    char new_str[x+1];
+
+    for(int i = x; i < length(list->content.array_value); list->content.string_value++, i++) {
+        new_str[i] = *list->content.string_value;
+        new_str[i+1] = '\0';
+    }
+}
+
+void take_last_n_elements(Stack *stack){
+    long x = pop_long(stack);
+    StackElement element = pop(stack);
+    ElementType element_type = element.type;
+
+    switch(element_type) {
+        case ARRAY_TYPE:
+            take_last_n_array_elements(stack, &element, x);
+            return;
+        case STRING_TYPE:
+            take_last_n_string_elements(stack, &element, x);
+            return;
+        case LONG_TYPE:
+        case DOUBLE_TYPE:
+        case CHAR_TYPE:
+        default:
+            return;
+    }
+}
+
+void elem_index_array_elements(Stack *stack, StackElement *list, long x) {
+    push(stack, list->content.array_value->array[x]);
+}
+
+void elem_index_string_elements(Stack *stack, StackElement *list, long x) {
+    push_char(stack, list->content.string_value[x]);
+}
+
+void elem_index(Stack *stack) {
+    long x = pop_long(stack);
+    StackElement element = pop(stack);
+    ElementType element_type = element.type;
+
+    switch(element_type) {
+        case ARRAY_TYPE:
+            elem_index_array_elements(stack, &element, x);
+            return;
+        case STRING_TYPE:
+            elem_index_string_elements(stack, &element, x);
+            return;
+        case LONG_TYPE:
+        case DOUBLE_TYPE:
+        case CHAR_TYPE:
+        default:
+            return;
+    }
 }
