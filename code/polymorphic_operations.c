@@ -50,7 +50,7 @@ void left_parentheses_operation(Stack *stack) {
     ElementType element_type = peek(stack).type;
 
     if (element_type == ARRAY_TYPE || element_type == STRING_TYPE) {
-        take_first_n_elements_operation(stack);
+        remove_first_element_operation(stack);
     } else {
         decrement_operation(stack);
     }
@@ -60,7 +60,7 @@ void right_parentheses_operation(Stack *stack) {
     ElementType element_type = peek(stack).type;
 
     if (element_type == ARRAY_TYPE || element_type == STRING_TYPE) {
-        take_last_n_elements_operation(stack);
+        remove_last_element_operation(stack);
     } else {
         increment_operation(stack);
     }
