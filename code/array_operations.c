@@ -191,7 +191,6 @@ void take_first_n_elements_from_array(Stack *stack, StackElement *list, long x) 
     }
 
     free_element(*list);
-    free(&x);
     push(stack, create_array_element(new_array));
 }
 
@@ -205,7 +204,6 @@ void take_first_n_elements_from_string(Stack *stack, StackElement *list, long x)
     }
 
     free_element(*list);
-    free(&x);
     push_string(stack, new_str);
 }
 
@@ -229,7 +227,6 @@ void take_last_n_elements_from_array(Stack *stack, StackElement *list, long x) {
     }
 
     free_element(*list);
-    free(&x);
     push(stack, create_array_element(new_array));
 }
 
@@ -243,7 +240,6 @@ void take_last_n_elements_from_string(Stack *stack, StackElement *list, long x) 
     }
 
     free_element(*list);
-    free(&x);
     push_string(stack, new_str);
     
 }
@@ -262,14 +258,10 @@ void take_last_n_elements_operation(Stack *stack){
 
 void elem_index_array_elements(Stack *stack, StackElement *list, long x) {
     push(stack, list->content.array_value->array[x]);
-
-    free(&x);
 }
 
 void elem_index_string_elements(Stack *stack, StackElement *list, long x) { 
     push_char(stack, list->content.string_value[x]);
-
-    free(&x);
 }
 
 void elem_index_operation(Stack *stack) {
