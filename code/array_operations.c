@@ -183,24 +183,23 @@ void separate_string_by_newlines (Stack *stack, int v[]){
 void take_first_n_elements_from_array(Stack *stack, StackElement *list_element, long x) {
     Stack *new_array = create_stack((int) x);
     
-    for(int i = 0; i < x; i++){
+    for(long int i = x; i < length(list_element->content.array_value); i++){
         push(new_array, list_element->content.array_value->array[i]);
     }
 
-    free_element(*list_element);
     push(stack, create_array_element(new_array));
 }
 
 void take_first_n_elements_from_string(Stack *stack, StackElement *list_element, long x) {
-    size_t lenght_string = strlen(list_element->content.string_value);
-    char new_str[lenght_string];
-    strcpy(new_str, list_element->content.string_value);
+    int lenght_string = (int) strlen(list_element->content.string_value);
+    char old_str[lenght_string+1];
+    strcpy(old_str, list_element->content.string_value);
+    char new_str[lenght_string - x+1];
 
-    for(size_t i = lenght_string ; i >= (size_t) x; i--) {
-        new_str[i] = '\0';
+    for(long int i = x; i < lenght_string; i++){
+        new_str[i - x] = old_str[i];
     }
 
-    free_element(*list_element);
     push_string(stack, new_str);
 }
 
@@ -217,28 +216,23 @@ void take_first_n_elements_operation(Stack *stack){
 }
 
 void take_last_n_elements_from_array(Stack *stack, StackElement *list_element, long x) {
-    Stack *new_array = create_stack((int) x);
+    StackElement new_array = duplicate_array(*list_element);
 
-    for(size_t i = (size_t) x; i < (size_t) length(list_element->content.array_value); i++) {
-        push(new_array, list_element->content.array_value->array[i]);                
+    for(int i = 0; i < x; i++) {
+        pop(new_array.content.array_value);
     }
 
-    free_element(*list_element);
-    push(stack, create_array_element(new_array));
+    push(stack, new_array);
 }
 
 void take_last_n_elements_from_string(Stack *stack, StackElement *list_element, long x) {
-    size_t lenght_string = strlen(list_element->content.string_value);
+    int lenght_string = (int) strlen(list_element->content.string_value);
     char new_str[lenght_string];
     strcpy(new_str, list_element->content.string_value);
 
-    for(size_t i = 0, j = lenght_string - (size_t) x ; j <= (size_t) x; i++, j++) {
-        new_str[i] = new_str[j];
-    }
+    new_str[(long) lenght_string - x] = '\0';
 
-    free_element(*list_element);
-    push_string(stack, new_str);
-    
+    push_string(stack, new_str);  
 }
 
 void take_last_n_elements_operation(Stack *stack){
@@ -275,27 +269,22 @@ void elem_index_operation(Stack *stack) {
 }
 
 void remove_first_element_from_array(Stack *stack, StackElement element) {
-    Stack *new_array = create_stack(element.content.array_value->capacity);
+    Stack *new_array = create_stack(length(element.content.array_value));
 
-    for(int i = 1; i < element.content.array_value->capacity; i++){
+    for(int i = 1; i < length(element.content.array_value); i++){
         push(new_array, element.content.array_value->array[i]);
     }
 
-    free_element(element);
     push(stack, create_array_element(new_array));
     push(stack,element.content.array_value->array[0]);
 }
 
 void remove_first_element_from_string(Stack *stack, StackElement element) {
-    char new_str[MAX_STR_ARRAY];
-    strcpy(new_str,element.content.string_value);
-
-    for(size_t i = 0; i < strlen(new_str); i++) {
-        new_str[i] = new_str[i+1];
-    }
-
-    free_element(element);
-    push_string(stack, new_str);
+    char old_str[strlen(element.content.string_value) + 1];
+    strcpy(old_str, element.content.string_value);
+    
+    take_first_n_elements_from_string(stack, &element, 1);
+    push_char(stack, old_str[0]);
 }
 
 void remove_first_element_operation(Stack *stack){
@@ -312,9 +301,9 @@ void remove_first_element_operation(Stack *stack){
 
 void remove_last_element_from_array(Stack *stack, StackElement element) {
     StackElement last_element = pop(element.content.array_value);
-    free_element(last_element);
 
     push_array(stack, element.content.array_value);
+    push(stack, last_element);
 }
 
 void remove_last_element_from_string(Stack *stack, StackElement element) {
@@ -322,10 +311,11 @@ void remove_last_element_from_string(Stack *stack, StackElement element) {
     strcpy(new_string, element.content.string_value);
     size_t lenght_str = strlen(new_string);
 
+    char aux = new_string[lenght_str - 1];
     new_string[lenght_str - 1] = '\0';
 
-    free_element(element);
     push_string(stack, new_string);
+    push_char(stack, aux);
 }
 
 
