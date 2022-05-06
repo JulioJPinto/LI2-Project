@@ -183,111 +183,104 @@ void separate_string_by_newlines (Stack *stack, int v[]){
 
 }
 
-void take_first_n_array_elements(Stack *stack, StackElement *list, long x) {
+void take_first_n_elements_from_array(Stack *stack, StackElement *list, long x) {
     Stack *new_array = create_stack(x);
     
     for(int i = 0; i < x; i++){
         push(new_array, list->content.array_value->array[i]);
     }
 
+    free_element(*list);
+    free(&x);
     push(stack, create_array_element(new_array));
 }
 
-void take_first_n_string_elements(Stack *stack, StackElement *list, long x) {
-    char new_str[x+1];
+void take_first_n_elements_from_string(Stack *stack, StackElement *list, long x) {
+    int lenght_string = strlen(list->content.string_value);
+    char new_str[lenght_string];
+    strcpy(new_str, list);
 
-    for(int i = 0; i < x; list->content.string_value++, i++) {
-        new_str[i] = *list->content.string_value;
-        new_str[i+1] = '\0';
+    for(int i = lenght_string ; i >= x; i--) {
+        new_str[i] = '\0';
     }
 
-
+    free_element(*list);
+    free(&x);
     push_string(stack, new_str);
 }
 
-void take_first_n_elements(Stack *stack){
+void take_first_n_elements_operation(Stack *stack){
     long x = pop_long(stack);
     StackElement element = pop(stack);
     ElementType element_type = element.type;
 
-    switch(element_type) {
-        case ARRAY_TYPE:
-            take_first_n_array_elements(stack, &element, x);
-            return;
-        case STRING_TYPE:
-            take_first_n_string_elements(stack, &element, x);
-            return;
-        case LONG_TYPE:
-        case DOUBLE_TYPE:
-        case CHAR_TYPE:
-        default:
-            return;
-    }
+    if (element_type == ARRAY_TYPE) {
+       take_first_n_elements_from_array(stack, &element, x);
+   } else if (element_type == STRING_TYPE) {
+       take_first_n_elements_from_string(stack, &element, x);
+   }
 }
 
-void take_last_n_array_elements(Stack *stack, StackElement *list, long x) {
+void take_last_n_elements_from_array(Stack *stack, StackElement *list, long x) {
     Stack *new_array = create_stack(x);
 
     for(int i = x; i < length(list->content.array_value); i++) {
         push(new_array, list->content.array_value->array[i]);                
     }
 
+    free_element(*list);
+    free(&x);
     push(stack, create_array_element(new_array));
 }
 
-void take_last_n_string_elements(Stack *stack, StackElement *list, long x) {
-    char new_str[x+1];
+void take_last_n_elements_from_string(Stack *stack, StackElement *list, long x) {
+    int lenght_string = strlen(list->content.string_value);
+    char new_str[lenght_string];
+    strcpy(new_str, list);
 
-    for(int i = x; i < length(list->content.array_value); list->content.string_value++, i++) {
-        new_str[i] = *list->content.string_value;
-        new_str[i+1] = '\0';
+    for(int i = 0, j = lenght_string - x ; j <= x; i++, j++) {
+        new_str[i] = new_str[j];
     }
+
+    free_element(*list);
+    free(&x);
+    push_string(stack, new_str);
+    
 }
 
-void take_last_n_elements(Stack *stack){
+void take_last_n_elements_operation(Stack *stack){
     long x = pop_long(stack);
     StackElement element = pop(stack);
     ElementType element_type = element.type;
 
-    switch(element_type) {
-        case ARRAY_TYPE:
-            take_last_n_array_elements(stack, &element, x);
-            return;
-        case STRING_TYPE:
-            take_last_n_string_elements(stack, &element, x);
-            return;
-        case LONG_TYPE:
-        case DOUBLE_TYPE:
-        case CHAR_TYPE:
-        default:
-            return;
-    }
+   if (element_type == ARRAY_TYPE) {
+       take_last_n_array_elements(stack, &element, x);
+   } else if (element_type == STRING_TYPE) {
+       take_last_n_string_elements(stack, &element, x);
+   }
 }
 
 void elem_index_array_elements(Stack *stack, StackElement *list, long x) {
     push(stack, list->content.array_value->array[x]);
+
+    free(&x);
 }
 
-void elem_index_string_elements(Stack *stack, StackElement *list, long x) {
+void elem_index_string_elements(Stack *stack, StackElement *list, long x) { 
     push_char(stack, list->content.string_value[x]);
+
+    free(&x);
 }
 
-void elem_index(Stack *stack) {
+void elem_index_operation(Stack *stack) {
     long x = pop_long(stack);
     StackElement element = pop(stack);
     ElementType element_type = element.type;
 
-    switch(element_type) {
-        case ARRAY_TYPE:
-            elem_index_array_elements(stack, &element, x);
-            return;
-        case STRING_TYPE:
-            elem_index_string_elements(stack, &element, x);
-            return;
-        case LONG_TYPE:
-        case DOUBLE_TYPE:
-        case CHAR_TYPE:
-        default:
-            return;
+    if ( element_type == ARRAY_TYPE) {
+        elem_index_array_elements(stack, &element, x);
+
+    } else if (element_type == STRING_TYPE) {
+        elem_index_string_elements(stack, &element, x);
     }
 }
