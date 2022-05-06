@@ -25,3 +25,23 @@ void repeat_array_operation(Stack *stack);
  * @param stack target
  */
 void push_all_elements_from_array(Stack *stack);
+
+void remove_first_from_array(Stack *stack);
+
+void remove_last_from_array(Stack *stack);
+
+int search_substring (Stack *stack, char *string, char *result, char *x);
+
+void separate_string_by_substrings (Stack *stack, int v[]);
+
+void separate_string_by_whitespaces (Stack *stack, int v[]);
+
+void separate_string_by_newlines (Stack *stack, int v[]);
+
+int elems_inicio (Stack *stack, int v[], int N, int x);
+
+int elems_fim (Stack *stack, int v[], int N, int x);
+
+void elem_indice (Stack *stack, StackElement v[], int N, int x);
+
+

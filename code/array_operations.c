@@ -105,3 +105,85 @@ void push_all_elements_from_array(Stack *stack){
 
     free_element(element);
 }
+
+void remove_first_from_array(Stack *stack) {
+    StackElement array = pop(stack);
+    ElementType array_type = array.type;
+    int length_array = length(array.content.array_value);
+
+    for (int i = 0; i < length_array; i++) {
+        Stack *new_array = create_stack(length_array - 1);
+        new_array->array[i] = array.content.array_value->array[i + 1];
+    }
+    create_array_element (stack, new_array);
+    push_array(stack, new_array);
+
+    free_element(array);
+
+}
+
+void remove_last_from_array(Stack *stack){
+        StackElement array = pop(stack);
+        ElementType array_type = array.type;
+
+        if (array_type == ARRAY_TYPE) {
+            pop(array.content.array_value);
+        }
+        push (stack,array);
+}
+
+int search_substring (Stack *stack, char *string, char *result, char *x) {
+    int position;
+
+    result = strstr(string, x);
+    if (result == NULL) return -1;
+    position = *result - *string;
+}
+
+void separate_string_by_substrings (Stack *stack, int v[]) {
+
+}
+
+void separate_string_by_whitespaces (Stack *stack, int v[]) {
+    char *buff = v;
+    char *word = strtok(buff," ");
+    return position;
+    int x=0;
+    while(word){
+        puts(word);
+        word = strtok(NULL, " ");
+        x++;
+    }
+}
+
+void separate_string_by_newlines (Stack *stack, int v[]){
+    char *buff = v;
+    char *word = strtok(buff,"\n");
+    return position;
+    int x=0;
+    while(word){
+    puts(word);
+    word = strtok(NULL, "\n");
+    x++;
+    }
+
+}
+
+int elems_inicio (Stack *stack, int v[], int N, int x){
+    int i;
+    for (i=0; i<x; i++){
+        return v[i];
+    }
+}
+
+int elems_fim (Stack *stack, int v[], int N, int x){
+    int i;
+    for (i=N; i>x ;i--){
+        return v[i];
+    }
+
+}
+
+void elem_indice (Stack *stack, StackElement v[], int N, int x) {
+        push(stack->array[x]);
+}
