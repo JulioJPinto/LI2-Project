@@ -19,3 +19,9 @@ void repeat_string_operation(Stack *stack);
  * @param stack target
  */
 void repeat_array_operation(Stack *stack);
+
+/**
+ * @brief Operação de colocar todos os elementos do array na stack
+ * @param stack target
+ */
+void push_all_elements_from_array(Stack *stack);

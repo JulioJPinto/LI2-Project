@@ -286,6 +286,5 @@ StackElement duplicate_element(StackElement element) {
         case DOUBLE_TYPE:
         default:
             return element;
-            
     }
 }

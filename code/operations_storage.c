@@ -23,7 +23,7 @@ StackOperationFunction get_operation(char op[]) {
             {"&",  and_bitwise_operation},
             {"|",  or_bitwise_operation},
             {"^",  xor_bitwise_operation},
-            {"~",  not_bitwise_operation},
+            {"~",  tilde_operation},
             {"_",  duplicate_operation},
             {";",  pop_operation},
             {"\\", swap_last_two_operation},

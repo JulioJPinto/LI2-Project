@@ -13,3 +13,14 @@ void asterisk_operation(Stack *stack) {
         mult_operation(stack);
     }
 }
+
+void tilde_operation(Stack *stack) {
+    StackElement element= peek(stack);
+    ElementType  element_type =element.type;
+
+    if (element_type == ARRAY_TYPE) {
+        push_all_elements_from_array(stack);
+    }else {
+        not_bitwise_operation(stack);
+    }
+}

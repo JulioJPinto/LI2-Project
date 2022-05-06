@@ -63,9 +63,9 @@ void repeat_string_operation(Stack *stack) {
     if(times > 0) {
         int i;
         for (i = 0; i < times - 1; ++i) {
-            memcpy(dest + i * from_length, from, from_length);
+            memcpy(dest + i * from_length, from, (unsigned long) from_length);
         }
-        memcpy(dest + i * from_length, from, from_length + 1);
+        memcpy(dest + i * from_length, from, (unsigned long) (from_length + 1));
     }
 
     push_string(stack, dest);
@@ -91,86 +91,17 @@ void repeat_array_operation(Stack *stack) {
     push_array(stack, array);
 }
 
-void concat(Stack *stack) {
-    StackElement x = pop(stack);
-    StackElement y = pop(stack);
 
-    ElementType x_type = x.type;
-    ElementType y_type = y.type;
+void push_all_elements_from_array(Stack *stack){
+    StackElement element = pop(stack);
 
-    if (x_type == STRING_TYPE || y_type == STRING_TYPE) {
+    Stack *array = element.content.array_value;
 
-        char *result = x.content.string_value;
-        strcat(result, y.content.string_value);
+    long array_size = length(array);
 
-        push_string(stack, result);
-
-        free_element(x);
-        free_element(y);
+    for (int i = 0; i < array_size ; ++i) {
+        push(stack,duplicate_element(array->array[i]));
     }
-    /* criar array_value
-     * else{
-        int elements_array_x,elements_array_y;
 
-        elements_array_x = sizeof(x.content.array_value) / sizeof(x.content.array_value[0]);
-        elements_array_y = sizeof(y.content.array_value) / sizeof(y.content.array_value[0]);
-
-        int *result;
-
-        for(int i = 0; i < elements_array_x; i++){
-
-            result[i]= x.content.array_value[i];
-        }
-
-        for(int i = elements_array_x; i < elements_array_x + elements_array_y; i++){
-
-            result[i]= y.content.array_value[i];
-        }
-
-        push_array(stack, result);
-
-        free_element(x);
-        free_element(y);
-    }*/
-}
-
-//void push_elements_array(Stack *stack){
-//    StackElement array = pop(stack);
-//
-//    int elements_array;
-
-/* elements_array = sizeof(array.content.array_value) / sizeof(array.content.array_value[0]);
-
-for(int i = 0; i < elements_array; i++){
-
-    push_long(stack, array.content.array_value[i]);
-}
-
-free_element(array);  */
-//}
-
-void prefix(Stack *stack) {
-    StackElement element = pop(stack); //string ou array
-    StackElement range = pop(stack); //quantos elementos o prefixo irá ter
-
-    ElementType element_type = element.type;
-
-    if (element_type == STRING_TYPE) {
-
-        char result[range.content.long_value];
-
-        for (int i = 0; i < range.content.long_value; i++) {
-
-            result[i] = element.content.string_value[i];
-        }
-
-        push_string(stack, result);
-
-        free_element(element);
-        free_element(range);
-
-    } else {
-
-
-    }
+    free_element(element);
 }

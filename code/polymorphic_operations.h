@@ -4,3 +4,4 @@
 
 void asterisk_operation(Stack *stack);
 
+void tilde_operation(Stack *stack);
