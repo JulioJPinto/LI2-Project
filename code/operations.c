@@ -95,28 +95,45 @@ void add_array_operation(Stack *stack, StackElement *a, StackElement *b) {
 }
 
 void add_string_operation(Stack *stack, StackElement *a, StackElement *b) {
-    char *a_string = a->content.string_value;
-    char *b_string = b->content.string_value;
+    ElementType a_type = a->type;
+    ElementType b_type = a->type;
 
-    char x_string[MAX_CONVERT_TO_STRING_SIZE];
-    char y_string[MAX_CONVERT_TO_STRING_SIZE];
+    if (a_type != STRING_TYPE){
+        char a_str[MAX_CONVERT_TO_STRING_SIZE];
+        convert_element_to_string(a, a_str);
+        StackElement new_a = create_string_element(a_str);
+        add_string_operation(stack, &new_a, b);
 
-    convert_element_to_string(a, y_string);
-    convert_element_to_string(b, x_string);
+    } else if (b_type != STRING_TYPE){
+        char b_str[MAX_CONVERT_TO_STRING_SIZE];
+        convert_element_to_string(b, b_str);
+        StackElement new_b = create_string_element(b_str);
+        add_string_operation(stack, a, &new_b);
 
-    size_t a_length = strlen(a_string);
-    size_t b_length = strlen(b_string);
-
-    char *concat = calloc(a_length + b_length + 1, sizeof(char));
-
-    memcpy(concat, a_string, a_length);
-    memcpy(concat + a_length, b_string, b_length + 1);
-
-    push_string(stack, concat);
-
-    free(concat);
-    free_element(*a);
-    free_element(*b);
+    } else { 
+        char *b_string = b->content.string_value;
+        char *a_string = a->content.string_value;
+    
+        char x_string[MAX_CONVERT_TO_STRING_SIZE];
+        char y_string[MAX_CONVERT_TO_STRING_SIZE];
+    
+        convert_element_to_string(a, y_string);
+        convert_element_to_string(b, x_string);
+    
+        size_t a_length = strlen(a_string);
+        size_t b_length = strlen(b_string);
+    
+        char *concat = calloc(a_length + b_length + 1, sizeof(char));
+    
+        memcpy(concat, a_string, a_length);
+        memcpy(concat + a_length, b_string, b_length + 1);
+    
+        push_string(stack, concat);
+        free(concat);
+        free_element(*a);
+        free_element(*b);
+    }
+    
 }
 
 void add_double_operation(Stack *stack, double a, double b) {
