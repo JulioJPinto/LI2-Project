@@ -29,6 +29,14 @@ int parse_array(Stack *stack, StackElement *variables, char *word) {
     return 1;
 }
 
+/**
+ * @brief A Função devolve o tamanho da string/array ou um array com todos os elementos até esta caso seja um long
+ * Dependendo do valor de @param{x}, elemento no topo da Stack, está função realizará diferentes operações
+ * Caso @param{x} seja do tipo long esta realizará a função create_range_array_operation para este
+ * e devolve um array com a range até ao elemento. Caso esta seja do tipo array/string irá devolver
+ * o seu tamanho 
+ * @param stack A Stack onde vamos buscar os elemento para a função
+ */
 void size_range_operation(Stack *stack) {
     StackElement x = pop(stack);
     ElementType x_type = x.type;
@@ -43,7 +51,12 @@ void size_range_operation(Stack *stack) {
 
     free_element(x);
 }
-
+/**
+ * @brief Create a range array operation object
+ * 
+ * @param stack 
+ * @param range 
+ */
 void create_range_array_operation(Stack *stack, long range) {
     Stack *array = create_stack(INITIAL_ARRAY_CAPACITY);
     for (int i = 0; i < range; i++) {
@@ -355,50 +368,6 @@ void remove_last_element_from_string_operation(Stack *stack) {
     free_element(element);
 }
 
-void string_compare_equal_operation(Stack *stack) {
-    StackElement fst_element = pop(stack);
-    StackElement snd_element = pop(stack);
-
-    int return_value = strcmp(snd_element.content.string_value, fst_element.content.string_value);
-
-    push_long(stack, return_value == 0 ? 1 : 0);
-}
-
-void string_compare_bigger_operation(Stack *stack) {
-    StackElement fst_element = pop(stack);
-    StackElement snd_element = pop(stack);
-
-    int return_value = strcmp(snd_element.content.string_value, fst_element.content.string_value);
-
-    push_long(stack, return_value > 0 ? 1 : 0);
-}
-
-void string_compare_smaller_operation(Stack *stack) {
-    StackElement fst_element = pop(stack);
-    StackElement snd_element = pop(stack);
-
-    int return_value = strcmp(snd_element.content.string_value, fst_element.content.string_value);
-
-    push_long(stack, return_value < 0 ? 1 : 0);
-}
-
-void string_compare_smaller_value_operation(Stack *stack) {
-    StackElement fst_element = pop(stack);
-    StackElement snd_element = pop(stack);
-
-    int return_value = strcmp(snd_element.content.string_value, fst_element.content.string_value);
-
-    push(stack, return_value < 0 ? fst_element : snd_element);
-}
-
-void string_compare_bigger_value_operation(Stack *stack) {
-    StackElement fst_element = pop(stack);
-    StackElement snd_element = pop(stack);
-
-    int return_value = strcmp(snd_element.content.string_value, fst_element.content.string_value);
-
-    push(stack, return_value > 0 ? fst_element : snd_element);
-}
 
 void search_substring_in_string_operation(Stack *stack) {
     StackElement substring_element = pop(stack);

@@ -146,15 +146,16 @@ void push_char(Stack *stack, char value) {
 void push_string(Stack *stack, char *value) {
     push(stack, create_string_element(value));
 }
-
+/**
+ * @brief Push para tipos arrays
+ */
 void push_array(Stack *stack, Stack *value) {
     push(stack, create_array_element(value));
 }
 
 /**
- * @brief Cria um elemento do tipo double
- * @param value o valor do elemento
- * @return StackElement criado
+ * @brief Cria um elemento do tipo double usando o @param{value} que contém o double
+ * @return StackElement O novo double criado pela função
  */
 StackElement create_double_element(double value) {
     StackElement element;
@@ -164,10 +165,10 @@ StackElement create_double_element(double value) {
     return element;
 }
 
+
 /**
- * @brief Cria um elemento do tipo long
- * @param value o valor do elemento
- * @return StackElement criado
+ * @brief Cria um elemento do tipo long usando o @param{value} que contém o long
+ * @return StackElement O novo char criado pela função
  */
 StackElement create_long_element(long value) {
     StackElement element;
@@ -178,9 +179,8 @@ StackElement create_long_element(long value) {
 }
 
 /**
- * @brief Cria um elemento do tipo cbar
- * @param value o valor do elemento
- * @return StackElement criado
+ * @brief Cria um elemento do tipo char usando o @param{value} que contém o char
+ * @return StackElement O novo char criado pela função
  */
 StackElement create_char_element(char value) {
     StackElement element;
@@ -191,9 +191,8 @@ StackElement create_char_element(char value) {
 }
 
 /**
- * @brief Cria um elemento do tipo string
- * @param value o valor do elemento
- * @return StackElement criado
+ * @brief Cria um elemento do tipo string usando o @param{value} que contém a string
+ * @return StackElement A nova string criada pela função
  */
 StackElement create_string_element(char *value) {
     StackElement element;
@@ -207,7 +206,10 @@ StackElement create_string_element(char *value) {
 
     return element;
 }
-
+/**
+ * @brief Cria um elemento do tipo array usando o @param{value} que é uma stack/array
+ * @return StackElement O novo array criado pela função
+ */
 StackElement create_array_element(Stack *value) {
     StackElement element;
     element.type = ARRAY_TYPE;
@@ -215,19 +217,24 @@ StackElement create_array_element(Stack *value) {
 
     return element;
 }
-
+/**
+ * @brief A função permite nos ver o elemento que se encontra no topo da stack sem termos de dar pop
+ * @return StackElement O elemento que se encontra no topo da stack
+ */
 StackElement peek(Stack *stack) {
     return stack->array[stack->current_index];
 }
-
+/**
+ * @brief A função permite nos ver o elemento anterior @param{index} vezes atrás do elemento no topo da stack
+ * @return StackElement O elemento que se encontra na posição que queremos
+ */
 StackElement get(Stack *stack, long index) {
     return stack->array[stack->current_index - index];
 }
 
 /**
- * @brief Função que testa se um elemento pertence ao grupo truthy ou não
- * @param a Elemento que vamos testar
- * @return int Valor que vamos retornar caso este pertenca ao grupo truthy ou não (1 ou 0)
+ * @brief Função que testa se um @param{a} pertence ao grupo truthy ou não
+ * @return int Retorna valor 1 caso seja verdade, valor 0 caso seja falso
  */
 int is_truthy(StackElement *a) {
     switch (a->type) {
@@ -244,7 +251,9 @@ int is_truthy(StackElement *a) {
         default: PANIC("Couldn't retrieve truthy value from type %d\n", a->type)
     }
 }
-
+/**
+ * @brief A Função irá dar free a memória alocada para o @param{element}
+ */
 void free_element(StackElement element) {
     switch (element.type) {
         case STRING_TYPE:
@@ -260,7 +269,10 @@ void free_element(StackElement element) {
             return;
     }
 }
-
+/**
+ * @brief A Função vai copiar tudo o que se encontra no array @param{element} 
+ * @return StackElement O array copiado pela função
+ */
 StackElement duplicate_array(StackElement element) {
     Stack *old_array = element.content.array_value;
     Stack *new_array = create_stack(old_array->capacity);
@@ -269,7 +281,10 @@ StackElement duplicate_array(StackElement element) {
     }
         return create_array_element(new_array);
 }
-
+/**
+ * @brief A Função vai copiar tudo o que se encontra no elemento @param{element} 
+ * @return StackElement O elemento (cópia) devolvido pela função
+ */
 StackElement duplicate_element(StackElement element) {
     switch (element.type) {
         case STRING_TYPE:
