@@ -42,7 +42,9 @@ void take_first_n_elements_operation(Stack *stack);
 
 void take_last_n_elements_operation(Stack *stack);
 
-void elem_index_operation(Stack *stack);
+void get_element_from_index_array_operation(Stack *stack);
+
+void get_element_from_index_string_operation(Stack *stack);
 
 void remove_first_element_from_array_operation(Stack *stack);
 

@@ -255,24 +255,24 @@ void take_last_n_elements_operation(Stack *stack) {
     }
 }
 
-void elem_index_array_elements(Stack *stack, StackElement *list_element, long x) {
-    push(stack, list_element->content.array_value->array[x]);
+void get_element_from_index_array_operation(Stack *stack) {
+    long index = pop_long(stack);
+    StackElement array_element = pop(stack);
+
+    StackElement element_from_index = array_element.content.array_value->array[index];
+    push(stack, duplicate_element(element_from_index));
+
+    free_element(array_element);
 }
 
-void elem_index_string_elements(Stack *stack, StackElement *list_element, long x) {
-    push_char(stack, list_element->content.string_value[x]);
-}
+void get_element_from_index_string_operation(Stack *stack) {
+    long index = pop_long(stack);
+    StackElement string_element = pop(stack);
 
-void elem_index_operation(Stack *stack) {
-    long x = pop_long(stack);
-    StackElement element = pop(stack);
-    ElementType element_type = element.type;
+    char char_from_index = string_element.content.string_value[index];
+    push_char(stack, char_from_index);
 
-    if (element_type == ARRAY_TYPE) {
-        elem_index_array_elements(stack, &element, x);
-    } else if (element_type == STRING_TYPE) {
-        elem_index_string_elements(stack, &element, x);
-    }
+    free_element(string_element);
 }
 
 void remove_first_element_from_array_operation(Stack *stack) {
@@ -319,7 +319,7 @@ void remove_last_element_from_string_operation(Stack *stack) {
     char *string_value = element.content.string_value;
     size_t string_length = strlen(string_value);
 
-    if(string_length <= 0) PANIC("Trying to remove last char from empty string")
+    if (string_length <= 0) PANIC("Trying to remove last char from empty string")
 
     char last_element = string_value[string_length - 1];
     string_value[string_length - 1] = '\0';

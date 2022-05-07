@@ -73,8 +73,10 @@ void close_parentheses_operation(Stack *stack) {
 void equal_symbol_operation(Stack *stack) {
     ElementType left_element_type = get(stack, 1).type;
 
-    if (left_element_type == ARRAY_TYPE || left_element_type == STRING_TYPE) {
-        elem_index_operation(stack);
+    if (left_element_type == ARRAY_TYPE) {
+        get_element_from_index_array_operation(stack);
+    } else if (left_element_type == STRING_TYPE) {
+        get_element_from_index_string_operation(stack);
     } else {
         is_equal_operation(stack);
     }
