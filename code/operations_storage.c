@@ -19,7 +19,7 @@ StackOperationFunction get_operation(char op[]) {
             {"%",  modulo_operation},
             {"(",  open_parentheses_operation},
             {")",  close_parentheses_operation},
-            {"#",  exponential_operation},
+            {"#",  hashtag_symbol_operation},
             {"&",  and_bitwise_operation},
             {"|",  or_bitwise_operation},
             {"^",  xor_bitwise_operation},

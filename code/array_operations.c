@@ -377,3 +377,18 @@ void string_compare_bigger_value_operation(Stack *stack) {
     push(stack, return_value > 0 ? fst_element : snd_element);
 }
 
+void search_substring_in_string_operation(Stack *stack) {
+    StackElement substring_element = pop(stack);
+    StackElement string_element = pop(stack);
+
+    char *string_value = string_element.content.string_value;
+    char *substring_string = substring_element.content.string_value;
+
+    long index = get_index_substring(string_value, substring_string);
+
+    push_long(stack, index);
+
+    free_element(substring_element);
+    free_element(string_element);
+}
+

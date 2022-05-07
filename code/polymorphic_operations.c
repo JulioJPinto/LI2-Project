@@ -78,11 +78,11 @@ void close_parentheses_operation(Stack *stack) {
 
 void equal_symbol_operation(Stack *stack) {
     ElementType left_element_type = get(stack, 1).type;
-    ElementType element_type = peek(stack).type;
+    ElementType right_element_type = peek(stack).type;
 
-    if (left_element_type == ARRAY_TYPE && element_type == LONG_TYPE) {
+    if (left_element_type == ARRAY_TYPE && right_element_type == LONG_TYPE) {
         get_element_from_index_array_operation(stack);
-    } else if (left_element_type == STRING_TYPE && element_type == LONG_TYPE) {
+    } else if (left_element_type == STRING_TYPE && right_element_type == LONG_TYPE) {
         get_element_from_index_string_operation(stack);
     } else {
         is_equal_operation(stack);
@@ -96,5 +96,16 @@ void slash_symbol_operation(Stack *stack) {
         separate_string_by_substring_operation(stack);
     } else {
         div_operation(stack);
+    }
+}
+
+void hashtag_symbol_operation(Stack *stack) {
+    ElementType left_element_type = get(stack, 1).type;
+    ElementType right_element_type = peek(stack).type;
+
+    if (left_element_type == STRING_TYPE && right_element_type == STRING_TYPE) {
+        search_substring_in_string_operation(stack);
+    } else {
+        exponential_operation(stack);
     }
 }
