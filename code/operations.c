@@ -94,44 +94,33 @@ void add_array_operation(Stack *stack, StackElement *a, StackElement *b) {
     free_element(*b);
 }
 
+static long get_max_string_size(StackElement *element) {
+    if (element->type == STRING_TYPE) return (long) strlen(element->content.string_value) + 1;
+    return MAX_CONVERT_TO_STRING_SIZE;
+}
+
 void add_string_operation(Stack *stack, StackElement *a, StackElement *b) {
+    long max_a_size = get_max_string_size(a);
+    char a_string[max_a_size];
+    long max_b_size = get_max_string_size(b);
+    char b_string[max_b_size];
 
-    if (a->type != STRING_TYPE){
-        char a_str[MAX_CONVERT_TO_STRING_SIZE];
-        convert_element_to_string(a, a_str);
-        StackElement new_a = create_string_element(a_str);
-        add_string_operation(stack, &new_a, b);
+    convert_element_to_string(a, a_string);
+    convert_element_to_string(b, b_string);
 
-    } else if (b->type != STRING_TYPE){
-        char b_str[MAX_CONVERT_TO_STRING_SIZE];
-        convert_element_to_string(b, b_str);
-        StackElement new_b = create_string_element(b_str);
-        add_string_operation(stack, a, &new_b);
+    size_t a_length = strlen(a_string);
+    size_t b_length = strlen(b_string);
 
-    } else { 
-        char *b_string = b->content.string_value;
-        char *a_string = a->content.string_value;
-    
-        char x_string[MAX_CONVERT_TO_STRING_SIZE];
-        char y_string[MAX_CONVERT_TO_STRING_SIZE];
-    
-        convert_element_to_string(a, y_string);
-        convert_element_to_string(b, x_string);
-    
-        size_t a_length = strlen(a_string);
-        size_t b_length = strlen(b_string);
-    
-        char *concat = calloc(a_length + b_length + 1, sizeof(char));
-    
-        memcpy(concat, a_string, a_length);
-        memcpy(concat + a_length, b_string, b_length + 1);
-    
-        push_string(stack, concat);
-        free(concat);
-        free_element(*a);
-        free_element(*b);
-    }
-    
+    char *concat = calloc(a_length + b_length + 1, sizeof(char));
+
+    memcpy(concat, a_string, a_length);
+    memcpy(concat + a_length, b_string, b_length + 1);
+
+    push_string(stack, concat);
+
+    free(concat);
+    free_element(*a);
+    free_element(*b);
 }
 
 void add_double_operation(Stack *stack, double a, double b) {
@@ -402,19 +391,16 @@ void read_input_from_console_operation(Stack *stack) {
 }
 
 void read_all_input_from_console_operation(Stack *stack) {
-    char input[READ_INPUT_FROM_CONSOLE_MAX_LENGTH];
-    char current_line[READ_INPUT_FROM_CONSOLE_MAX_LENGTH];
+    char *input = calloc(READ_INPUT_FROM_CONSOLE_MAX_LENGTH, sizeof(char));
+    char *current_line = calloc(READ_INPUT_FROM_CONSOLE_MAX_LENGTH, sizeof(char));
 
     while (fgets(current_line, READ_INPUT_FROM_CONSOLE_MAX_LENGTH, stdin) != NULL && strlen(current_line) > 1) {
         strcat(input, current_line);
     }
 
-    // filtrar o \n
-    size_t length = strlen(input);
-    if (length > 0 && input[length - 1] == '\n') {
-        input[--length] = '\0';
-    }
-
     push_string(stack, input);
+
+    free(input);
+    free(current_line);
 }
 

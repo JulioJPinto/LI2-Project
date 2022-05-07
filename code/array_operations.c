@@ -5,7 +5,6 @@
 #include <string.h>
 
 #define INITIAL_ARRAY_CAPACITY 5
-#define MAX_STR_ARRAY 100
 
 void create_range_array_operation(Stack *stack, long range);
 
@@ -120,7 +119,7 @@ long get_index_substring(char *string, const char *substring) {
  * @param stack target
  * @param string string
  */
-static void split_string_by_char(Stack *stack, char *string) {
+static void split_string_char_by_char(Stack *stack, char *string) {
     while (*string != 0) {
         char *temp_string = strdup(string);
         temp_string[1] = '\0';
@@ -134,36 +133,60 @@ static void split_string_by_char(Stack *stack, char *string) {
 }
 
 /**
+ * Separa uma string por multiplos delimitadores e coloca na stack essa string
+ * @param stack stack
+ * @param string string
+ * @param delimiters substring
+ */
+static void split_string_by_multiple_delimiters(Stack *stack, char *string, const char *delimiters) {
+    string = strtok(string, delimiters);
+    while (string != NULL) {
+        push_string(stack, string);
+        string = strtok(NULL, delimiters);
+    }
+}
+
+/**
  * Separa uma string por delimitador e coloca na stack essa string
  * @param stack stack
  * @param string string
- * @param substring_string substring
+ * @param delimiters substring
  */
-static void split_string_by_delimiter(Stack *stack, char *string, const char *substring_string) {
-    long substring_length = (long) strlen(substring_string);
+static void split_string_by_substring(Stack *stack, char *string, const char *delimiters) {
+    long substring_length = (long) strlen(delimiters);
 
     long current_index;
-    while ((current_index = get_index_substring(string, substring_string)) != -1) {
+    while ((current_index = get_index_substring(string, delimiters)) != -1) {
         string[current_index] = '\0';
         push_string(stack, string);
 
         string += current_index + substring_length;
     }
 
-    string[current_index] = '\0';
-    push_string(stack, string);
+    if (*string) {
+        string[current_index] = '\0';
+        push_string(stack, string);
+    }
 }
 
-void separate_string_by_substring(Stack *stack, const char *substring_string) {
+/**
+ * @brief Separa os caracteres da string do topo da stack conforme a substring recebida e coloca o resultado numa array na stack
+ * @param stack target
+ * @param substring_string string para dar substring
+ * @param multiple_delimiters 1 ou 0 se é para tratar a @param{substring_string} como multiplos delimitadores
+ */
+void separate_string_by_substring(Stack *stack, const char *substring_string, int multiple_delimiters) {
     StackElement target_element = pop(stack);
     char *target_string = target_element.content.string_value;
 
     Stack *result_array = create_stack(INITIAL_ARRAY_CAPACITY);
 
-    if (*substring_string) {
-        split_string_by_delimiter(result_array, target_string, substring_string);
+    if (multiple_delimiters) {
+        split_string_by_multiple_delimiters(result_array, target_string, substring_string);
+    } else if (*substring_string) {
+        split_string_by_substring(result_array, target_string, substring_string);
     } else {
-        split_string_by_char(result_array, target_string);
+        split_string_char_by_char(result_array, target_string);
     }
 
     push_array(stack, result_array);
@@ -173,17 +196,17 @@ void separate_string_by_substring(Stack *stack, const char *substring_string) {
 void separate_string_by_substring_operation(Stack *stack) {
     StackElement substring_element = pop(stack);
 
-    separate_string_by_substring(stack, substring_element.content.string_value);
+    separate_string_by_substring(stack, substring_element.content.string_value, 0);
 
     free_element(substring_element);
 }
 
 void separate_string_by_new_line_operation(Stack *stack) {
-    separate_string_by_substring(stack, "\n");
+    separate_string_by_substring(stack, "\n", 0);
 }
 
 void separate_string_by_whitespace_operation(Stack *stack) {
-    separate_string_by_substring(stack, " ");
+    separate_string_by_substring(stack, " \n\t\v\f\r", 1);
 }
 
 static int min(int a, int b) {
