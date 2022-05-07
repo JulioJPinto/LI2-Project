@@ -28,10 +28,12 @@ void tilde_operation(Stack *stack) {
 
 void lesser_than_symbol_operation(Stack *stack) {
     ElementType left_element_type = get(stack, 1).type;
-    ElementType element_type = peek(stack).type;
+    ElementType right_element_type = peek(stack).type;
 
-    if ((left_element_type == ARRAY_TYPE || left_element_type == STRING_TYPE) && element_type == LONG_TYPE) {
-        take_first_n_elements_operation(stack);
+    if (left_element_type == ARRAY_TYPE && right_element_type == LONG_TYPE) {
+        take_first_n_elements_from_array_operation(stack);
+    } else if (left_element_type == STRING_TYPE && right_element_type == LONG_TYPE) {
+        take_first_n_elements_from_string_operation(stack);
     } else {
         lesser_than_operation(stack);
     }
@@ -39,10 +41,12 @@ void lesser_than_symbol_operation(Stack *stack) {
 
 void bigger_than_symbol_operation(Stack *stack) {
     ElementType left_element_type = get(stack, 1).type;
-    ElementType element_type = peek(stack).type;
+    ElementType right_element_type = peek(stack).type;
 
-    if ((left_element_type == ARRAY_TYPE || left_element_type == STRING_TYPE) && element_type == LONG_TYPE) {
-        take_last_n_elements_operation(stack);
+    if (left_element_type == ARRAY_TYPE && right_element_type == LONG_TYPE) {
+        take_last_n_elements_from_array_operation(stack);
+    } else if (left_element_type == STRING_TYPE && right_element_type == LONG_TYPE) {
+        take_last_n_elements_from_string_operation(stack);
     } else {
         bigger_than_operation(stack);
     }
@@ -88,7 +92,7 @@ void equal_symbol_operation(Stack *stack) {
 void slash_symbol_operation(Stack *stack) {
     ElementType left_element_type = get(stack, 1).type;
 
-    if (left_element_type == ARRAY_TYPE || left_element_type == STRING_TYPE) {
+    if (left_element_type == STRING_TYPE) {
         separate_string_by_substring_operation(stack);
     } else {
         div_operation(stack);

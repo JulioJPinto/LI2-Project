@@ -186,73 +186,75 @@ void separate_string_by_whitespace_operation(Stack *stack) {
     separate_string_by_substring(stack, " ");
 }
 
-void take_first_n_elements_from_array(Stack *stack, StackElement *list_element, long x) {
-    Stack *new_array = create_stack((int) x);
+static int min(int a, int b) {
+    return a > b ? b : a;
+}
 
-    for (long int i = x; i < length(list_element->content.array_value); i++) {
-        push(new_array, list_element->content.array_value->array[i]);
+void take_first_n_elements_from_array_operation(Stack *stack) {
+    int number_of_elements = (int) pop_long(stack);
+    StackElement array_element = pop(stack);
+    Stack *array = array_element.content.array_value;
+
+    Stack *new_array = create_stack(number_of_elements);
+    int new_array_length = min(number_of_elements, length(array));
+
+    for (int i = 0; i < new_array_length; i++) {
+        push(new_array, duplicate_element(array->array[i]));
     }
 
     push(stack, create_array_element(new_array));
+
+    free_element(array_element);
 }
 
-void take_first_n_elements_from_string(Stack *stack, StackElement *list_element, long x) {
-    int lenght_string = (int) strlen(list_element->content.string_value);
-    char old_str[lenght_string + 1];
-    strcpy(old_str, list_element->content.string_value);
-    char new_str[lenght_string - x + 1];
+void take_first_n_elements_from_string_operation(Stack *stack) {
+    long number_of_elements = pop_long(stack);
+    StackElement string_element = pop(stack);
 
-    for (long int i = x; i < lenght_string; i++) {
-        new_str[i - x] = old_str[i];
-    }
+    char *string_value = string_element.content.string_value;
+    int new_string_length = (int) strnlen(string_value, (size_t) number_of_elements);
 
-    push_string(stack, new_str);
+    string_value[new_string_length] = '\0';
+
+    push_string(stack, string_value);
+
+    free_element(string_element);
 }
 
-void take_first_n_elements_operation(Stack *stack) {
-    long x = pop_long(stack);
+void take_last_n_elements_from_array_operation(Stack *stack) {
+    long number_of_elements = pop_long(stack);
     StackElement element = pop(stack);
-    ElementType element_type = element.type;
 
-    if (element_type == ARRAY_TYPE) {
-        take_first_n_elements_from_array(stack, &element, x);
-    } else if (element_type == STRING_TYPE) {
-        take_first_n_elements_from_string(stack, &element, x);
-    }
-}
+    Stack *old_array = element.content.array_value;
+    int old_array_length = length(old_array);
 
-void take_last_n_elements_from_array(Stack *stack, StackElement *list_element, long x) {
-    StackElement new_array = duplicate_array(*list_element);
+    Stack *new_array = create_stack((int) number_of_elements);
 
-    for (int i = 0; i < x; i++) {
-        pop(new_array.content.array_value);
+    for (long int i = old_array_length - number_of_elements; i < old_array_length; i++) {
+        push(new_array, duplicate_element(old_array->array[i]));
     }
 
-    push(stack, new_array);
+    push(stack, create_array_element(new_array));
+
+    free_element(element);
 }
 
-void take_last_n_elements_from_string(Stack *stack, StackElement *list_element, long x) {
-    char *string = list_element->content.string_value;
-
-    int string_length = (int) strlen(string);
-    char new_str[string_length];
-    strcpy(new_str, string);
-
-    new_str[(long) string_length - x] = '\0';
-
-    push_string(stack, new_str);
-}
-
-void take_last_n_elements_operation(Stack *stack) {
-    long x = pop_long(stack);
+void take_last_n_elements_from_string_operation(Stack *stack) {
+    long number_of_elements = pop_long(stack);
     StackElement element = pop(stack);
-    ElementType element_type = element.type;
 
-    if (element_type == ARRAY_TYPE) {
-        take_last_n_elements_from_array(stack, &element, x);
-    } else if (element_type == STRING_TYPE) {
-        take_last_n_elements_from_string(stack, &element, x);
+    char *string = element.content.string_value;
+    size_t string_length = strlen(string);
+
+    long string_offset = (long) string_length - number_of_elements;
+
+    if (number_of_elements > 0 && string_offset > 0) {
+        string += string_offset;
     }
+
+    push_string(stack, string);
+
+    free_element(element);
 }
 
 void get_element_from_index_array_operation(Stack *stack) {
@@ -336,7 +338,7 @@ void string_compare_equal_operation(Stack *stack) {
 
     int return_value = strcmp(snd_element.content.string_value, fst_element.content.string_value);
 
-    push_long(stack, return_value == 0 ? 1 : 0 );
+    push_long(stack, return_value == 0 ? 1 : 0);
 }
 
 void string_compare_bigger_operation(Stack *stack) {
@@ -345,7 +347,7 @@ void string_compare_bigger_operation(Stack *stack) {
 
     int return_value = strcmp(snd_element.content.string_value, fst_element.content.string_value);
 
-    push_long(stack, return_value > 0 ? 1 : 0 );
+    push_long(stack, return_value > 0 ? 1 : 0);
 }
 
 void string_compare_smaller_operation(Stack *stack) {
@@ -354,24 +356,24 @@ void string_compare_smaller_operation(Stack *stack) {
 
     int return_value = strcmp(snd_element.content.string_value, fst_element.content.string_value);
 
-    push_long(stack, return_value < 0 ? 1 : 0 );
+    push_long(stack, return_value < 0 ? 1 : 0);
 }
 
-void string_compare_smaller_value_operation(Stack *stack){
+void string_compare_smaller_value_operation(Stack *stack) {
     StackElement fst_element = pop(stack);
     StackElement snd_element = pop(stack);
 
     int return_value = strcmp(snd_element.content.string_value, fst_element.content.string_value);
 
-    push(stack, return_value < 0 ? fst_element : snd_element );
+    push(stack, return_value < 0 ? fst_element : snd_element);
 }
 
-void string_compare_bigger_value_operation(Stack *stack){
+void string_compare_bigger_value_operation(Stack *stack) {
     StackElement fst_element = pop(stack);
     StackElement snd_element = pop(stack);
 
     int return_value = strcmp(snd_element.content.string_value, fst_element.content.string_value);
 
-    push(stack, return_value > 0 ? fst_element : snd_element );
+    push(stack, return_value > 0 ? fst_element : snd_element);
 }
 
