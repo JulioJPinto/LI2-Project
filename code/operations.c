@@ -325,7 +325,7 @@ void not_bitwise_operation(Stack *stack) {
  * \brief Nesta função duplicamos o que se encontra na stack.
  */
 void duplicate_operation(Stack *stack) {
-    push(stack, peek(stack));
+    push(stack, duplicate_element(peek(stack)));
 }
 
 /**

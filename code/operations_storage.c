@@ -15,7 +15,7 @@ StackOperationFunction get_operation(char op[]) {
             {"+",  add_operation},
             {"-",  minus_operation},
             {"*",  asterisk_operation},
-            {"/",  div_operation},
+            {"/",  slash_symbol_operation},
             {"%",  modulo_operation},
             {"(",  left_parentheses_operation},
             {")",  right_parentheses_operation},
@@ -35,8 +35,8 @@ StackOperationFunction get_operation(char op[]) {
             {"l",  read_input_from_console_operation},
             {"t",  read_all_input_from_console_operation},
             {"s",  convert_last_element_to_string},
-            {">",  bigger_symbol_operation},
-            {"<",  lesser_symbol_operation},
+            {">",  bigger_than_symbol_operation},
+            {"<",  lesser_than_symbol_operation},
             {"=",  equal_symbol_operation},
             {"e&", and_operation},
             {"e|", or_operation},
@@ -44,7 +44,9 @@ StackOperationFunction get_operation(char op[]) {
             {"e<", bigger_value_operation},
             {"?",  if_then_else_operation},
             {"!",  not_operation},
-            {"," , size_range_operation}
+            {",",  size_range_operation},
+            {"S/", separate_string_by_whitespace_operation},
+            {"N/", separate_string_by_new_line_operation}
     };
 
     size_t size = sizeof(entries) / sizeof(StackOperationTableEntry);

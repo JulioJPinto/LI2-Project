@@ -62,7 +62,7 @@ void repeat_string_operation(Stack *stack) {
 
     char *dest = calloc((unsigned long) (from_length * times), sizeof(char));
 
-    if(times > 0) {
+    if (times > 0) {
         int i;
         for (i = 0; i < times - 1; ++i) {
             memcpy(dest + i * from_length, from, (unsigned long) from_length);
@@ -94,15 +94,15 @@ void repeat_array_operation(Stack *stack) {
 }
 
 
-void push_all_elements_from_array(Stack *stack){
+void push_all_elements_from_array(Stack *stack) {
     StackElement element = pop(stack);
 
     Stack *array = element.content.array_value;
 
     long array_size = length(array);
 
-    for (int i = 0; i < array_size ; ++i) {
-        push(stack,duplicate_element(array->array[i]));
+    for (int i = 0; i < array_size; ++i) {
+        push(stack, duplicate_element(array->array[i]));
     }
 
     free_element(element);
@@ -123,142 +123,168 @@ void remove_first_from_array(Stack *stack) {
 
 }
 
-void remove_last_from_array(Stack *stack){
-        StackElement array = pop(stack);
+void remove_last_from_array(Stack *stack) {
+    StackElement array = pop(stack);
 
-        if (array.type == ARRAY_TYPE) {
-            pop(array.content.array_value);
-        }
-        push (stack,array);
+    if (array.type == ARRAY_TYPE) {
+        pop(array.content.array_value);
+    }
+    push(stack, array);
 }
-/*
-int search_substring (Stack *stack, char *string, char *result, char *x) {
-    result = strstr(string, x);
+
+long get_index_substring(char *string, const char *substring) {
+    char *result = strstr(string, substring);
     if (result == NULL) return -1;
-    int position = *result - *string;
+
+    return result - string;
+}
+
+/**
+ * @brief Separa uma string por caractere e coloca na stack uma string com esse caractere
+ * @param stack target
+ * @param string string
+ */
+static void split_string_by_char(Stack *stack, char *string) {
+    while (*string != 0) {
+        char *temp_string = strdup(string);
+        temp_string[1] = '\0';
+
+        push_string(stack, temp_string);
+
+        free(temp_string);
+
+        string++;
+    }
+}
+
+/**
+ * Separa uma string por delimitador e coloca na stack essa string
+ * @param stack stack
+ * @param string string
+ * @param substring_string substring
+ */
+static void split_string_by_delimiter(Stack *stack, char *string, const char *substring_string) {
+    long substring_length = (long) strlen(substring_string);
     
-}
+    long current_index;
+    while ((current_index = get_index_substring(string, substring_string)) != -1) {
+        string[current_index] = '\0';
+        push_string(stack, string);
 
-void separate_string_by_substrings (Stack *stack, int v[]) {
-
-}
-void separate_string_by_whitespaces (Stack *stack, int v[]) {
-    char *buff = v;
-    char *word = strtok(buff," ");
-    return position;
-    int x=0;
-    while(word){
-        puts(word);
-        word = strtok(NULL, " ");
-        x++;
-    }
-}
-
-void separate_string_by_whitespaces (Stack *stack) {
-    StackElement str = pop(stack);
-
-    if (str.type == STRING_TYPE) {
-        for(int i = 0; str.content.string_value; i++){
-            char old_string[MAX_STR_ARRAY];
-            strcpy(old_string, str.content.string_value);
-
-        }
-    }
-}
-
-void separate_string_by_newlines (Stack *stack, int v[]){
-    char *buff = v;
-    char *word = strtok(buff,"\n");
-    return position;
-    int x=0;
-    while(word){
-    puts(word);
-    word = strtok(NULL, "\n");
-    x++;
+        string += current_index + substring_length;
     }
 
+    string[current_index] = '\0';
+    push_string(stack, string);
 }
-*/
 
-void take_first_n_elements_from_array(Stack *stack, StackElement *list_element, size_t x) {
+void separate_string_by_substring(Stack *stack, const char *substring_string) {
+    StackElement target_element = pop(stack);
+    char *target_string = target_element.content.string_value;
+
+    Stack *result_array = create_stack(INITIAL_ARRAY_CAPACITY);
+
+    if (*substring_string) {
+        split_string_by_delimiter(result_array, target_string, substring_string);
+    } else {
+        split_string_by_char(result_array, target_string);
+    }
+
+    push_array(stack, result_array);
+    free_element(target_element);
+}
+
+void separate_string_by_substring_operation(Stack *stack) {
+    StackElement substring_element = pop(stack);
+
+    separate_string_by_substring(stack, substring_element.content.string_value);
+
+    free_element(substring_element);
+}
+
+void separate_string_by_new_line_operation(Stack *stack) {
+    separate_string_by_substring(stack, "\n");
+}
+
+void separate_string_by_whitespace_operation(Stack *stack) {
+    separate_string_by_substring(stack, " ");
+}
+
+void take_first_n_elements_from_array(Stack *stack, StackElement *list_element, long x) {
     Stack *new_array = create_stack((int) x);
-    
-    for(size_t i = x; i < (size_t) length(list_element->content.array_value); i++){
+
+    for (long int i = x; i < length(list_element->content.array_value); i++) {
         push(new_array, list_element->content.array_value->array[i]);
     }
 
     push(stack, create_array_element(new_array));
-    free_element(*list_element);
 }
 
-void take_first_n_elements_from_string(Stack *stack, StackElement *list_element, size_t x) {
-    size_t lenght_string = strlen(list_element->content.string_value);
-    char old_str[lenght_string+1];
+void take_first_n_elements_from_string(Stack *stack, StackElement *list_element, long x) {
+    int lenght_string = (int) strlen(list_element->content.string_value);
+    char old_str[lenght_string + 1];
     strcpy(old_str, list_element->content.string_value);
-    char new_str[lenght_string - x+1];
+    char new_str[lenght_string - x + 1];
 
-    for(size_t i = x; i < lenght_string; i++){
+    for (long int i = x; i < lenght_string; i++) {
         new_str[i - x] = old_str[i];
     }
 
     push_string(stack, new_str);
-    free_element(*list_element);
 }
 
-void take_first_n_elements_operation(Stack *stack){
+void take_first_n_elements_operation(Stack *stack) {
     long x = pop_long(stack);
     StackElement element = pop(stack);
     ElementType element_type = element.type;
 
     if (element_type == ARRAY_TYPE) {
-       take_first_n_elements_from_array(stack, &element, (size_t) x);
-   } else if (element_type == STRING_TYPE) {
-       take_first_n_elements_from_string(stack, &element, (size_t) x);
-   }
+        take_first_n_elements_from_array(stack, &element, x);
+    } else if (element_type == STRING_TYPE) {
+        take_first_n_elements_from_string(stack, &element, x);
+    }
 }
 
-void take_last_n_elements_from_array(Stack *stack, StackElement *list_element, size_t x) {
+void take_last_n_elements_from_array(Stack *stack, StackElement *list_element, long x) {
     StackElement new_array = duplicate_array(*list_element);
 
-    for(size_t i = 0; i < x; i++) {
+    for (int i = 0; i < x; i++) {
         pop(new_array.content.array_value);
     }
 
     push(stack, new_array);
-    free_element(*list_element);
 }
 
-void take_last_n_elements_from_string(Stack *stack, StackElement *list_element, size_t x) {
-    size_t lenght_string = strlen(list_element->content.string_value);
-    char new_str[lenght_string];
-    strcpy(new_str, list_element->content.string_value);
+void take_last_n_elements_from_string(Stack *stack, StackElement *list_element, long x) {
+    char *string = list_element->content.string_value;
 
-    new_str[lenght_string - (size_t) x] = '\0';
+    int string_length = (int) strlen(string);
+    char new_str[string_length];
+    strcpy(new_str, string);
+
+    new_str[(long) string_length - x] = '\0';
 
     push_string(stack, new_str);
-    free_element(*list_element); 
 }
 
-void take_last_n_elements_operation(Stack *stack){
+void take_last_n_elements_operation(Stack *stack) {
     long x = pop_long(stack);
     StackElement element = pop(stack);
     ElementType element_type = element.type;
 
-   if (element_type == ARRAY_TYPE) {
-       take_last_n_elements_from_array(stack, &element, (size_t) x);
-   } else if (element_type == STRING_TYPE) {
-       take_last_n_elements_from_string(stack, &element, (size_t) x);
-   }
+    if (element_type == ARRAY_TYPE) {
+        take_last_n_elements_from_array(stack, &element, x);
+    } else if (element_type == STRING_TYPE) {
+        take_last_n_elements_from_string(stack, &element, x);
+    }
 }
 
 void elem_index_array_elements(Stack *stack, StackElement *list_element, long x) {
     push(stack, list_element->content.array_value->array[x]);
-    free_element(*list_element);
 }
 
-void elem_index_string_elements(Stack *stack, StackElement *list_element, long x) { 
+void elem_index_string_elements(Stack *stack, StackElement *list_element, long x) {
     push_char(stack, list_element->content.string_value[x]);
-    free_element(*list_element);
 }
 
 void elem_index_operation(Stack *stack) {
@@ -266,9 +292,8 @@ void elem_index_operation(Stack *stack) {
     StackElement element = pop(stack);
     ElementType element_type = element.type;
 
-    if ( element_type == ARRAY_TYPE) {
+    if (element_type == ARRAY_TYPE) {
         elem_index_array_elements(stack, &element, x);
-
     } else if (element_type == STRING_TYPE) {
         elem_index_string_elements(stack, &element, x);
     }
@@ -279,15 +304,14 @@ void remove_first_element_from_array(Stack *stack, StackElement *element) {
     Stack *new_array = create_stack(length(old_array));
 
     StackElement first_element = old_array->array[0];
-    for(int i = 1; i < length(old_array); i++) {
+    for (int i = 1; i < length(old_array); i++) {
         push(new_array, old_array->array[i]);
     }
 
     push_array(stack, new_array);
     push(stack, first_element);
-    free_element(*element);
 }
-    
+
 
 void remove_first_element_from_string(Stack *stack, StackElement *element) {
     char new_str[MAX_STR_ARRAY];
@@ -295,17 +319,16 @@ void remove_first_element_from_string(Stack *stack, StackElement *element) {
 
     char aux = new_str[0];
 
-    for(size_t i = 0; i < strlen(new_str); i++){
-        new_str[i] = new_str[i+1];
+    for (size_t i = 0; i < strlen(new_str); i++) {
+        new_str[i] = new_str[i + 1];
     }
 
     push_string(stack, new_str);
     push_char(stack, aux);
-    free_element(*element);
 }
 
 
-void remove_first_element_operation(Stack *stack){
+void remove_first_element_operation(Stack *stack) {
     StackElement element = pop(stack);
     ElementType element_type = element.type;
 
@@ -336,7 +359,6 @@ void remove_last_element_from_string(Stack *stack, StackElement *element) {
 
     push_string(stack, new_str);
     push_char(stack, last_element);
-    free_element(*element);
 
 }
 
@@ -350,5 +372,4 @@ void remove_last_element_operation(Stack *stack) {
     } else if (element_type == STRING_TYPE) {
         remove_last_element_from_string(stack, &element);
     }
- 
 }

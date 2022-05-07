@@ -30,13 +30,13 @@ void remove_first_from_array(Stack *stack);
 
 void remove_last_from_array(Stack *stack);
 
-int search_substring (Stack *stack, char *string, char *result, char *x);
+int search_substring(Stack *stack, char *string, char *result, char *x);
 
-void separate_string_by_substrings (Stack *stack, int v[]);
+void separate_string_by_substring_operation(Stack *stack);
 
-void separate_string_by_whitespaces (Stack *stack, int v[]);
+void separate_string_by_new_line_operation(Stack *stack);
 
-void separate_string_by_newlines (Stack *stack, int v[]);
+void separate_string_by_whitespace_operation(Stack *stack);
 
 void take_first_n_elements_operation(Stack *stack);
 
