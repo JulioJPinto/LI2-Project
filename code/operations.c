@@ -4,7 +4,7 @@
 #include <math.h>
 #include <string.h>
 
-#define READ_INPUT_FROM_CONSOLE_MAX_LENGTH 100
+#define READ_INPUT_FROM_CONSOLE_MAX_LENGTH BUFSIZ
 
 /**
  * @brief Recebe um elemento da stack e retorna este como double.
@@ -95,16 +95,14 @@ void add_array_operation(Stack *stack, StackElement *a, StackElement *b) {
 }
 
 void add_string_operation(Stack *stack, StackElement *a, StackElement *b) {
-    ElementType a_type = a->type;
-    ElementType b_type = a->type;
 
-    if (a_type != STRING_TYPE){
+    if (a->type != STRING_TYPE){
         char a_str[MAX_CONVERT_TO_STRING_SIZE];
         convert_element_to_string(a, a_str);
         StackElement new_a = create_string_element(a_str);
         add_string_operation(stack, &new_a, b);
 
-    } else if (b_type != STRING_TYPE){
+    } else if (b->type != STRING_TYPE){
         char b_str[MAX_CONVERT_TO_STRING_SIZE];
         convert_element_to_string(b, b_str);
         StackElement new_b = create_string_element(b_str);
