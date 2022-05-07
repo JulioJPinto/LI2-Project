@@ -28,8 +28,9 @@ void tilde_operation(Stack *stack) {
 
 void lesser_than_symbol_operation(Stack *stack) {
     ElementType left_element_type = get(stack, 1).type;
+    ElementType element_type = peek(stack).type;
 
-    if (left_element_type == ARRAY_TYPE || left_element_type == STRING_TYPE) {
+    if ((left_element_type == ARRAY_TYPE || left_element_type == STRING_TYPE) && element_type == LONG_TYPE) {
         take_first_n_elements_operation(stack);
     } else {
         lesser_than_operation(stack);
@@ -38,8 +39,9 @@ void lesser_than_symbol_operation(Stack *stack) {
 
 void bigger_than_symbol_operation(Stack *stack) {
     ElementType left_element_type = get(stack, 1).type;
+    ElementType element_type = peek(stack).type;
 
-    if (left_element_type == ARRAY_TYPE || left_element_type == STRING_TYPE) {
+    if ((left_element_type == ARRAY_TYPE || left_element_type == STRING_TYPE) && element_type == LONG_TYPE) {
         take_last_n_elements_operation(stack);
     } else {
         bigger_than_operation(stack);
@@ -72,10 +74,11 @@ void close_parentheses_operation(Stack *stack) {
 
 void equal_symbol_operation(Stack *stack) {
     ElementType left_element_type = get(stack, 1).type;
+    ElementType element_type = peek(stack).type;
 
-    if (left_element_type == ARRAY_TYPE) {
+    if (left_element_type == ARRAY_TYPE && element_type == LONG_TYPE) {
         get_element_from_index_array_operation(stack);
-    } else if (left_element_type == STRING_TYPE) {
+    } else if (left_element_type == STRING_TYPE && element_type == LONG_TYPE) {
         get_element_from_index_string_operation(stack);
     } else {
         is_equal_operation(stack);

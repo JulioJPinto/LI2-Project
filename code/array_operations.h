@@ -53,3 +53,13 @@ void remove_first_element_from_string_operation(Stack *stack);
 void remove_last_element_from_array_operation(Stack *stack);
 
 void remove_last_element_from_string_operation(Stack *stack);
+
+void string_compare_equal_operation(Stack *stack);
+
+void string_compare_smaller_operation(Stack *stack);
+
+void string_compare_bigger_operation(Stack *stack);
+
+void string_compare_smaller_value_operation(Stack *stack);
+
+void string_compare_bigger_value_operation(Stack *stack);

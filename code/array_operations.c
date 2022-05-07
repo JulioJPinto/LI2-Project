@@ -329,3 +329,49 @@ void remove_last_element_from_string_operation(Stack *stack) {
 
     free_element(element);
 }
+
+void string_compare_equal_operation(Stack *stack) {
+    StackElement fst_element = pop(stack);
+    StackElement snd_element = pop(stack);
+
+    int return_value = strcmp(snd_element.content.string_value, fst_element.content.string_value);
+
+    push_long(stack, return_value == 0 ? 1 : 0 );
+}
+
+void string_compare_bigger_operation(Stack *stack) {
+    StackElement fst_element = pop(stack);
+    StackElement snd_element = pop(stack);
+
+    int return_value = strcmp(snd_element.content.string_value, fst_element.content.string_value);
+
+    push_long(stack, return_value > 0 ? 1 : 0 );
+}
+
+void string_compare_smaller_operation(Stack *stack) {
+    StackElement fst_element = pop(stack);
+    StackElement snd_element = pop(stack);
+
+    int return_value = strcmp(snd_element.content.string_value, fst_element.content.string_value);
+
+    push_long(stack, return_value < 0 ? 1 : 0 );
+}
+
+void string_compare_smaller_value_operation(Stack *stack){
+    StackElement fst_element = pop(stack);
+    StackElement snd_element = pop(stack);
+
+    int return_value = strcmp(snd_element.content.string_value, fst_element.content.string_value);
+
+    push(stack, return_value < 0 ? fst_element : snd_element );
+}
+
+void string_compare_bigger_value_operation(Stack *stack){
+    StackElement fst_element = pop(stack);
+    StackElement snd_element = pop(stack);
+
+    int return_value = strcmp(snd_element.content.string_value, fst_element.content.string_value);
+
+    push(stack, return_value > 0 ? fst_element : snd_element );
+}
+
