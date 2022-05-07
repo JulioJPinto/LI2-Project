@@ -46,21 +46,25 @@ void bigger_than_symbol_operation(Stack *stack) {
     }
 }
 
-void left_parentheses_operation(Stack *stack) {
+void open_parentheses_operation(Stack *stack) {
     ElementType element_type = peek(stack).type;
 
-    if (element_type == ARRAY_TYPE || element_type == STRING_TYPE) {
-        remove_first_element_operation(stack);
+    if (element_type == ARRAY_TYPE) {
+        remove_first_element_from_array_operation(stack);
+    } else if (element_type == STRING_TYPE) {
+        remove_first_element_from_string_operation(stack);
     } else {
         decrement_operation(stack);
     }
 }
 
-void right_parentheses_operation(Stack *stack) {
+void close_parentheses_operation(Stack *stack) {
     ElementType element_type = peek(stack).type;
 
-    if (element_type == ARRAY_TYPE || element_type == STRING_TYPE) {
-        remove_last_element_operation(stack);
+    if (element_type == ARRAY_TYPE) {
+        remove_last_element_from_array_operation(stack);
+    } else if (element_type == STRING_TYPE) {
+        remove_last_element_from_string_operation(stack);
     } else {
         increment_operation(stack);
     }

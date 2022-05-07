@@ -44,6 +44,10 @@ void take_last_n_elements_operation(Stack *stack);
 
 void elem_index_operation(Stack *stack);
 
-void remove_first_element_operation(Stack *stack);
+void remove_first_element_from_array_operation(Stack *stack);
 
-void remove_last_element_operation(Stack *stack);
+void remove_first_element_from_string_operation(Stack *stack);
+
+void remove_last_element_from_array_operation(Stack *stack);
+
+void remove_last_element_from_string_operation(Stack *stack);

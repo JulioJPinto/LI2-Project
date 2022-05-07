@@ -4,9 +4,6 @@
 #include <string.h>
 #include "logger.h"
 #include "conversions.h"
-#include "parser.h"
-
-#define MAX_STR_ARRAY 100
 
 /**
  * @brief Create a stack object
@@ -86,6 +83,8 @@ int length(Stack *stack) {
  * @return StackElement 
  */
 StackElement pop(Stack *stack) {
+    if(length(stack) <= 0) PANIC("Trying to pop from empty stack")
+
     StackElement result = stack->array[stack->current_index];
     stack->current_index--;
 
@@ -260,10 +259,6 @@ void free_element(StackElement element) {
         default:
             return;
     }
-}
-
-ElementType get_last_element_type(Stack *stack) {
-    return peek(stack).type;
 }
 
 StackElement duplicate_array(StackElement element) {

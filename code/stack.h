@@ -163,10 +163,3 @@ void free_element(StackElement element);
 StackElement duplicate_element(StackElement element);
 
 StackElement duplicate_array(StackElement element);
-
-/**
- * Retorna o tipo do elemento do topo da stack
- * @param stack
- * @return o tipo do elemento
- */
-ElementType get_last_element_type(Stack *stack);

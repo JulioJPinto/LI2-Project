@@ -10,9 +10,9 @@ void lesser_than_symbol_operation(Stack *stack);
 
 void bigger_than_symbol_operation(Stack *stack);
 
-void left_parentheses_operation(Stack *stack);
+void open_parentheses_operation(Stack *stack);
 
-void right_parentheses_operation(Stack *stack);
+void close_parentheses_operation(Stack *stack);
 
 void equal_symbol_operation(Stack *stack);
 
