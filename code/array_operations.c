@@ -7,7 +7,12 @@
 #define INITIAL_ARRAY_CAPACITY 5
 
 void create_range_array_operation(Stack *stack, long range);
-
+/**
+ * @brief Tenta dar parse a uma array que está em string no @param{word} e dá push para a stack
+ * A função tenta dar parse a @param{word} para o tipo array, caso consiga esta devolve 1
+ * e da push ao novo array @param{stack}, levando também em conta o @param{variables}
+ * @returns 1 caso a word é uma array, 0 caso contrário
+ */
 int parse_array(Stack *stack, StackElement *variables, char *word) {
     size_t word_length = strlen(word);
 
@@ -52,10 +57,10 @@ void size_range_operation(Stack *stack) {
     free_element(x);
 }
 /**
- * @brief Create a range array operation object
- * 
- * @param stack 
- * @param range 
+ * @brief A Função devolve um array com o range de elementos de 0 a @param{range}
+ * A Função recebe um valor @param{range} e devolve num array todos os elementos de 0 a @param{range}
+ * Estes valores são todos longs e são postos na stack em forma de array
+ * @param stack A Stack para onde vamos devolver o range do elemento
  */
 void create_range_array_operation(Stack *stack, long range) {
     Stack *array = create_stack(INITIAL_ARRAY_CAPACITY);
@@ -64,7 +69,10 @@ void create_range_array_operation(Stack *stack, long range) {
     }
     push_array(stack, array);
 }
-
+/**
+ * @brief A função copia a string @param{string_element} @param{times} vezes e da push a todas as cópias para a @param{stack}
+ * @param stack A Stack onde vamos buscar os elemento para a função e recebe as cópias de @param{string_element}
+ */
 void repeat_string_operation(Stack *stack) {
     long times = pop_long(stack);
     StackElement string_element = pop(stack);
@@ -87,7 +95,10 @@ void repeat_string_operation(Stack *stack) {
     free_element(string_element);
     free(dest);
 }
-
+/**
+ * @brief A função copia a array @param{array_element} @param{times} vezes e da push a todas as cópias para a @param{stack}
+ * @param stack A Stack onde vamos buscar os elemento para a função e recebe as cópias de @param{array_element}
+ */ 
 void repeat_array_operation(Stack *stack) {
     long times = pop_long(stack) - 1;
     StackElement array_element = pop(stack);
@@ -105,7 +116,12 @@ void repeat_array_operation(Stack *stack) {
     push_array(stack, array);
 }
 
-
+/**
+ * @brief A função da push para @param{stack} de todos os elementos guardados no array @param{element}
+ * A função retira do array @param{element} e da push para @param{stack} de todos os elementos encontrados
+ * no array
+ * @param stack A Stack para onde vamos devolver os elementos do array
+ */
 void push_all_elements_from_array(Stack *stack) {
     StackElement element = pop(stack);
 
@@ -128,9 +144,11 @@ long get_index_substring(char *string, const char *substring) {
 }
 
 /**
- * @brief Separa uma string por caractere e coloca na stack uma string com esse caractere
- * @param stack target
- * @param string string
+ * @brief A função separa a string @param{string} em chars e da push para a @param{stack}
+ * A função recebes uma stack @param{stack} e uma string @param{string} que vai separar em chars
+ * e dar push aos mesmos para a stack 
+ * @param stack A stack para onde vamos dar push aos chars que surgem da separação @param{string}
+ * @param string A string que vamos separar em chars
  */
 static void split_string_char_by_char(Stack *stack, char *string) {
     while (*string != 0) {
@@ -146,10 +164,12 @@ static void split_string_char_by_char(Stack *stack, char *string) {
 }
 
 /**
- * Separa uma string por multiplos delimitadores e coloca na stack essa string
- * @param stack stack
- * @param string string
- * @param delimiters substring
+ * @brief A função separa string @param{string} de acordo com um separador @param{delimiters}
+ * A função separa a string @param{string} em substrings de acordo com um separador @param{delimiters} e da 
+ * push a estas substrings para a @param{stack}
+ * @param stack A stack que vai receber as substrings geradas pela função
+ * @param string A string que irá será separada em substrings
+ * @param delimiters O elemento que vai funcionar como separador
  */
 static void split_string_by_multiple_delimiters(Stack *stack, char *string, const char *delimiters) {
     string = strtok(string, delimiters);
@@ -160,10 +180,12 @@ static void split_string_by_multiple_delimiters(Stack *stack, char *string, cons
 }
 
 /**
- * Separa uma string por delimitador e coloca na stack essa string
- * @param stack stack
- * @param string string
- * @param delimiters substring
+ * @brief A função separa string @param{string} de acordo com uma substring que funciona como separador @param{delimeters}
+ * A função separa a string @param{string} em substrings de acordo com a substring @param{delimiters} e
+ * da push a estas substring, geradas pela @param{string}, para a @param{stack}
+ * @param stack A stack que vai receber as substrings geradas pela função
+ * @param string A string que irá será separada em substrings
+ * @param delimiters O substring que vai funcionar como separador 
  */
 static void split_string_by_substring(Stack *stack, char *string, const char *delimiters) {
     long substring_length = (long) strlen(delimiters);

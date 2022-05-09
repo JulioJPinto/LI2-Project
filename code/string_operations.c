@@ -64,7 +64,7 @@ void string_compare_bigger_operation(Stack *stack) {
 void string_compare_smaller_operation(Stack *stack) {
     int return_value = string_compare_base(stack);
 
-    push_long(stack, return_value < 0 ? 1 : 0);
+    push_long(stack, return_value < 0);
 }
 /**
  * @brief Função que compara se a string a esquerda é menor (a nível lexicográfico) que a string a direita e devolve a menor das duas
