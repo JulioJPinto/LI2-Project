@@ -390,7 +390,6 @@ void remove_last_element_from_string_operation(Stack *stack) {
     free_element(element);
 }
 
-
 void search_substring_in_string_operation(Stack *stack) {
     StackElement substring_element = pop(stack);
     StackElement string_element = pop(stack);
@@ -405,4 +404,3 @@ void search_substring_in_string_operation(Stack *stack) {
     free_element(substring_element);
     free_element(string_element);
 }
-
