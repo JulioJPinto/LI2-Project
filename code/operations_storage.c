@@ -7,10 +7,6 @@
 #include "polymorphic_operations.h"
 #include <string.h>
 
-/**
- * @brief Procura a correspondente operação StackOperationFunction do @param{op} operador.
- * Caso o operador não tenha correspondente operação esta devolverá NULL.
- */
 StackOperationFunction get_operation(char op[]) {
     static const StackOperationTableEntry entries[] = {
             {"+",  add_operation},

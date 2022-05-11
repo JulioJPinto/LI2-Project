@@ -7,6 +7,7 @@
 #include "operations_storage.h"
 #include "string_operations.h"
 #include "array_operations.h"
+#include "block_operations.h"
 
 enum parseState {
     PARSING_NORMAL_TEXT,
@@ -50,6 +51,11 @@ void parse_word(Stack *stack, StackElement *variables, char word[]) {
 
     if (parse_array(stack, variables, word)) {
         PRINT_DEBUG("Pushing array '%s'\n", word + 1)
+        return;
+    }
+
+    if (try_to_parse_block(stack, word)) {
+        PRINT_DEBUG("Pushing block '{%s}'\n", word + 1)
         return;
     }
 

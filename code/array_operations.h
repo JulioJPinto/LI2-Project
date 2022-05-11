@@ -9,6 +9,7 @@
  * @returns 1 caso a word é uma array, 0 caso contrário
  */
 int parse_array(Stack *stack, StackElement *variables, char *word);
+
 /**
  * @brief A Função devolve o tamanho da string/array ou um array com todos os elementos até esta caso seja um long
  * Dependendo do valor de @param{x}, elemento no topo da Stack, está função realizará diferentes operações

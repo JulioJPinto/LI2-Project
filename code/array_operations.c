@@ -6,13 +6,6 @@
 
 #define INITIAL_ARRAY_CAPACITY 5
 
-void create_range_array_operation(Stack *stack, long range);
-/**
- * @brief Tenta dar parse a uma array que está em string no @param{word} e dá push para a stack
- * A função tenta dar parse a @param{word} para o tipo array, caso consiga esta devolve 1
- * e da push ao novo array @param{stack}, levando também em conta o @param{variables}
- * @returns 1 caso a word é uma array, 0 caso contrário
- */
 int parse_array(Stack *stack, StackElement *variables, char *word) {
     size_t word_length = strlen(word);
 
@@ -20,7 +13,7 @@ int parse_array(Stack *stack, StackElement *variables, char *word) {
         return 0;
     }
 
-    PRINT_DEBUG("Starting parsing array:\n")
+    PRINT_DEBUG("Starting to parse array:\n")
 
     // remover brackets:
     word[word_length - 1] = '\0';
@@ -35,13 +28,19 @@ int parse_array(Stack *stack, StackElement *variables, char *word) {
 }
 
 /**
- * @brief A Função devolve o tamanho da string/array ou um array com todos os elementos até esta caso seja um long
- * Dependendo do valor de @param{x}, elemento no topo da Stack, está função realizará diferentes operações
- * Caso @param{x} seja do tipo long esta realizará a função create_range_array_operation para este
- * e devolve um array com a range até ao elemento. Caso esta seja do tipo array/string irá devolver
- * o seu tamanho 
- * @param stack A Stack onde vamos buscar os elemento para a função
+ * @brief A Função devolve um array com o range de elementos de 0 a @param{range}
+ * A Função recebe um valor @param{range} e devolve num array todos os elementos de 0 a @param{range}
+ * Estes valores são todos longs e são postos na stack em forma de array
+ * @param stack A Stack para onde vamos devolver o range do elemento
  */
+void create_range_array_operation(Stack *stack, long range) {
+    Stack *array = create_stack(INITIAL_ARRAY_CAPACITY);
+    for (int i = 0; i < range; i++) {
+        push_long(array, (long) i);
+    }
+    push_array(stack, array);
+}
+
 void size_range_operation(Stack *stack) {
     StackElement x = pop(stack);
     ElementType x_type = x.type;
@@ -56,23 +55,7 @@ void size_range_operation(Stack *stack) {
 
     free_element(x);
 }
-/**
- * @brief A Função devolve um array com o range de elementos de 0 a @param{range}
- * A Função recebe um valor @param{range} e devolve num array todos os elementos de 0 a @param{range}
- * Estes valores são todos longs e são postos na stack em forma de array
- * @param stack A Stack para onde vamos devolver o range do elemento
- */
-void create_range_array_operation(Stack *stack, long range) {
-    Stack *array = create_stack(INITIAL_ARRAY_CAPACITY);
-    for (int i = 0; i < range; i++) {
-        push_long(array, (long) i);
-    }
-    push_array(stack, array);
-}
-/**
- * @brief A função copia a string @param{string_element} @param{times} vezes e da push a todas as cópias para a @param{stack}
- * @param stack A Stack onde vamos buscar os elemento para a função e recebe as cópias de @param{string_element}
- */
+
 void repeat_string_operation(Stack *stack) {
     long times = pop_long(stack);
     StackElement string_element = pop(stack);
@@ -95,10 +78,7 @@ void repeat_string_operation(Stack *stack) {
     free_element(string_element);
     free(dest);
 }
-/**
- * @brief A função copia a array @param{array_element} @param{times} vezes e da push a todas as cópias para a @param{stack}
- * @param stack A Stack onde vamos buscar os elemento para a função e recebe as cópias de @param{array_element}
- */ 
+
 void repeat_array_operation(Stack *stack) {
     long times = pop_long(stack) - 1;
     StackElement array_element = pop(stack);
@@ -116,12 +96,6 @@ void repeat_array_operation(Stack *stack) {
     push_array(stack, array);
 }
 
-/**
- * @brief A função da push para @param{stack} de todos os elementos guardados no array @param{element}
- * A função retira do array @param{element} e da push para @param{stack} de todos os elementos encontrados
- * no array
- * @param stack A Stack para onde vamos devolver os elementos do array
- */
 void push_all_elements_from_array(Stack *stack) {
     StackElement element = pop(stack);
 

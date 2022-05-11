@@ -1,7 +1,7 @@
 #pragma once
 
 typedef enum {
-    DOUBLE_TYPE, LONG_TYPE, CHAR_TYPE, STRING_TYPE, ARRAY_TYPE
+    DOUBLE_TYPE, LONG_TYPE, CHAR_TYPE, STRING_TYPE, ARRAY_TYPE, BLOCK_TYPE
 } ElementType;
 
 typedef struct stack Stack;
@@ -14,6 +14,7 @@ typedef struct {
         char char_value;
         char *string_value;
         Stack *array_value;
+        char *block_value;
     } content;
 } StackElement;
 
@@ -106,6 +107,13 @@ void push_string(Stack *stack, char *value);
 void push_array(Stack *stack, Stack *value);
 
 /**
+ * Faz push de um bloco para a @param{stack}
+ * @param stack target
+ * @param value valor bloco
+ */
+void push_block(Stack *stack, char *value);
+
+/**
  * @param stack target
  * @return O ultimo elemento adicionado à stack sem o remover
  */
@@ -143,7 +151,7 @@ StackElement create_char_element(char value);
 
 /**
  * Cria um elemento do tipo string.
- * É guardado um pointer para uma copia do @param{value} alocada na heap.
+ * É feito uma copia do @param{value}.
  * @param value string
  * @return O elemento criado
  */
@@ -155,6 +163,14 @@ StackElement create_string_element(char *value);
  * @return O elemento criado
  */
 StackElement create_array_element(Stack *value);
+
+/**
+ * Cria um elemento do tipo bloco.
+ * É feito uma copia do @param{value}.
+ * @param value bloco
+ * @return O elemento criado
+ */
+StackElement create_block_element(char *value);
 
 int is_truthy(StackElement *a);
 

@@ -53,6 +53,7 @@ char convert_element_to_char(StackElement *stack_element) {
                 return (*stack_element).content.string_value[0];
             }
         case ARRAY_TYPE:
+        case BLOCK_TYPE:
         default: PANIC("Couldn't convert to char from type %d", (*stack_element).type)
     }
 }
@@ -76,6 +77,7 @@ double convert_element_to_double(StackElement *stack_element) {
                 return x;
             PANIC("Couldn't convert to double from string %s", (*stack_element).content.string_value)
         case ARRAY_TYPE:
+        case BLOCK_TYPE:
         default: PANIC("Couldn't convert to double from type %d", (*stack_element).type)
     }
 }
@@ -99,6 +101,7 @@ long convert_element_to_long(StackElement *stack_element) {
                 return x;
             PANIC("Couldn't convert to long from string %s", (*stack_element).content.string_value)
         case ARRAY_TYPE:
+        case BLOCK_TYPE:
         default: PANIC("Couldn't convert to long from type %d", (*stack_element).type)
     }
 }
@@ -128,19 +131,22 @@ static void convert_array_to_string(Stack *array_stack, char *dest) {
 void convert_element_to_string(StackElement *stack_element, char *dest) {
     switch ((*stack_element).type) {
         case DOUBLE_TYPE:
-            sprintf(dest, "%g", (*stack_element).content.double_value);
+            sprintf(dest, "%g", stack_element->content.double_value);
             return;
         case LONG_TYPE:
-            sprintf(dest, "%ld", (*stack_element).content.long_value);
+            sprintf(dest, "%ld", stack_element->content.long_value);
             return;
         case CHAR_TYPE:
-            sprintf(dest, "%c", (*stack_element).content.char_value);
+            sprintf(dest, "%c", stack_element->content.char_value);
             return;
         case STRING_TYPE:
-            strcpy(dest, (*stack_element).content.string_value);
+            strcpy(dest, stack_element->content.string_value);
             return;
         case ARRAY_TYPE:
             convert_array_to_string(stack_element->content.array_value, dest);
+            return;
+        case BLOCK_TYPE:
+            strcpy(dest, stack_element->content.block_value);
             return;
         default: PANIC("Couldn't convert to string from type %d", (*stack_element).type)
     }
