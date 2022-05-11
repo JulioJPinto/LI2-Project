@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include "stack.h"
 #include "variable_operations.h"
 
@@ -30,7 +31,7 @@ StackElement get_variable_value(StackElement *variables, char key) {
 
 int parse_push_variable(Stack *stack, StackElement *variables, const char *input) {
     char variable = input[0];
-    if (!is_variable_key(variable)) return 0;
+    if (!is_variable_key(variable) || strlen(input) != 1) return 0;
 
     StackElement element = get_variable_value(variables, variable);
 

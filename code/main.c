@@ -9,7 +9,7 @@
 #include "parser.h"
 #include "variable_operations.h"
 
-#define INPUT_BUFFER_SIZE 1000
+#define INPUT_BUFFER_SIZE 10000
 #define INITIAL_STACK_CAPACITY 10
 
 /**
@@ -28,6 +28,8 @@ int main() {
     tokenize_and_parse(stack, variables, input);
 
     dump_stack(stack);
+    printf("\n");
+
     free_stack(stack);
     free(variables);
 

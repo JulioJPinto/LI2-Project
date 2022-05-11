@@ -4,7 +4,6 @@
 #include "conversions.h"
 #include "logger.h"
 
-#define MAX_CONVERT_TO_STRING_SIZE 100
 /**
  * @brief Função que vai atribuir ao elemento da stack o respetivo tipo long.
  * @param word O elemento que vai ser transformado num long.
@@ -20,6 +19,7 @@ int parse_long(char word[], long *to) {
     }
     return 0;
 }
+
 /**
  * @brief Função que vai atribuir ao elemento da stack o respetivo tipo double.
  * @param word O elemento que vai ser transformado num double.
@@ -35,10 +35,7 @@ int parse_double(char word[], double *to) {
     }
     return 0;
 }
-/**
- * @brief Função que vai transformar um elemento na stack no tipo char.
- * Esta Função vai receber o @param{*stack_element} e vai transformá-lo num char, char este que é devolvido.
- */
+
 char convert_element_to_char(StackElement *stack_element) {
     long l;
 
@@ -55,9 +52,11 @@ char convert_element_to_char(StackElement *stack_element) {
             } else {
                 return (*stack_element).content.string_value[0];
             }
+        case ARRAY_TYPE:
         default: PANIC("Couldn't convert to char from type %d", (*stack_element).type)
     }
 }
+
 /**
  * @brief Função que vai transformar um elemento na stack no tipo double.
  * Esta Função vai receber o @param{*stack_element} e vai transformá-lo num double, double este que é devolvido.
@@ -76,9 +75,11 @@ double convert_element_to_double(StackElement *stack_element) {
             if (parse_double((*stack_element).content.string_value, &x))
                 return x;
             PANIC("Couldn't convert to double from string %s", (*stack_element).content.string_value)
+        case ARRAY_TYPE:
         default: PANIC("Couldn't convert to double from type %d", (*stack_element).type)
     }
 }
+
 /**
  * @brief Função que vai transformar um elemento na stack no tipo long.
  * Esta Função vai receber o @param{*stack_element} e vai transformá-lo num long, long este que é devolvido.
@@ -97,9 +98,29 @@ long convert_element_to_long(StackElement *stack_element) {
             if (parse_long((*stack_element).content.string_value, &x))
                 return x;
             PANIC("Couldn't convert to long from string %s", (*stack_element).content.string_value)
+        case ARRAY_TYPE:
         default: PANIC("Couldn't convert to long from type %d", (*stack_element).type)
     }
 }
+
+/**
+ * @brief Converte uma array para uma string
+ */
+static void convert_array_to_string(Stack *array_stack, char *dest) {
+    *dest = '\0';
+
+    int stack_length = length(array_stack);
+
+    for (int i = 0; i < stack_length; i++) {
+        StackElement array_elem = array_stack->array[i];
+
+        char current_element_to_string[MAX_CONVERT_TO_STRING_SIZE];
+        convert_element_to_string(&array_elem, current_element_to_string);
+
+        strcat(dest, current_element_to_string);
+    }
+}
+
 /**
  * @brief Função que vai transformar um elemento na stack no tipo string.
  * Esta Função vai receber o @param{*stack_element} e vai transformá-lo num string, string este que é devolvido.
@@ -118,9 +139,13 @@ void convert_element_to_string(StackElement *stack_element, char *dest) {
         case STRING_TYPE:
             strcpy(dest, (*stack_element).content.string_value);
             return;
+        case ARRAY_TYPE:
+            convert_array_to_string(stack_element->content.array_value, dest);
+            return;
         default: PANIC("Couldn't convert to string from type %d", (*stack_element).type)
     }
 }
+
 /**
  * @brief Esta função converte o último elemento da stack para o tipo char.
  */
@@ -131,6 +156,7 @@ void convert_last_element_to_char(Stack *stack) {
 
     free_element(stack_element);
 }
+
 /**
  * @brief Esta função converte o último elemento da stack para o tipo double.
  */
@@ -141,6 +167,7 @@ void convert_last_element_to_double(Stack *stack) {
 
     free_element(stack_element);
 }
+
 /**
  * @brief Esta função converte o último elemento da stack para o tipo long.
  */
@@ -151,6 +178,7 @@ void convert_last_element_to_long(Stack *stack) {
 
     free_element(stack_element);
 }
+
 /**
  * @brief Esta função converte o último elemento da stack para o tipo string.
  */
@@ -158,8 +186,8 @@ void convert_last_element_to_string(Stack *stack) {
     StackElement stack_element = pop(stack);
 
     char x[MAX_CONVERT_TO_STRING_SIZE];
-    convert_element_to_string(&stack_element, x);
 
+    convert_element_to_string(&stack_element, x);
     push_string(stack, x);
 
     free_element(stack_element);

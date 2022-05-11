@@ -1,8 +1,10 @@
 #pragma once
 
 typedef enum {
-    DOUBLE_TYPE, LONG_TYPE, CHAR_TYPE, STRING_TYPE
+    DOUBLE_TYPE, LONG_TYPE, CHAR_TYPE, STRING_TYPE, ARRAY_TYPE
 } ElementType;
+
+typedef struct stack Stack;
 
 typedef struct {
     ElementType type;
@@ -11,10 +13,11 @@ typedef struct {
         long long_value;
         char char_value;
         char *string_value;
+        Stack *array_value;
     } content;
 } StackElement;
 
-typedef struct {
+typedef struct stack {
     int capacity;
     int current_index;
     StackElement *array;
@@ -96,6 +99,13 @@ void push_char(Stack *stack, char value);
 void push_string(Stack *stack, char *value);
 
 /**
+ * Faz push de uma array para a @param{stack}
+ * @param stack target
+ * @param value valor array
+ */
+void push_array(Stack *stack, Stack *value);
+
+/**
  * @param stack target
  * @return O ultimo elemento adicionado à stack sem o remover
  */
@@ -139,11 +149,17 @@ StackElement create_char_element(char value);
  */
 StackElement create_string_element(char *value);
 
+/**
+ * Cria um elemento do tipo array.
+ * @param value array
+ * @return O elemento criado
+ */
+StackElement create_array_element(Stack *value);
+
 int is_truthy(StackElement *a);
 
 void free_element(StackElement element);
 
 StackElement duplicate_element(StackElement element);
 
-
-
+StackElement duplicate_array(StackElement element);

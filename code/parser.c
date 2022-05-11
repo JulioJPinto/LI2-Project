@@ -6,11 +6,14 @@
 #include "variable_operations.h"
 #include "operations_storage.h"
 #include "string_operations.h"
+#include "array_operations.h"
 
-/**
- * @brief Dá parse_word a uma word.
- * Transforma a word no seu devido tipo ou função correspondente.
- */
+enum parseState {
+    PARSING_NORMAL_TEXT,
+    PARSING_INSIDE_QUOTE,
+    PARSING_INSIDE_BRACKETS,
+    PARSING_INSIDE_CURLY_BRACKETS
+};
 
 void parse_word(Stack *stack, StackElement *variables, char word[]) {
     PRINT_DEBUG("Parsing: '%s'\n", word)
@@ -45,6 +48,11 @@ void parse_word(Stack *stack, StackElement *variables, char word[]) {
         return;
     }
 
+    if (parse_array(stack, variables, word)) {
+        PRINT_DEBUG("Pushing array '%s'\n", word + 1)
+        return;
+    }
+
     PRINT_DEBUG("Parsed symbol: %s\n", word)
 
     StackOperationFunction operation_function = get_operation(word);
@@ -55,27 +63,57 @@ void parse_word(Stack *stack, StackElement *variables, char word[]) {
         PANIC("Couldn't find operator operation_function for '%s'\n", word)
     }
 }
+
+enum parseState was_success_set_state_from_open_char(char c, enum parseState *target) {
+    if (c == '[') {
+        *target = PARSING_INSIDE_BRACKETS;
+        return 1;
+    }
+    if (c == '{') {
+        *target = PARSING_INSIDE_CURLY_BRACKETS;
+        return 1;
+    }
+    if (c == '"') {
+        *target = PARSING_INSIDE_QUOTE;
+        return 1;
+    }
+    return 0;
+}
+
 /**
- * @brief 
+ * @brief Retorna o char correspondente ao caractere de começar o state
+ * @param state state
+ * @return o caractere de começar o state
  */
+char get_open_char(enum parseState state) {
+    if (state == PARSING_INSIDE_BRACKETS) return '[';
+    if (state == PARSING_INSIDE_CURLY_BRACKETS) return '{';
+    if (state == PARSING_INSIDE_QUOTE) return '"';
+    return -1;
+}
+
+/**
+ * @brief Retorna o char correspondente ao caractere de fechar o state
+ * @param state state
+ * @return o caractere de fechar o state
+ */
+char get_close_char(enum parseState state) {
+    if (state == PARSING_INSIDE_BRACKETS) return ']';
+    if (state == PARSING_INSIDE_CURLY_BRACKETS) return '}';
+    if (state == PARSING_INSIDE_QUOTE) return '"';
+    return -1;
+}
+
+int get_new_bracket_count(int bracket_count, char current_char, char open_bracket, char close_bracket) {
+    if (current_char == close_bracket) {
+        bracket_count--;
+    } else if (current_char == open_bracket) {
+        bracket_count++;
+    }
+    return bracket_count;
+}
+
 void tokenize_and_parse(Stack *stack, StackElement *variables, char *input) {
-//    char p[] = " \t\r\n\f\v";
-//
-//    char *token = strtok(input, p);
-//
-//    while (token != NULL) {
-//        parse_word(stack, token);
-//
-//        token = strtok(NULL, p);
-//    }
-
-    enum parseState {
-        PARSING_NORMAL_TEXT,
-        PARSING_INSIDE_QUOTE,
-        PARSING_INSIDE_BRACKETS,
-        PARSING_INSIDE_CURLY_BRACKETS
-    };
-
     enum parseState state = PARSING_NORMAL_TEXT;
 
     size_t input_length = strlen(input);
@@ -84,26 +122,32 @@ void tokenize_and_parse(Stack *stack, StackElement *variables, char *input) {
 
     int current_word_index = 0;
 
-    for (size_t i = 0; i < input_length; ++i) {
+    int bracket_count = 0;
+
+    for (size_t i = 0; i < input_length + 1; ++i) {
         char current_char = input[i];
 
+        word[current_word_index++] = current_char;
+
         if (state == PARSING_NORMAL_TEXT) {
-            word[current_word_index++] = current_char;
-            if (isspace(current_char)) {
+            if (isspace(current_char) || current_char == '\0') {
                 word[current_word_index - 1] = '\0';
                 current_word_index = 0;
 
                 if (*word) {
                     parse_word(stack, variables, word);
                 }
-            } else if (current_char == '"') { // iniciar parse_word de string
-                state = PARSING_INSIDE_QUOTE;
+            } else if (was_success_set_state_from_open_char(current_char, &state)) {
+                bracket_count++;
             }
-        } else if (state == PARSING_INSIDE_QUOTE) {
-            if (current_char == '"') { // fim do parse_word de string
+        } else {
+            bracket_count = get_new_bracket_count(bracket_count, current_char,
+                                                  get_open_char(state),
+                                                  get_close_char(state));
+
+            if (bracket_count <= 0) {
                 state = PARSING_NORMAL_TEXT;
             }
-            word[current_word_index++] = current_char;
         }
     }
 }

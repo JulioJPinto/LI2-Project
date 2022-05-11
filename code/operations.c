@@ -1,9 +1,11 @@
 #include "logger.h"
 #include "operations.h"
+#include "conversions.h"
 #include <math.h>
 #include <string.h>
 
-#define READ_INPUT_FROM_CONSOLE_MAX_LENGTH 100
+#define READ_INPUT_FROM_CONSOLE_MAX_LENGTH BUFSIZ
+
 /**
  * @brief Recebe um elemento da stack e retorna este como double.
  * @param element O elemento da stack que irá ser transformado.
@@ -21,6 +23,7 @@ static double get_element_as_double(StackElement *element) {
         PANIC("Trying to get double value from non-number element (type: %d)", type)
     }
 }
+
 /**
  * @brief Recebe um elemento da stack e retorna este como long.
  * @param element O elemento da stack que irá ser transformado.
@@ -37,6 +40,18 @@ static long get_element_as_long(StackElement *element) {
     } else {
         PANIC("Trying to get long value from non-number element (type: %d)", type)
     }
+}
+
+static Stack *get_element_as_array(StackElement *element) {
+    ElementType type = element->type;
+    if (type == ARRAY_TYPE) {
+        return element->content.array_value;
+    }
+
+    Stack *new_array = create_stack(1);
+    push(new_array, *element);
+
+    return new_array;
 }
 
 /**
@@ -65,24 +80,78 @@ void operate_promoting_number_type(Stack *stack,
     free_element(y);
     free_element(x);
 }
-/**
- * \brief Nesta função fazemos a soma dos dois números no topo da stack do tipo double.
- */
+
+void add_array_operation(Stack *stack, StackElement *a, StackElement *b) {
+    Stack *a_array = get_element_as_array(a);
+    Stack *b_array = get_element_as_array(b);
+
+    for (int i = 0; i < length(b_array); ++i) {
+        push(a_array, duplicate_element(b_array->array[i]));
+    }
+
+    push_array(stack, a_array);
+
+    free_element(*b);
+}
+
+static long get_max_string_size(StackElement *element) {
+    if (element->type == STRING_TYPE) return (long) strlen(element->content.string_value) + 1;
+    return MAX_CONVERT_TO_STRING_SIZE;
+}
+
+void add_string_operation(Stack *stack, StackElement *a, StackElement *b) {
+    long max_a_size = get_max_string_size(a);
+    char a_string[max_a_size];
+    long max_b_size = get_max_string_size(b);
+    char b_string[max_b_size];
+
+    convert_element_to_string(a, a_string);
+    convert_element_to_string(b, b_string);
+
+    size_t a_length = strlen(a_string);
+    size_t b_length = strlen(b_string);
+
+    char *concat = calloc(a_length + b_length + 1, sizeof(char));
+
+    memcpy(concat, a_string, a_length);
+    memcpy(concat + a_length, b_string, b_length + 1);
+
+    push_string(stack, concat);
+
+    free(concat);
+    free_element(*a);
+    free_element(*b);
+}
+
 void add_double_operation(Stack *stack, double a, double b) {
     push_double(stack, a + b);
 }
-/**
- * \brief Nesta função fazemos a soma dos dois números no topo da stack do tipo long.
- */
+
 void add_long_operation(Stack *stack, long a, long b) {
     push_long(stack, a + b);
 }
 
-/**
- * \brief Nesta função fazemos a soma dos dois números no topo da stack.
- */
+void add_char_operation(Stack *stack, char a, char b) {
+    push_long(stack, a + b);
+}
+
 void add_operation(Stack *stack) {
-    operate_promoting_number_type(stack, add_double_operation, add_long_operation);
+    StackElement x = pop(stack);
+    StackElement y = pop(stack);
+
+    if (x.type == ARRAY_TYPE || y.type == ARRAY_TYPE) {
+        add_array_operation(stack, &y, &x);
+    } else if (x.type == STRING_TYPE || y.type == STRING_TYPE) {
+        add_string_operation(stack, &y, &x);
+    } else if (x.type == DOUBLE_TYPE || y.type == DOUBLE_TYPE) {
+        add_double_operation(stack, get_element_as_double(&y), get_element_as_double(&x));
+    } else if (x.type == LONG_TYPE || y.type == LONG_TYPE) {
+        add_long_operation(stack, get_element_as_long(&y), get_element_as_long(&x));
+    } else if (x.type == CHAR_TYPE || y.type == CHAR_TYPE) {
+        add_char_operation(stack, convert_element_to_char(&y), convert_element_to_char(&x));
+    } else {
+        PANIC("Couldn't find add operation for types x=%d, y=%d", x.type, y.type)
+    }
 }
 
 /**
@@ -91,6 +160,7 @@ void add_operation(Stack *stack) {
 void minus_double_operation(Stack *stack, double a, double b) {
     push_double(stack, a - b);
 }
+
 /**
  * \brief Nesta função fazemos a diferença dos dois ultimos números na stack do tipo long.
  */
@@ -104,12 +174,14 @@ void minus_long_operation(Stack *stack, long a, long b) {
 void minus_operation(Stack *stack) {
     operate_promoting_number_type(stack, minus_double_operation, minus_long_operation);
 }
+
 /**
  * \brief Nesta função fazemos o produto dos dois ultimos números na stack do tipo double.
  */
 void mult_double_operation(Stack *stack, double a, double b) {
     push_double(stack, a * b);
 }
+
 /**
  * \brief Nesta função fazemos o produto dos dois ultimos números na stack do tipo long.
  */
@@ -130,12 +202,14 @@ void mult_operation(Stack *stack) {
 void div_long_operation(Stack *stack, long a, long b) {
     push_long(stack, a / b);
 }
+
 /**
  * \brief Nesta função fazemos a divisão do número último número da stack pelo penúltimo número da stack do double.
  */
 void div_double_operation(Stack *stack, double a, double b) {
     push_double(stack, a / b);
 }
+
 /**
  * \brief Nesta função fazemos a divisão do número último número da stack pelo penúltimo número da stack.
  */
@@ -197,12 +271,14 @@ void modulo_operation(Stack *stack) {
 void exponential_double_operation(Stack *stack, double a, double b) {
     push_double(stack, pow(a, b));
 }
+
 /**
  * \brief Nesta função retornamos o módulo do número no topo da stack um do tipo long.
  */
 void exponential_long_operation(Stack *stack, long a, long b) {
     push_long(stack, (long) pow((double) a, (double) b));
 }
+
 /**
  * \brief Nesta função retornamos o módulo do número no topo da stack um.
  */
@@ -253,7 +329,7 @@ void not_bitwise_operation(Stack *stack) {
  * \brief Nesta função duplicamos o que se encontra na stack.
  */
 void duplicate_operation(Stack *stack) {
-    push(stack, peek(stack));
+    push(stack, duplicate_element(peek(stack)));
 }
 
 /**
@@ -295,6 +371,7 @@ void copy_nth_element_operation(Stack *stack) {
 
     push(stack, get(stack, index));
 }
+
 /**
  * \brief Nesta função lemos o input inserido na consola
  */
@@ -312,3 +389,18 @@ void read_input_from_console_operation(Stack *stack) {
     }
     push_string(stack, input);
 }
+
+void read_all_input_from_console_operation(Stack *stack) {
+    char *input = calloc(READ_INPUT_FROM_CONSOLE_MAX_LENGTH, sizeof(char));
+    char *current_line = calloc(READ_INPUT_FROM_CONSOLE_MAX_LENGTH, sizeof(char));
+
+    while (fgets(current_line, READ_INPUT_FROM_CONSOLE_MAX_LENGTH, stdin) != NULL && strlen(current_line) > 1) {
+        strcat(input, current_line);
+    }
+
+    push_string(stack, input);
+
+    free(input);
+    free(current_line);
+}
+

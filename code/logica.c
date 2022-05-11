@@ -3,43 +3,60 @@
 #include "conversions.h"
 #include "stack.h"
 #include "logica.h"
+#include "string_operations.h"
+#include "array_operations.h"
+
 /**
  * @brief Função lesser_than_operation para longs.
  */
-void lesser_than_long_operation(Stack *stack, long a, long b) {
+void bigger_than_long_operation(Stack *stack, long a, long b) {
     push_long(stack, a > b);
 }
 /**
  * @brief Função lesser_than_operation para doubles.
  */
-void lesser_than_double_operation(Stack *stack, double a, double b) {
+void bigger_than_double_operation(Stack *stack, double a, double b) {
     push_long(stack, a > b);
 }
 /**
  * @brief Função que vê se o último valor da stack é maior do que o penúltimo e devolve 1 ou 0 
  * A Função vê se o último valor da stack é maior que o penúltimo e devolve 1 ou 0 caso este seja verdadeiro ou falso.
  */
-void lesser_than_operation(Stack *stack) {
-    operate_promoting_number_type(stack, lesser_than_double_operation, lesser_than_long_operation);
+void bigger_than_operation(Stack *stack) {
+    ElementType left_element_type = get(stack, 1).type;
+    ElementType element_type = peek(stack).type;
+
+    if (element_type == STRING_TYPE && left_element_type == STRING_TYPE) {
+        string_compare_bigger_operation(stack);
+    } else {
+        operate_promoting_number_type(stack, bigger_than_double_operation, bigger_than_long_operation);
+    }
 }
 /**
  * @brief Função bigger_than_operation para doubles.
  */
-void bigger_than_long_operation(Stack *stack, long a, long b) {
+void lesser_than_long_operation(Stack *stack, long a, long b) {
     push_long(stack, a < b);
 }
 /**
  * @brief Função bigger_than_operation para doubles.
  */
-void bigger_than_double_operation(Stack *stack, double a, double b) {
+void lesser_than_double_operation(Stack *stack, double a, double b) {
     push_long(stack, a < b);
 }
 /**
  * @brief Função que vê se o último valor da stack é menor do que o penúltimo e devolve 1 ou 0.
  * A Função vê se o último valor da stack é menor que o penúltimo e devolve 1 ou 0 caso este seja verdadeiro ou falso.
  */
-void bigger_than_operation(Stack *stack) {
-    operate_promoting_number_type(stack, bigger_than_double_operation, bigger_than_long_operation);
+void lesser_than_operation(Stack *stack) {
+    ElementType left_element_type = get(stack, 1).type;
+    ElementType element_type = peek(stack).type;
+    
+    if (element_type == STRING_TYPE && left_element_type == STRING_TYPE) {
+        string_compare_smaller_operation(stack);
+    } else {
+        operate_promoting_number_type(stack, lesser_than_double_operation, lesser_than_long_operation);
+    }
 }
 /**
  * @brief Função is_equal_operation para longs.
@@ -58,7 +75,15 @@ void is_equal_double_operation(Stack *stack, double a, double b) {
  * A Função vê se o último valor da stack é igual ao penúltimo e devolve 1 ou 0 caso este seja verdadeiro ou falso.
  */
 void is_equal_operation(Stack *stack) {
-    operate_promoting_number_type(stack, is_equal_double_operation, is_equal_long_operation);
+    ElementType left_element_type = get(stack, 1).type;
+    ElementType element_type = peek(stack).type;
+    
+    if (element_type == STRING_TYPE && left_element_type == STRING_TYPE) {
+        string_compare_equal_operation(stack);
+    } else {
+        operate_promoting_number_type(stack, is_equal_double_operation, is_equal_long_operation);
+    }
+    
 }
 /**
  * @brief Função and_operation para longs.
@@ -128,7 +153,14 @@ void lesser_value_double_operation(Stack *stack, double a, double b) {
  * A Função compara os últimos dois elementos que se encontram na stack e devolve o maior deste dois.
  */
 void lesser_value_operation(Stack *stack) {
-    operate_promoting_number_type(stack, lesser_value_double_operation, lesser_value_long_operation);
+    ElementType left_element_type = get(stack, 1).type;
+    ElementType element_type = peek(stack).type;
+    
+    if (element_type == STRING_TYPE && left_element_type == STRING_TYPE) {
+        string_compare_smaller_value_operation(stack);
+    } else {
+        operate_promoting_number_type(stack, lesser_value_double_operation, lesser_value_long_operation);
+    }
 }
 /**
  * @brief Função bigger_value_operation para longs.
@@ -147,7 +179,14 @@ void bigger_value_double_operation(Stack *stack, double a, double b) {
  * A Função compara os últimos dois elementos que se encontram na stack e devolve o menor deste dois.
  */
 void bigger_value_operation(Stack *stack) {
-    operate_promoting_number_type(stack, bigger_value_double_operation, bigger_value_long_operation);
+    ElementType left_element_type = get(stack, 1).type;
+    ElementType element_type = peek(stack).type;
+    
+    if (element_type == STRING_TYPE && left_element_type == STRING_TYPE) {
+        string_compare_bigger_value_operation(stack);
+    } else {
+        operate_promoting_number_type(stack, bigger_value_double_operation, bigger_value_long_operation);
+    }
 }
 /**
  * @brief Esta função dependendo no antepenúltimo elemento da stack ser truthy ou falsy devolve o penúltimo ou último elemento desta.

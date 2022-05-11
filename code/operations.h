@@ -105,6 +105,12 @@ void copy_nth_element_operation(Stack *stack);
 
 void read_input_from_console_operation(Stack *stack);
 
+/**
+ * @brief Operação de ler todas as linhas do input até encontrar linha vazia.
+ * @param stack target
+ */
+void read_all_input_from_console_operation(Stack *stack);
+
 void operate_promoting_number_type(Stack *stack,
                                    void (*double_operation_function_pointer)(Stack *, double, double),
                                    void (*long_operation_function_pointer)(Stack *, long, long));
