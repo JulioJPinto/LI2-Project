@@ -13,7 +13,7 @@ StackOperationFunction get_operation(char op[]) {
             {"-",  minus_operation},
             {"*",  asterisk_operation},
             {"/",  slash_symbol_operation},
-            {"%",  modulo_operation},
+            {"%",  parentheses_symbol_operation},
             {"(",  open_parentheses_operation},
             {")",  close_parentheses_operation},
             {"#",  hashtag_symbol_operation},

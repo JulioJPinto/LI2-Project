@@ -43,7 +43,7 @@ void dump_element(StackElement *element) {
             dump_stack(element->content.array_value);
             return;
         case BLOCK_TYPE:
-            printf("%s", element->content.block_value);
+            printf("{%s}", element->content.block_value);
             return;
         default: PANIC("Couldn't match type for %d when dumping\n", (*element).content.char_value)
     }

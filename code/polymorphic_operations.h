@@ -19,3 +19,5 @@ void equal_symbol_operation(Stack *stack);
 void slash_symbol_operation(Stack *stack);
 
 void hashtag_symbol_operation(Stack *stack);
+
+void parentheses_symbol_operation(Stack *stack);
