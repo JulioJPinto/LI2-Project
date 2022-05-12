@@ -135,19 +135,23 @@ void add_char_operation(Stack *stack, char a, char b) {
     push_long(stack, a + b);
 }
 
+int is_either_element_type(StackElement a, StackElement b, ElementType type) {
+    return a.type == type || b.type == type;
+}
+
 void add_operation(Stack *stack) {
     StackElement x = pop(stack);
     StackElement y = pop(stack);
 
-    if (x.type == ARRAY_TYPE || y.type == ARRAY_TYPE) {
+    if (is_either_element_type(x, y, ARRAY_TYPE)) {
         add_array_operation(stack, &y, &x);
-    } else if (x.type == STRING_TYPE || y.type == STRING_TYPE) {
+    } else if (is_either_element_type(x, y, STRING_TYPE)) {
         add_string_operation(stack, &y, &x);
-    } else if (x.type == DOUBLE_TYPE || y.type == DOUBLE_TYPE) {
+    } else if (is_either_element_type(x, y, DOUBLE_TYPE)) {
         add_double_operation(stack, get_element_as_double(&y), get_element_as_double(&x));
-    } else if (x.type == LONG_TYPE || y.type == LONG_TYPE) {
+    } else if (is_either_element_type(x, y, LONG_TYPE)) {
         add_long_operation(stack, get_element_as_long(&y), get_element_as_long(&x));
-    } else if (x.type == CHAR_TYPE || y.type == CHAR_TYPE) {
+    } else if (is_either_element_type(x, y, CHAR_TYPE)) {
         add_char_operation(stack, convert_element_to_char(&y), convert_element_to_char(&x));
     } else {
         PANIC("Couldn't find add operation for types x=%d, y=%d", x.type, y.type)
