@@ -16,14 +16,14 @@ void asterisk_operation(Stack *stack) {
     }
 }
 
-void tilde_operation(Stack *stack) {
+void tilde_operation(Stack *stack, StackElement *variables) {
     StackElement element = peek(stack);
     ElementType element_type = element.type;
 
     if (element_type == ARRAY_TYPE) {
         push_all_elements_from_array(stack);
     } else if (element_type == BLOCK_TYPE) {
-        execute_block_operation(stack);
+        execute_block_operation(stack, variables);
     } else {
         not_bitwise_operation(stack);
     }
@@ -113,10 +113,10 @@ void hashtag_symbol_operation(Stack *stack) {
     }
 }
 
-void parentheses_symbol_operation(Stack *stack) {
+void parentheses_symbol_operation(Stack *stack, StackElement *variables) {
     ElementType element_type = peek(stack).type;
     if(element_type == BLOCK_TYPE) {
-        map_block_array_operation(stack);
+        map_block_array_operation(stack, variables);
     } else {
         modulo_operation(stack);
     }

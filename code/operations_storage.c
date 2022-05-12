@@ -5,45 +5,50 @@
 #include "logica.h"
 
 #include "polymorphic_operations.h"
+#include "logger.h"
 #include <string.h>
 
-StackOperationFunction get_operation(char op[]) {
+#define SIMPLE_OPERATION(simple_operation_function) {SIMPLE_OPERATION, {.operation_function = simple_operation_function}}
+
+#define VARIABLES_OPERATION(variables_operation_function) {VARIABLES_OPERATION, {.variables_operation = variables_operation_function}}
+
+StackOperation get_operation(char op[]) {
     static const StackOperationTableEntry entries[] = {
-            {"+",  add_operation},
-            {"-",  minus_operation},
-            {"*",  asterisk_operation},
-            {"/",  slash_symbol_operation},
-            {"%",  parentheses_symbol_operation},
-            {"(",  open_parentheses_operation},
-            {")",  close_parentheses_operation},
-            {"#",  hashtag_symbol_operation},
-            {"&",  and_bitwise_operation},
-            {"|",  or_bitwise_operation},
-            {"^",  xor_bitwise_operation},
-            {"~",  tilde_operation},
-            {"_",  duplicate_operation},
-            {";",  pop_operation},
-            {"\\", swap_last_two_operation},
-            {"@",  rotate_last_three_operation},
-            {"$",  copy_nth_element_operation},
-            {"c",  convert_last_element_to_char},
-            {"i",  convert_last_element_to_long},
-            {"f",  convert_last_element_to_double},
-            {"l",  read_input_from_console_operation},
-            {"t",  read_all_input_from_console_operation},
-            {"s",  convert_last_element_to_string},
-            {">",  bigger_than_symbol_operation},
-            {"<",  lesser_than_symbol_operation},
-            {"=",  equal_symbol_operation},
-            {"e&", and_operation},
-            {"e|", or_operation},
-            {"e>", lesser_value_operation},
-            {"e<", bigger_value_operation},
-            {"?",  if_then_else_operation},
-            {"!",  not_operation},
-            {",",  size_range_operation},
-            {"S/", separate_string_by_whitespace_operation},
-            {"N/", separate_string_by_new_line_operation}
+            {"+",  SIMPLE_OPERATION(add_operation)},
+            {"-",  SIMPLE_OPERATION(minus_operation)},
+            {"*",  SIMPLE_OPERATION(asterisk_operation)},
+            {"/",  SIMPLE_OPERATION(slash_symbol_operation)},
+            {"%",  VARIABLES_OPERATION(parentheses_symbol_operation)},
+            {"(",  SIMPLE_OPERATION(open_parentheses_operation)},
+            {")",  SIMPLE_OPERATION(close_parentheses_operation)},
+            {"#",  SIMPLE_OPERATION(hashtag_symbol_operation)},
+            {"&",  SIMPLE_OPERATION(and_bitwise_operation)},
+            {"|",  SIMPLE_OPERATION(or_bitwise_operation)},
+            {"^",  SIMPLE_OPERATION(xor_bitwise_operation)},
+            {"~",  VARIABLES_OPERATION(tilde_operation)},
+            {"_",  SIMPLE_OPERATION(duplicate_operation)},
+            {";",  SIMPLE_OPERATION(pop_operation)},
+            {"\\", SIMPLE_OPERATION(swap_last_two_operation)},
+            {"@",  SIMPLE_OPERATION(rotate_last_three_operation)},
+            {"$",  SIMPLE_OPERATION(copy_nth_element_operation)},
+            {"c",  SIMPLE_OPERATION(convert_last_element_to_char)},
+            {"i",  SIMPLE_OPERATION(convert_last_element_to_long)},
+            {"f",  SIMPLE_OPERATION(convert_last_element_to_double)},
+            {"l",  SIMPLE_OPERATION(read_input_from_console_operation)},
+            {"t",  SIMPLE_OPERATION(read_all_input_from_console_operation)},
+            {"s",  SIMPLE_OPERATION(convert_last_element_to_string)},
+            {">",  SIMPLE_OPERATION(bigger_than_symbol_operation)},
+            {"<",  SIMPLE_OPERATION(lesser_than_symbol_operation)},
+            {"=",  SIMPLE_OPERATION(equal_symbol_operation)},
+            {"e&", SIMPLE_OPERATION(and_operation)},
+            {"e|", SIMPLE_OPERATION(or_operation)},
+            {"e>", SIMPLE_OPERATION(lesser_value_operation)},
+            {"e<", SIMPLE_OPERATION(bigger_value_operation)},
+            {"?",  SIMPLE_OPERATION(if_then_else_operation)},
+            {"!",  SIMPLE_OPERATION(not_operation)},
+            {",",  SIMPLE_OPERATION(size_range_operation)},
+            {"S/", SIMPLE_OPERATION(separate_string_by_whitespace_operation)},
+            {"N/", SIMPLE_OPERATION(separate_string_by_new_line_operation)}
     };
 
     size_t size = sizeof(entries) / sizeof(StackOperationTableEntry);
@@ -53,5 +58,17 @@ StackOperationFunction get_operation(char op[]) {
             return entries[i].operation;
         }
     }
-    return NULL;
+
+    PANIC("Couldn't find operation_function '%s'", op)
+}
+
+void execute_operation(StackOperation operation, Stack *stack, StackElement *variables) {
+    switch (operation.type) {
+        case SIMPLE_OPERATION:
+            operation.operation_function(stack);
+            return;
+        case VARIABLES_OPERATION:
+            operation.variables_operation(stack, variables);
+            return;
+    }
 }

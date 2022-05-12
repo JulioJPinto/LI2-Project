@@ -61,13 +61,9 @@ void parse_word(Stack *stack, StackElement *variables, char word[]) {
 
     PRINT_DEBUG("Parsed symbol: %s\n", word)
 
-    StackOperationFunction operation_function = get_operation(word);
+    StackOperation operation = get_operation(word);
 
-    if (operation_function != NULL) {
-        operation_function(stack);
-    } else {
-        PANIC("Couldn't find operator operation_function for '%s'\n", word)
-    }
+    execute_operation(operation, stack, variables);
 }
 
 enum parseState was_success_set_state_from_open_char(char c, enum parseState *target) {

@@ -42,15 +42,14 @@ StackElement execute_block(StackElement target_element, StackElement block_eleme
     return result;
 }
 
-void execute_block_operation(Stack *stack) {
+void execute_block_operation(Stack *stack, StackElement *variables) {
     StackElement block_element = pop(stack);
     StackElement target_element = pop(stack);
 
-    // TODO: fix variables
-    push(stack, execute_block(target_element, block_element, NULL));
+    push(stack, execute_block(target_element, block_element, variables));
 }
 
-void map_block_array_operation(Stack *stack) {
+void map_block_array_operation(Stack *stack, StackElement *variables) {
     StackElement block_element = pop(stack);
     StackElement array_element = pop(stack);
 
@@ -60,7 +59,8 @@ void map_block_array_operation(Stack *stack) {
     Stack *array_result = create_stack(array_target_length);
 
     for (int i = 0; i < array_target_length; ++i) {
-        StackElement result = execute_block(duplicate_element(array_target->array[i]), block_element, NULL);
+        StackElement target = duplicate_element(array_target->array[i]);
+        StackElement result = execute_block(target, block_element, variables);
         push(array_result, result);
     }
 
