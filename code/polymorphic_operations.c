@@ -114,10 +114,27 @@ void hashtag_symbol_operation(Stack *stack) {
 }
 
 void parentheses_symbol_operation(Stack *stack, StackElement *variables) {
-    ElementType element_type = peek(stack).type;
-    if(element_type == BLOCK_TYPE) {
+    ElementType left_element_type = get(stack, 1).type;
+    ElementType right_element_type = peek(stack).type;
+
+    if (left_element_type == ARRAY_TYPE && right_element_type == BLOCK_TYPE) {
         map_block_array_operation(stack, variables);
+    } else if (left_element_type == STRING_TYPE && right_element_type == BLOCK_TYPE) {
+        map_block_string_operation(stack, variables);
     } else {
         modulo_operation(stack);
+    }
+}
+
+void comma_symbol_operation(Stack *stack, StackElement *variables) {
+    ElementType left_element_type = get(stack, 1).type;
+    ElementType right_element_type = peek(stack).type;
+
+    if (left_element_type == ARRAY_TYPE && right_element_type == BLOCK_TYPE) {
+        filter_block_array_operation(stack, variables);
+    } else if (left_element_type == STRING_TYPE && right_element_type == BLOCK_TYPE) {
+        filter_block_string_operation(stack, variables);
+    } else {
+        size_range_operation(stack);
     }
 }

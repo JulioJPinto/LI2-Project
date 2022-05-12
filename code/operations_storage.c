@@ -46,7 +46,7 @@ StackOperation get_operation(char op[]) {
             {"e<", SIMPLE_OPERATION(bigger_value_operation)},
             {"?",  SIMPLE_OPERATION(if_then_else_operation)},
             {"!",  SIMPLE_OPERATION(not_operation)},
-            {",",  SIMPLE_OPERATION(size_range_operation)},
+            {",",  VARIABLES_OPERATION(comma_symbol_operation)},
             {"S/", SIMPLE_OPERATION(separate_string_by_whitespace_operation)},
             {"N/", SIMPLE_OPERATION(separate_string_by_new_line_operation)}
     };

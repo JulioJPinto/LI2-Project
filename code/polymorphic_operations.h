@@ -21,3 +21,5 @@ void slash_symbol_operation(Stack *stack);
 void hashtag_symbol_operation(Stack *stack);
 
 void parentheses_symbol_operation(Stack *stack, StackElement *variables);
+
+void comma_symbol_operation(Stack *stack, StackElement *variables);
