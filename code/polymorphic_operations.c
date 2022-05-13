@@ -21,7 +21,7 @@ void tilde_operation(Stack *stack, StackElement *variables) {
     ElementType element_type = element.type;
 
     if (element_type == ARRAY_TYPE) {
-        push_all_elements_from_array(stack);
+        push_all_elements_from_array_operation(stack);
     } else if (element_type == BLOCK_TYPE) {
         execute_block_operation(stack, variables);
     } else {

@@ -72,6 +72,13 @@ long pop_long(Stack *stack);
 void push(Stack *stack, StackElement x);
 
 /**
+ * Faz push de todos os elementos (faz uma cópia deles) de uma stack para a @param{stack}
+ * @param stack target
+ * @param elements elementos para adicionar
+ */
+void push_all(Stack *stack, Stack *elements);
+
+/**
  * Faz push de um double para a @param{stack}
  * @param stack target
  * @param value valor double

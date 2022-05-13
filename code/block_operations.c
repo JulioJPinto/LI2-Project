@@ -19,34 +19,26 @@ int try_to_parse_block(Stack *stack, char *word) {
     return 1;
 }
 
-StackElement execute_block(StackElement target_element, StackElement block_element, StackElement *variables) {
+Stack *execute_block(StackElement target_element, StackElement block_element, StackElement *variables) {
     if (block_element.type != BLOCK_TYPE) PANIC("Trying to execute a non-block_element type (%d).", block_element.type)
 
-    Stack *temp_stack = create_stack(10);
-    push(temp_stack, target_element);
+    Stack *result_stack = create_stack(10);
+    push(result_stack, target_element);
 
     PRINT_DEBUG("Starting to execute block {%s}:\n", block_element.content.block_value)
-    tokenize_and_parse(temp_stack, variables, block_element.content.block_value);
+    tokenize_and_parse(result_stack, variables, block_element.content.block_value);
 
-    if (length(temp_stack) != 1) {
-        printf("Temp stack: '");
-        dump_stack(temp_stack);
-        printf("'\n");
-        PANIC("Block execution result ^ is empty or has more than 1 element")
-    }
-
-    StackElement result = pop(temp_stack);
-
-    free_stack(temp_stack);
-
-    return result;
+    return result_stack;
 }
 
 void execute_block_operation(Stack *stack, StackElement *variables) {
     StackElement block_element = pop(stack);
     StackElement target_element = pop(stack);
 
-    push(stack, execute_block(target_element, block_element, variables));
+    Stack *result_stack = execute_block(target_element, block_element, variables);
+    push_all(stack, result_stack);
+
+    free_stack(result_stack);
 }
 
 Stack *map_blocks(Stack *array, StackElement block_element, StackElement *variables) {
@@ -55,8 +47,11 @@ Stack *map_blocks(Stack *array, StackElement block_element, StackElement *variab
 
     for (int i = 0; i < array_target_length; ++i) {
         StackElement target = duplicate_element(array->array[i]);
-        StackElement result = execute_block(target, block_element, variables);
-        push(array_result, result);
+        Stack *result = execute_block(target, block_element, variables);
+
+        push_all(array_result, result);
+
+        free_stack(result);
     }
 
     return array_result;
@@ -160,13 +155,17 @@ void filter_block_array_operation(Stack *stack, StackElement *variables) {
     Stack *array_result = create_stack(array_length);
     for (int i = 0; i < array_length; ++i) {
         StackElement current_element = duplicate_element(target_array->array[i]);
-        StackElement current_element_result = execute_block(current_element, block_element, variables);
+        Stack *current_element_result = execute_block(current_element, block_element, variables);
 
-        if (is_truthy(&current_element_result)) {
-            push(array_result, current_element);
+        if (length(current_element_result) > 0) {
+            StackElement first_element = pop(current_element_result);
+            if (is_truthy(&first_element)) {
+                push(array_result, current_element);
+            }
+            free_element(first_element);
         }
 
-        free_element(current_element_result);
+        free_stack(current_element_result);
     }
 
     push_array(stack, array_result);
@@ -188,15 +187,19 @@ void filter_block_string_operation(Stack *stack, StackElement *variables) {
     for (int i = 0; i < string_length; ++i) {
         char current_char = target_string[i];
         StackElement char_element = create_char_element(current_char);
-        StackElement current_element_result = execute_block(char_element, block_element, variables);
+        Stack *current_element_result = execute_block(char_element, block_element, variables);
 
-        if (is_truthy(&current_element_result)) {
-            string_result[current_string_result_index] = current_char;
-            current_string_result_index++;
+        if (length(current_element_result) > 0) {
+            StackElement first_element = pop(current_element_result);
+            if (is_truthy(&first_element)) {
+                string_result[current_string_result_index] = current_char;
+                current_string_result_index++;
+            }
+            free_element(first_element);
         }
 
         free_element(char_element);
-        free_element(current_element_result);
+        free_stack(current_element_result);
     }
 
     push_string(stack, string_result);

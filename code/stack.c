@@ -86,6 +86,13 @@ void push(Stack *stack, StackElement x) {
     stack->array[++(stack->current_index)] = x;
 }
 
+void push_all(Stack *stack, Stack *elements) {
+    int elements_length = length(elements);
+    for (int i = 0; i < elements_length; ++i) {
+        push(stack, duplicate_element(elements->array[i]));
+    }
+}
+
 void push_double(Stack *stack, double value) {
     push(stack, create_double_element(value));
 }

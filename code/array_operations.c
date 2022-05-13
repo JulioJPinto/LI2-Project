@@ -96,7 +96,7 @@ void repeat_array_operation(Stack *stack) {
     push_array(stack, array);
 }
 
-void push_all_elements_from_array(Stack *stack) {
+void push_all_elements_from_array_operation(Stack *stack) {
     StackElement element = pop(stack);
 
     Stack *array = element.content.array_value;

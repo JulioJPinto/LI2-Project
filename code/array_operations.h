@@ -37,7 +37,7 @@ void repeat_array_operation(Stack *stack);
  * no array
  * @param stack A Stack para onde vamos devolver os elementos do array
  */
-void push_all_elements_from_array(Stack *stack);
+void push_all_elements_from_array_operation(Stack *stack);
 
 void separate_string_by_substring_operation(Stack *stack);
 
