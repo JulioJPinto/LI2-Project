@@ -31,7 +31,7 @@ StackOperation get_operation(char op[]) {
             {";",  SIMPLE_OPERATION(pop_operation)},
             {"\\", SIMPLE_OPERATION(swap_last_two_operation)},
             {"@",  SIMPLE_OPERATION(rotate_last_three_operation)},
-            {"$",  SIMPLE_OPERATION(copy_nth_element_operation)},
+            {"$",  VARIABLES_OPERATION(dollar_symbol_operation)},
             {"c",  SIMPLE_OPERATION(convert_last_element_to_char)},
             {"i",  SIMPLE_OPERATION(convert_last_element_to_long)},
             {"f",  SIMPLE_OPERATION(convert_last_element_to_double)},
@@ -50,7 +50,7 @@ StackOperation get_operation(char op[]) {
             {",",  VARIABLES_OPERATION(comma_symbol_operation)},
             {"S/", SIMPLE_OPERATION(separate_string_by_whitespace_operation)},
             {"N/", SIMPLE_OPERATION(separate_string_by_new_line_operation)},
-            {"w", VARIABLES_OPERATION(while_top_truthy_operation)}
+            {"w",  VARIABLES_OPERATION(while_top_truthy_operation)}
     };
 
     size_t size = sizeof(entries) / sizeof(StackOperationTableEntry);

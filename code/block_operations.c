@@ -2,6 +2,8 @@
 #include "block_operations.h"
 #include "logger.h"
 #include "parser.h"
+#include "conversions.h"
+#include "operations.h"
 
 int try_to_parse_block(Stack *stack, char *word) {
     size_t word_length = strlen(word);
@@ -23,7 +25,7 @@ Stack *execute_block(StackElement target_element, StackElement block_element, St
     if (block_element.type != BLOCK_TYPE) PANIC("Trying to execute a non-block_element type (%d).", block_element.type)
 
     Stack *result_stack = create_stack(10);
-    push(result_stack, target_element);
+    push(result_stack, duplicate_element(target_element));
 
     PRINT_DEBUG("Starting to execute block {%s}:\n", block_element.content.block_value)
     tokenize_and_parse(result_stack, variables, block_element.content.block_value);
@@ -209,6 +211,66 @@ void filter_block_string_operation(Stack *stack, StackElement *variables) {
     free_element(string_element);
 }
 
+int compare_elements(StackElement a, StackElement b) {
+    if (a.type == STRING_TYPE && b.type == STRING_TYPE) {
+        return strcmp(a.content.string_value, b.content.string_value);
+    } else if (a.type == DOUBLE_TYPE || b.type == DOUBLE_TYPE) {
+        return get_element_as_double(&a) - get_element_as_double(&b) > 0;
+    } else if (a.type == LONG_TYPE || b.type == LONG_TYPE) {
+        return (int) (get_element_as_long(&a) - get_element_as_long(&b));
+    } else if (a.type == CHAR_TYPE || b.type == CHAR_TYPE) {
+        return (int) (convert_element_to_char(&a) - convert_element_to_char(&b));
+    }
+    PANIC("Cannot compare elements with types x=%d, y=%d", a.type, b.type)
+}
+
+void insertion_sort(StackElement array[], int length, StackElement block_element, StackElement *variables,
+                    int compare_function(StackElement *, StackElement, StackElement, StackElement)) {
+    int j;
+    StackElement key;
+    for (int i = 1; i < length; i++) {
+        key = array[i];
+        j = i - 1;
+
+        while (j >= 0 && compare_function(variables, block_element, array[j], key) > 0) {
+            array[j + 1] = array[j];
+            j = j - 1;
+        }
+        array[j + 1] = key;
+    }
+}
+
+int sort_compare_function(StackElement *variables, StackElement block_element, StackElement a, StackElement b) {
+    Stack *a_block_result = execute_block(a, block_element, variables);
+    Stack *b_block_result = execute_block(b, block_element, variables);
+
+    StackElement a_compare_element = pop(a_block_result);
+    StackElement b_compare_element = pop(b_block_result);
+
+    int compare_result = compare_elements(a_compare_element, b_compare_element);
+
+    free_element(a_compare_element);
+    free_element(b_compare_element);
+
+    free_stack(a_block_result);
+    free_stack(b_block_result);
+
+    return compare_result;
+}
+
+void sort_block_array_operation(Stack *stack, StackElement *variables) {
+    StackElement block_element = pop(stack);
+    StackElement array_element = pop(stack);
+
+    Stack *array_value = array_element.content.array_value;
+    StackElement *array = array_value->array;
+
+    insertion_sort(array, length(array_value), block_element, variables, sort_compare_function);
+
+    push(stack, array_element);
+    free_element(block_element);
+}
+
 void while_top_truthy_operation(Stack *stack, StackElement *variables) {
     StackElement block_element = pop(stack);
     StackElement element = pop(stack);
@@ -217,12 +279,12 @@ void while_top_truthy_operation(Stack *stack, StackElement *variables) {
     Stack *result_stack = create_stack(stack->capacity);
 
 
-    for(int i = 0; length(stack) && is_truthy(&element); i++) {
+    for (int i = 0; length(stack) && is_truthy(&element); i++) {
 
-        if ( i != 0 ) {
+        if (i != 0) {
             element = pop(stack);
         }
-        
+
         if (is_truthy(&element)) {
             StackElement transformed_element = pop(execute_block(element, block_element, variables));
 
@@ -232,12 +294,12 @@ void while_top_truthy_operation(Stack *stack, StackElement *variables) {
         free_element(element);
 
     }
-    
-    for(int i = 0; i < length(storage_stack) + 1 && storage_stack->current_index != -1; i++) {
+
+    for (int i = 0; i < length(storage_stack) + 1 && storage_stack->current_index != -1; i++) {
 
         StackElement new_element = pop(storage_stack);
 
-        if (is_truthy(&new_element)) push(result_stack, new_element);        
+        if (is_truthy(&new_element)) push(result_stack, new_element);
     }
 
     push_all(stack, result_stack);
@@ -246,5 +308,5 @@ void while_top_truthy_operation(Stack *stack, StackElement *variables) {
     free_element(block_element);
     free_stack(storage_stack);
     free_stack(result_stack);
-    
+
 }

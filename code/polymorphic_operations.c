@@ -138,3 +138,13 @@ void comma_symbol_operation(Stack *stack, StackElement *variables) {
         size_range_operation(stack);
     }
 }
+
+void dollar_symbol_operation(Stack *stack, StackElement *variables) {
+    ElementType right_element_type = peek(stack).type;
+
+    if (right_element_type == BLOCK_TYPE) {
+        sort_block_array_operation(stack, variables);
+    } else {
+        copy_nth_element_operation(stack);
+    }
+}

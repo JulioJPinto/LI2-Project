@@ -6,12 +6,7 @@
 
 #define READ_INPUT_FROM_CONSOLE_MAX_LENGTH BUFSIZ
 
-/**
- * @brief Recebe um elemento da stack e retorna este como double.
- * @param element O elemento da stack que irá ser transformado.
- * @return double O elemento após ter sido transformado em double.
- */
-static double get_element_as_double(StackElement *element) {
+double get_element_as_double(StackElement *element) {
     ElementType type = element->type;
     if (type == DOUBLE_TYPE) {
         return element->content.double_value;
@@ -24,12 +19,7 @@ static double get_element_as_double(StackElement *element) {
     }
 }
 
-/**
- * @brief Recebe um elemento da stack e retorna este como long.
- * @param element O elemento da stack que irá ser transformado.
- * @return double O elemento após ter sido transformado em long.
- */
-static long get_element_as_long(StackElement *element) {
+long get_element_as_long(StackElement *element) {
     ElementType type = element->type;
     if (type == DOUBLE_TYPE) {
         return (long) element->content.double_value;

@@ -16,4 +16,6 @@ void filter_block_array_operation(Stack *stack, StackElement *variables);
 
 void filter_block_string_operation(Stack *stack, StackElement *variables);
 
+void sort_block_array_operation(Stack *stack, StackElement *variables);
+
 void while_top_truthy_operation(Stack *stack, StackElement *variables);

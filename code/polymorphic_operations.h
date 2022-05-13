@@ -23,3 +23,5 @@ void hashtag_symbol_operation(Stack *stack);
 void parentheses_symbol_operation(Stack *stack, StackElement *variables);
 
 void comma_symbol_operation(Stack *stack, StackElement *variables);
+
+void dollar_symbol_operation(Stack *stack, StackElement *variables);

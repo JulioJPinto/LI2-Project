@@ -114,3 +114,17 @@ void read_all_input_from_console_operation(Stack *stack);
 void operate_promoting_number_type(Stack *stack,
                                    void (*double_operation_function_pointer)(Stack *, double, double),
                                    void (*long_operation_function_pointer)(Stack *, long, long));
+
+/**
+ * @brief Recebe um elemento da stack e retorna este como long.
+ * @param element O elemento da stack que irá ser transformado.
+ * @return double O elemento após ter sido transformado em long.
+ */
+long get_element_as_long(StackElement *element);
+
+/**
+ * @brief Recebe um elemento da stack e retorna este como double.
+ * @param element O elemento da stack que irá ser transformado.
+ * @return double O elemento após ter sido transformado em double.
+ */
+double get_element_as_double(StackElement *element);
