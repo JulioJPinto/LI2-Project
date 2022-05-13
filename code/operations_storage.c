@@ -3,6 +3,7 @@
 #include "conversions.h"
 #include "array_operations.h"
 #include "logica.h"
+#include "block_operations.h"
 
 #include "polymorphic_operations.h"
 #include "logger.h"
@@ -48,7 +49,8 @@ StackOperation get_operation(char op[]) {
             {"!",  SIMPLE_OPERATION(not_operation)},
             {",",  VARIABLES_OPERATION(comma_symbol_operation)},
             {"S/", SIMPLE_OPERATION(separate_string_by_whitespace_operation)},
-            {"N/", SIMPLE_OPERATION(separate_string_by_new_line_operation)}
+            {"N/", SIMPLE_OPERATION(separate_string_by_new_line_operation)},
+            {"w", VARIABLES_OPERATION(while_top_truthy_operation)}
     };
 
     size_t size = sizeof(entries) / sizeof(StackOperationTableEntry);
@@ -69,6 +71,8 @@ void execute_operation(StackOperation operation, Stack *stack, StackElement *var
             return;
         case VARIABLES_OPERATION:
             operation.variables_operation(stack, variables);
+            return;
+        default:
             return;
     }
 }

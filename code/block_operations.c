@@ -208,3 +208,39 @@ void filter_block_string_operation(Stack *stack, StackElement *variables) {
     free_element(block_element);
     free_element(string_element);
 }
+
+void while_top_truthy_operation(Stack *stack, StackElement *variables) {
+    StackElement block_element = pop(stack);
+    StackElement element = pop(stack);
+
+    Stack *storage_stack = create_stack(stack->capacity);
+    Stack *result_stack = create_stack(stack->capacity);
+
+    int controller = 0;
+
+    for(int i = 0; is_truthy(&element) && length(stack) >= 1; i++) {
+
+        if ( i != 0 ) {
+            element = pop(stack);
+        }
+
+        StackElement transformed_element = pop(execute_block(element, block_element, variables));
+        push(storage_stack, transformed_element);
+        
+        controller = 1;
+        
+    }
+    for(int i = 0; i < length(storage_stack) + 1; i++) {
+        StackElement new_element = pop(storage_stack);
+        if (is_truthy(&new_element)) push(result_stack, new_element);        
+    }
+
+    if (controller) push_all(stack, result_stack);
+
+
+    free_element(block_element);
+    free_element(element);
+    free_stack(storage_stack);
+    free_stack(result_stack);
+    
+}
