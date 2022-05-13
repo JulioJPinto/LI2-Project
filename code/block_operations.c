@@ -232,6 +232,7 @@ void while_top_truthy_operation(Stack *stack, StackElement *variables) {
         free_element(element);
 
     }
+    
     for(int i = 0; i < length(storage_stack) + 1 && storage_stack->current_index != -1; i++) {
 
         StackElement new_element = pop(storage_stack);
