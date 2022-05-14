@@ -31,7 +31,7 @@ StackOperation get_operation(char op[]) {
             {";",  SIMPLE_OPERATION(pop_operation)},
             {"\\", SIMPLE_OPERATION(swap_last_two_operation)},
             {"@",  SIMPLE_OPERATION(rotate_last_three_operation)},
-            {"$",  VARIABLES_OPERATION(copy_nth_element_operation)},
+            {"$",  VARIABLES_OPERATION(dollar_symbol_operation)},
             {"c",  SIMPLE_OPERATION(convert_last_element_to_char)},
             {"i",  SIMPLE_OPERATION(convert_last_element_to_long)},
             {"f",  SIMPLE_OPERATION(convert_last_element_to_double)},
