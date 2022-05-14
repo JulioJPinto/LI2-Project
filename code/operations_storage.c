@@ -50,7 +50,8 @@ StackOperation get_operation(char op[]) {
             {",",  VARIABLES_OPERATION(comma_symbol_operation)},
             {"S/", SIMPLE_OPERATION(separate_string_by_whitespace_operation)},
             {"N/", SIMPLE_OPERATION(separate_string_by_new_line_operation)},
-            {"w", VARIABLES_OPERATION(while_top_truthy_operation)}
+            {"w",  VARIABLES_OPERATION(while_top_truthy_operation)},
+            {"p",  SIMPLE_OPERATION(print_stack_top_operation)}
     };
 
     size_t size = sizeof(entries) / sizeof(StackOperationTableEntry);

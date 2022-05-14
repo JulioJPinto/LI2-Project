@@ -38,10 +38,16 @@ Stack *create_stack(int initial_capacity);
 void free_stack(Stack *stack);
 
 /**
- * Faz print do conteúdo do stack conforme o tipo dos elementos
- * @param stack
+ * Faz print de todos os elementos da stack
+ * @param stack target
  */
 void dump_stack(Stack *stack);
+
+/**
+ * Faz print de um elemento
+ * @param element target
+ */
+void dump_element(StackElement *element);
 
 /**
  * Calcula o tamanho do stack

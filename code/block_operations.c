@@ -283,12 +283,9 @@ int check_truthy_and_free(StackElement element) {
 void while_top_truthy_operation(Stack *stack, StackElement *variables) {
     StackElement block_element = pop(stack);
 
-    StackElement pop_element;
-
     do {
         execute_block_stack(stack, block_element, variables);
-        pop_element = pop(stack);
-    } while (check_truthy_and_free(pop_element));
+    } while (check_truthy_and_free(pop(stack)));
 
     free_element(block_element);
 }

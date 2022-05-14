@@ -111,6 +111,12 @@ void read_input_from_console_operation(Stack *stack);
  */
 void read_all_input_from_console_operation(Stack *stack);
 
+/**
+ * Operação de fazer print ao elemento do topo da stack
+ * @param stack target
+ */
+void print_stack_top_operation(Stack *stack);
+
 void operate_promoting_number_type(Stack *stack,
                                    void (*double_operation_function_pointer)(Stack *, double, double),
                                    void (*long_operation_function_pointer)(Stack *, long, long));

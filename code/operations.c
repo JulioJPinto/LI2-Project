@@ -398,3 +398,8 @@ void read_all_input_from_console_operation(Stack *stack) {
     free(current_line);
 }
 
+void print_stack_top_operation(Stack *stack) {
+    StackElement element = peek(stack);
+    dump_element(&element);
+    printf("\n");
+}
