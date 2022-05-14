@@ -364,17 +364,35 @@ void remove_last_element_from_string_operation(Stack *stack) {
     free_element(element);
 }
 
+char *consume_and_get_string_value(StackElement element) {
+    char *result;
+    if (element.type == STRING_TYPE) {
+        result = strdup(element.content.string_value);
+    } else if (element.type == CHAR_TYPE) {
+        result = calloc(2, sizeof(char));
+
+        result[0] = element.content.char_value;
+        result[1] = '\0';
+    } else {
+        PANIC("Couldn't get string value from stack element type=%d", element.type)
+    }
+
+    free_element(element);
+
+    return result;
+}
+
 void search_substring_in_string_operation(Stack *stack) {
     StackElement substring_element = pop(stack);
     StackElement string_element = pop(stack);
 
     char *string_value = string_element.content.string_value;
-    char *substring_string = substring_element.content.string_value;
+    char *substring_string = consume_and_get_string_value(substring_element);
 
     long index = get_index_substring(string_value, substring_string);
 
     push_long(stack, index);
 
-    free_element(substring_element);
     free_element(string_element);
+    free(substring_string);
 }
