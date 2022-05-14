@@ -9,7 +9,7 @@
 #include "parser.h"
 #include "variable_operations.h"
 
-#define INPUT_BUFFER_SIZE 10000
+#define INPUT_BUFFER_SIZE 10001
 #define INITIAL_STACK_CAPACITY 10
 
 /**

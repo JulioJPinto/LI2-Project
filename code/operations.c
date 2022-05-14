@@ -4,7 +4,7 @@
 #include <math.h>
 #include <string.h>
 
-#define READ_INPUT_FROM_CONSOLE_MAX_LENGTH BUFSIZ
+#define READ_INPUT_FROM_CONSOLE_MAX_LENGTH 10001
 
 double get_element_as_double(StackElement *element) {
     ElementType type = element->type;
