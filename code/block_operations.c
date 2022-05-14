@@ -21,15 +21,18 @@ int try_to_parse_block(Stack *stack, char *word) {
     return 1;
 }
 
-Stack *execute_block(StackElement target_element, StackElement block_element, StackElement *variables) {
-    if (block_element.type != BLOCK_TYPE) PANIC("Trying to execute a non-block_element type (%d).", block_element.type)
+void execute_block_stack(Stack *stack, StackElement block_element, StackElement *variables) {
+    if (block_element.type != BLOCK_TYPE) PANIC("Trying to execute a non-block element type (%d).", block_element.type)
 
+    PRINT_DEBUG("Starting to execute block {%s}:\n", block_element.content.block_value)
+    tokenize_and_parse(stack, variables, block_element.content.block_value);
+}
+
+Stack *execute_block(StackElement target_element, StackElement block_element, StackElement *variables) {
     Stack *result_stack = create_stack(10);
     push(result_stack, duplicate_element(target_element));
 
-    PRINT_DEBUG("Starting to execute block {%s}:\n", block_element.content.block_value)
-    tokenize_and_parse(result_stack, variables, block_element.content.block_value);
-
+    execute_block_stack(result_stack, block_element, variables);
     return result_stack;
 }
 
@@ -278,9 +281,7 @@ void while_top_truthy_operation(Stack *stack, StackElement *variables) {
     Stack *storage_stack = create_stack(stack->capacity);
     Stack *result_stack = create_stack(stack->capacity);
 
-
     for (int i = 0; length(stack) && is_truthy(&element); i++) {
-
         if (i != 0) {
             element = pop(stack);
         }
@@ -315,10 +316,23 @@ void fold_operation(Stack *stack, StackElement *variables) {
     StackElement block_element = pop(stack);
     StackElement array_element = pop(stack);
 
-    while(length(array_element.content.array_value) > 1) {
-        tokenize_and_parse(array_element.content.array_value, variables, block_element.content.block_value);
+    Stack *array_value = array_element.content.array_value;
+    StackElement *array = array_value->array;
+
+    int array_length = length(array_value);
+
+    Stack *stack_result = create_stack(array_length);
+
+    if (array_length > 0) {
+        push(stack_result, duplicate_element(array[0]));
+        for (int i = 1; i < array_length; ++i) {
+            push(stack_result, duplicate_element(array[i]));
+            execute_block_stack(stack_result, block_element, variables);
+        }
     }
 
-    push_all(stack, array_element.content.array_value);
+    push_array(stack, stack_result);
 
+    free_element(block_element);
+    free_element(array_element);
 }

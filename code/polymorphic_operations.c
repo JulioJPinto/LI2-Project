@@ -108,7 +108,7 @@ void hashtag_symbol_operation(Stack *stack) {
     ElementType left_element_type = get(stack, 1).type;
     ElementType right_element_type = peek(stack).type;
 
-    if (left_element_type == STRING_TYPE && right_element_type == STRING_TYPE) {
+    if (left_element_type == STRING_TYPE && (right_element_type == STRING_TYPE || right_element_type == CHAR_TYPE)) {
         search_substring_in_string_operation(stack);
     } else {
         exponential_operation(stack);
