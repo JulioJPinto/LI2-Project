@@ -310,3 +310,15 @@ void while_top_truthy_operation(Stack *stack, StackElement *variables) {
     free_stack(result_stack);
 
 }
+
+void fold_operation(Stack *stack, StackElement *variables) {
+    StackElement block_element = pop(stack);
+    StackElement array_element = pop(stack);
+
+    while(length(array_element.content.array_value) > 1) {
+        tokenize_and_parse(array_element.content.array_value, variables, block_element.content.block_value);
+    }
+
+    push_all(stack, array_element.content.array_value);
+
+}

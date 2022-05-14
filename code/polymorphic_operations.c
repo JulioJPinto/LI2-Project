@@ -4,10 +4,12 @@
 #include "array_operations.h"
 #include "block_operations.h"
 
-void asterisk_operation(Stack *stack) {
+void asterisk_operation(Stack *stack, StackElement *variables) {
     ElementType left_element_type = get(stack, 1).type;
 
-    if (left_element_type == ARRAY_TYPE) {
+    if (peek(stack).type == BLOCK_TYPE) {
+        fold_operation(stack, variables);
+    } else if (left_element_type == ARRAY_TYPE) {
         repeat_array_operation(stack);
     } else if (left_element_type == STRING_TYPE) {
         repeat_string_operation(stack);

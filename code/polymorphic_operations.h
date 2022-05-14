@@ -2,7 +2,7 @@
 
 #include "stack.h"
 
-void asterisk_operation(Stack *stack);
+void asterisk_operation(Stack *stack, StackElement *variables);
 
 void tilde_operation(Stack *stack, StackElement *variables);
 
