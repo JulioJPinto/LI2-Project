@@ -364,6 +364,10 @@ void remove_last_element_from_string_operation(Stack *stack) {
     free_element(element);
 }
 
+/**
+* @brief A função transforma um elemento do tipo char ou string em string
+* @param element target
+*/
 char *consume_and_get_string_value(StackElement element) {
     char *result;
     if (element.type == STRING_TYPE) {
