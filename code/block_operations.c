@@ -21,6 +21,12 @@ int try_to_parse_block(Stack *stack, char *word) {
     return 1;
 }
 
+/**
+* @brief Executa um bloco na stack
+* @param stack target
+* @param block_element block to execute
+* @param variables value of variables
+*/
 void execute_block_stack(Stack *stack, StackElement block_element, StackElement *variables) {
     if (block_element.type != BLOCK_TYPE) PANIC("Trying to execute a non-block element type (%d).", block_element.type)
 
@@ -46,6 +52,12 @@ void execute_block_operation(Stack *stack, StackElement *variables) {
     free_stack(result_stack);
 }
 
+/**
+* @brief Aplica o bloco a todos os elementos deste
+* @param stack target
+* @param block_element block to execute
+* @param variables value of variables
+*/
 Stack *map_blocks(Stack *array, StackElement block_element, StackElement *variables) {
     int array_target_length = length(array);
     Stack *array_result = create_stack(array_target_length);
@@ -76,6 +88,10 @@ void map_block_array_operation(Stack *stack, StackElement *variables) {
     free_element(array_element);
 }
 
+/**
+* @brief Cria um array a partir de uma string
+* @param string target
+*/
 Stack *create_string_array(char *string) {
     int string_length = (int) strlen(string);
     Stack *result = create_stack(string_length);
@@ -87,6 +103,10 @@ Stack *create_string_array(char *string) {
     return result;
 }
 
+/**
+* @brief Verifica se o elemento é um caractere ou uma string. Se for um caractere adiciona 1 ao resultado e se for string adiciona o comprimento da mesma ao resultado.
+* @param array target
+*/
 int compute_string_length_from_stack_string_array(Stack *array) {
     int result = 0;
     for (int i = 0; i < length(array); ++i) {
@@ -100,6 +120,10 @@ int compute_string_length_from_stack_string_array(Stack *array) {
     return result;
 }
 
+/**
+* @brief Converte um array para uma string
+* @param array target
+*/
 char *convert_stack_array_to_string(Stack *array) {
     int string_length = compute_string_length_from_stack_string_array(array);
     int array_length = length(array);
@@ -214,6 +238,11 @@ void filter_block_string_operation(Stack *stack, StackElement *variables) {
     free_element(string_element);
 }
 
+/**
+* @brief Compara o tipo dos elementos da stack
+* @param a
+* @param b
+*/
 int compare_elements(StackElement a, StackElement b) {
     if (a.type == STRING_TYPE && b.type == STRING_TYPE) {
         return strcmp(a.content.string_value, b.content.string_value);
@@ -227,6 +256,14 @@ int compare_elements(StackElement a, StackElement b) {
     PANIC("Cannot compare elements with types x=%d, y=%d", a.type, b.type)
 }
 
+/**
+* @brief Insere os elementos num array de forma ordenada
+* @param array target
+* @param length array length
+* @param block_element block to execute
+* @param variables value of variables
+* @param compare_function
+*/
 void insertion_sort(StackElement array[], int length, StackElement block_element, StackElement *variables,
                     int compare_function(StackElement *, StackElement, StackElement, StackElement)) {
     int j;
@@ -243,6 +280,13 @@ void insertion_sort(StackElement array[], int length, StackElement block_element
     }
 }
 
+/**
+* @brief Compara dois elementos utilizando o resultado de executar um bloco
+* @param variables target
+* @param block_element block to execute
+* @param a elemento a comparar com b
+* @param b elemento a comparar com a
+*/
 int sort_compare_function(StackElement *variables, StackElement block_element, StackElement a, StackElement b) {
     Stack *a_block_result = execute_block(a, block_element, variables);
     Stack *b_block_result = execute_block(b, block_element, variables);
@@ -274,6 +318,10 @@ void sort_block_array_operation(Stack *stack, StackElement *variables) {
     free_element(block_element);
 }
 
+/**
+* @brief Verifica se o elemento é truthy e @returns retorna o valor lógico do mesmo
+* @param element target
+*/
 int check_truthy_and_free(StackElement element) {
     int result = is_truthy(&element);
     free_element(element);
