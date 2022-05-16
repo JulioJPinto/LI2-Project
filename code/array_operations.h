@@ -100,7 +100,7 @@ void get_element_from_index_string_operation(Stack *stack);
 void remove_first_element_from_array_operation(Stack *stack);
 
 /**
-* @brief Executa a operação de remover o primeiro elemento da string
+* @brief Executa a operação de remover o primeiro caractere da string
 * @param stack target
 */
 void remove_first_element_from_string_operation(Stack *stack);
@@ -112,7 +112,7 @@ void remove_first_element_from_string_operation(Stack *stack);
 void remove_last_element_from_array_operation(Stack *stack);
 
 /**
-* @brief Executa a operação de remover o último elemento da string
+* @brief Executa a operação de remover o último caractere da string
 * @param stack target
 */
 void remove_last_element_from_string_operation(Stack *stack);
