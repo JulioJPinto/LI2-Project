@@ -40,85 +40,85 @@ void repeat_array_operation(Stack *stack);
 void push_all_elements_from_array_operation(Stack *stack);
 
 /**
-* @brief A função separa a string @param{string_element} em substrings @param{substring_element}
+* @brief Executa a operação de separar a string @param{string_element} em substrings @param{substring_element}
 * @param stack target
 */
 void separate_string_by_substring_operation(Stack *stack);
 
 /**
-* @brief A função separa as substrings @param{substring_element} por linhas
+* @brief Executa a operação de separar as substrings @param{substring_element} por linhas
 * @param stack target
 */
 void separate_string_by_new_line_operation(Stack *stack);
 
 /**
-* @brief A função separa as substrings @param{substring_element} por espaços brancos
+* @brief Executa a operação de separar as substrings @param{substring_element} por espaços brancos
 * @param stack target
 */
 void separate_string_by_whitespace_operation(Stack *stack);
 
 /**
-* @brief A função devolve os primeiros n elementos do array
+* @brief Executa a operação de devolver os primeiros n elementos do array num novo array
 * @param stack target
 */
 void take_first_n_elements_from_array_operation(Stack *stack);
 
 /**
-* @brief A função devolve os primeiros n elementos da string
+* @brief Executa a operação de devolver os primeiros n caracteres da string numa nova string
 * @param stack target
 */
 void take_first_n_elements_from_string_operation(Stack *stack);
 
 /**
-* @brief A função devolve os últimos n elementos do array
+* @brief Executa a operação de devolver os últimos n elementos do array num novo array
 * @param stack target
 */
 void take_last_n_elements_from_array_operation(Stack *stack);
 
 /**
-* @brief A função devolve os últimos n elementos da string
+* @brief Executa a operação de devolver os últimos n caracteres da string numa nova string
 * @param stack target
 */
 void take_last_n_elements_from_string_operation(Stack *stack);
 
 /**
-* @brief A função devolve o elemento na posição x do array
+* @brief Executa a operação de devolver o elemento na posição x do array
 * @param stack target
 */
 void get_element_from_index_array_operation(Stack *stack);
 
 /**
-* @brief A função devolve o elemento na posição x da string
+* @brief Executa a operação de devolver o elemento na posição x da string
 * @param stack target
 */
 void get_element_from_index_string_operation(Stack *stack);
 
 /**
-* @brief A função remove o primeiro elemento do array
+* @brief Executa a operação de remover o primeiro elemento do array
 * @param stack target
 */
 void remove_first_element_from_array_operation(Stack *stack);
 
 /**
-* @brief A função remove o primeiro elemento da string
+* @brief Executa a operação de remover o primeiro elemento da string
 * @param stack target
 */
 void remove_first_element_from_string_operation(Stack *stack);
 
 /**
-* @brief A função remove o último elemento do array
+* @brief Executa a operação de remover o último elemento do array
 * @param stack target
 */
 void remove_last_element_from_array_operation(Stack *stack);
 
 /**
-* @brief A função remove o último elemento da string
+* @brief Executa a operação de remover o último elemento da string
 * @param stack target
 */
 void remove_last_element_from_string_operation(Stack *stack);
 
 /**
-* @brief A função procura a substring na string
+* @brief Executa a operação de procurar a substring na string
 * @param stack target
 */
 void search_substring_in_string_operation(Stack *stack);
