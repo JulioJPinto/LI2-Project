@@ -1,3 +1,8 @@
+/**
+ * @file block_operations.c
+ * @brief Implementação de operações sobre blocos
+ */
+
 #include <string.h>
 #include "block_operations.h"
 #include "logger.h"

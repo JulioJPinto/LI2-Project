@@ -1,3 +1,8 @@
+/**
+ * @file block_operations.h
+ * @brief Header de operações sobre blocos
+ */
+
 #pragma once
 
 #include "stack.h"
