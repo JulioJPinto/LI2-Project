@@ -1,11 +1,12 @@
-#include "stack.h"
-
-#define MAX_CONVERT_TO_STRING_SIZE 100
-
 /**
  * @file conversions.h
- * @brief Headers das conversões de tipo 
+ * @brief Headers das conversões de tipo
  */
+
+#include "stack.h"
+
+/** Número de bytes alocados para conversão de tipos para string */
+#define MAX_CONVERT_TO_STRING_SIZE 100
 
 /**
  * @brief Dá parse a @param{word} para um long

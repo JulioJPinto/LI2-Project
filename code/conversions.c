@@ -1,13 +1,13 @@
+/**
+ * @file conversions.c
+ * @brief Implementação das conversões de tipo
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "conversions.h"
 #include "logger.h"
-
-/**
- * @file conversion.c
- * @brief Implementação das conversões de tipo 
- */
 
 int parse_long(char word[], long *to) {
     char *remainder;
