@@ -1,9 +1,15 @@
+/**
+ * @file array_operations.c
+ * @brief Implementação de operações sobre arrays
+ */
+
 #include "array_operations.h"
 #include "parser.h"
 #include "logger.h"
 #include "stack.h"
 #include <string.h>
 
+/** Capacidade inicial de arrays */
 #define INITIAL_ARRAY_CAPACITY 5
 
 int parse_array(Stack *stack, StackElement *variables, char *word) {
@@ -27,6 +33,12 @@ int parse_array(Stack *stack, StackElement *variables, char *word) {
     return 1;
 }
 
+/**
+ * @brief A Função devolve um array com o range de elementos de 0 a @param{range}
+ * A Função recebe um valor @param{range} e devolve num array todos os elementos de 0 a @param{range}
+ * Estes valores são todos longs e são postos na stack em forma de array
+ * @param stack A Stack para onde vamos devolver o range do elemento
+ */
 void create_range_array_operation(Stack *stack, long range) {
     Stack *array = create_stack(INITIAL_ARRAY_CAPACITY);
     for (int i = 0; i < range; i++) {
@@ -104,7 +116,13 @@ void push_all_elements_from_array_operation(Stack *stack) {
     free_element(element);
 }
 
-long get_index_substring(char *string, const char *substring) {
+/**
+ * Procura a primeira ocorrencia da substring numa string e retorna o seu primeiro indice
+ * @param string a string
+ * @param substring a substring
+ * @return O indice da substring na string
+ */
+static long get_index_substring(char *string, const char *substring) {
     char *result = strstr(string, substring);
     if (result == NULL) return -1;
 
@@ -208,6 +226,12 @@ void separate_string_by_whitespace_operation(Stack *stack) {
     separate_string_by_substring(stack, " \n\t\v\f\r", 1);
 }
 
+/**
+ * @brief Mínimo entre dois inteiros
+ * @param a primeiro inteiro
+ * @param b segundo inteiro
+ * @return Retorna o valor mais pequeno entre dois inteiros
+ */
 static int min(int a, int b) {
     return a > b ? b : a;
 }

@@ -1,3 +1,8 @@
+/**
+ * @file array_operations.h
+ * @brief Header de operações para arrays
+ */
+
 #pragma once
 
 #include "stack.h"
