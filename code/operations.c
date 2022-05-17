@@ -1,9 +1,15 @@
+/**
+ * @file operations.c
+ * @brief Implementação das operações matemáticas
+ */
+
 #include "logger.h"
 #include "operations.h"
 #include "conversions.h"
 #include <math.h>
 #include <string.h>
 
+/** Tamanho em bytes do buffer das operações de ler input do terminal */
 #define READ_INPUT_FROM_CONSOLE_MAX_LENGTH 10001
 
 double get_element_as_double(StackElement *element) {
@@ -32,6 +38,12 @@ long get_element_as_long(StackElement *element) {
     }
 }
 
+/**
+ * @brief Converte um elemento para um array.
+ * Caso o elemento seja um array, retorna simplesmente o seu conteudo, caso contrário cria um array apenas com o elemento inserido.
+ * @param element O elemento para converter
+ * @return A array do elemento
+ */
 static Stack *get_element_as_array(StackElement *element) {
     ElementType type = element->type;
     if (type == ARRAY_TYPE) {
@@ -71,6 +83,12 @@ void operate_promoting_number_type(Stack *stack,
     free_element(x);
 }
 
+/**
+ * @brief Operação de adicionar dois arrays/elementos num array
+ * @param stack Stack para adicionar o novo array
+ * @param a Primeiro elemento/array
+ * @param b Segundo elemento/array
+ */
 void add_array_operation(Stack *stack, StackElement *a, StackElement *b) {
     Stack *a_array = get_element_as_array(a);
     Stack *b_array = get_element_as_array(b);
@@ -84,11 +102,23 @@ void add_array_operation(Stack *stack, StackElement *a, StackElement *b) {
     free_element(*b);
 }
 
+/**
+ * @brief Retorna o número de bytes necessários para converter o elemento para string.
+ * Caso o elemento seja string, retorna o tamanho da string + 1, caso contrário retorna MAX_CONVERT_TO_STRING_SIZE
+ * @param element elemento para calcular
+ * @return O número de bytes
+ */
 static long get_max_string_size(StackElement *element) {
     if (element->type == STRING_TYPE) return (long) strlen(element->content.string_value) + 1;
     return MAX_CONVERT_TO_STRING_SIZE;
 }
 
+/**
+ * @brief Operação de concatenar duas strings/elementos convertidos para string
+ * @param stack Stack para colocar a string concatenada
+ * @param a O primeiro elemento/string
+ * @param b O segundo elemento/string
+ */
 void add_string_operation(Stack *stack, StackElement *a, StackElement *b) {
     long max_a_size = get_max_string_size(a);
     char a_string[max_a_size];
@@ -113,18 +143,43 @@ void add_string_operation(Stack *stack, StackElement *a, StackElement *b) {
     free_element(*b);
 }
 
+/**
+ * @brief Operação de adicionar dois doubles
+ * @param stack Stack colocar o resultado
+ * @param a Primeiro double
+ * @param b Segundo double
+ */
 void add_double_operation(Stack *stack, double a, double b) {
     push_double(stack, a + b);
 }
 
+/**
+ * @brief Operação de adicionar dois inteiros
+ * @param stack Stack colocar o resultado
+ * @param a Primeiro long
+ * @param b Segundo long
+ */
 void add_long_operation(Stack *stack, long a, long b) {
     push_long(stack, a + b);
 }
 
+/**
+ * @brief Operação de adicionar dois caracteres
+ * @param stack Stack colocar o resultado
+ * @param a Primeiro char
+ * @param b Segundo char
+ */
 void add_char_operation(Stack *stack, char a, char b) {
     push_long(stack, a + b);
 }
 
+/**
+ * Retorna 1 se @param{a} ou @param{b} é do tipo @param{type}, 0 caso os dois diferentes de @param{type}
+ * @param type O tipo para corresponder
+ * @param a O primeiro elemento
+ * @param b O segundo elemento
+ * @return 1 se algum dos dois é do tal tipo, 0 caso contrário
+ */
 int any_element_is_type(ElementType type, StackElement a, StackElement b) {
     return a.type == type || b.type == type;
 }

@@ -1,10 +1,14 @@
+/**
+ * @file logica.c
+ * @brief Implementação das operações de lógica
+ */
+
 #include "logger.h"
 #include "operations.h"
 #include "conversions.h"
 #include "stack.h"
 #include "logica.h"
 #include "string_operations.h"
-#include "array_operations.h"
 
 /**
  * @brief Função lesser_than_operation para longs

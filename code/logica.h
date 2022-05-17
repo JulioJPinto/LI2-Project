@@ -1,3 +1,8 @@
+/**
+ * @file logica.h
+ * @brief Header das operações de lógica
+ */
+
 #include "stack.h"
 
 /**

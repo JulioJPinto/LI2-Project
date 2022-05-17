@@ -1,3 +1,8 @@
+/**
+ * @file operations.h
+ * @brief Header das operações matemáticas
+ */
+
 #include "stack.h"
 
 /**
