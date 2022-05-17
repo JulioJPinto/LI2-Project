@@ -1,3 +1,8 @@
+/**
+ * @file operations_storage.c
+ * @brief Ficheiro de implementação do @file{operations_storage.h}
+ */
+
 #include "operations_storage.h"
 #include "operations.h"
 #include "conversions.h"
@@ -9,8 +14,14 @@
 #include "logger.h"
 #include <string.h>
 
+/**
+ * @brief Macro para criar uma operação simples (que recebe apenas a stack como parametro)
+ */
 #define SIMPLE_OPERATION(simple_operation_function) {SIMPLE_OPERATION, {.operation_function = simple_operation_function}}
 
+/**
+ * @brief Macro para criar uma operação com variáveis globais
+ */
 #define VARIABLES_OPERATION(variables_operation_function) {VARIABLES_OPERATION, {.variables_operation = variables_operation_function}}
 
 StackOperation get_operation(char op[]) {
