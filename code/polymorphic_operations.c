@@ -1,3 +1,8 @@
+/**
+ * @file polymorphic_operations.c
+ * @brief Implementação das operações polimorfas
+ */
+
 #include "polymorphic_operations.h"
 #include "operations.h"
 #include "logica.h"
