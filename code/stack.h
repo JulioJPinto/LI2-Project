@@ -1,26 +1,65 @@
+/**
+ * @file stack.h
+ * @brief Funções sobre stacks
+ */
+
 #pragma once
 
+/**
+ * @brief Enum dos tipos de elementos existentes
+ */
 typedef enum {
-    DOUBLE_TYPE, LONG_TYPE, CHAR_TYPE, STRING_TYPE, ARRAY_TYPE, BLOCK_TYPE
+    /** Tipo double */
+    DOUBLE_TYPE,
+    /** Tipo inteiro */
+    LONG_TYPE,
+    /** Tipo caractere */
+    CHAR_TYPE,
+    /** Tipo string */
+    STRING_TYPE,
+    /** Tipo array */
+    ARRAY_TYPE,
+    /** Tipo bloco */
+    BLOCK_TYPE
 } ElementType;
 
+/**
+ * Struct da stack
+ */
 typedef struct stack Stack;
 
+/**
+ * Struct de um elemento da stack
+ */
 typedef struct {
+    /** Tipo do elemento */
     ElementType type;
+    /** Union do conteudo do elemento */
     union {
+        /** Valor double */
         double double_value;
+        /** Valor inteiro */
         long long_value;
+        /** Valor caractere */
         char char_value;
+        /** Valor string */
         char *string_value;
+        /** Valor array */
         Stack *array_value;
+        /** Valor bloco */
         char *block_value;
     } content;
 } StackElement;
 
+/**
+ * Definição do struct da stack com implementação de array dinâmica
+ */
 typedef struct stack {
+    /** Capacidade atual da stack */
     int capacity;
+    /** Indice do último elemento adicionado (Começa em -1) */
     int current_index;
+    /** Array dos elementos */
     StackElement *array;
 } Stack;
 
@@ -185,10 +224,29 @@ StackElement create_array_element(Stack *value);
  */
 StackElement create_block_element(char *value);
 
+/**
+ * Verifica o valor booleano de um elemento
+ * @param a o elemento
+ * @return O valor booleano
+ */
 int is_truthy(StackElement *a);
 
+/**
+ * Liberta a memória de um elemento
+ * @param element elemento para dar free
+ */
 void free_element(StackElement element);
 
+/**
+ * Deep copy de um elemento
+ * @param element elemento a ser copiado
+ * @return O elemento deep copied
+ */
 StackElement duplicate_element(StackElement element);
 
+/**
+ * Deep copy de arrays
+ * @param element elemento array a ser copiado
+ * @return A array deep copied
+ */
 StackElement duplicate_array(StackElement element);

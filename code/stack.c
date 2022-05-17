@@ -1,3 +1,8 @@
+/**
+ * @file stack.c
+ * @brief Implementação da stack com array dinâmica
+ */
+
 #include "stack.h"
 #include <stdio.h>
 #include <stdlib.h>
