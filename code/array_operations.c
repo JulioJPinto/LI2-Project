@@ -27,12 +27,6 @@ int parse_array(Stack *stack, StackElement *variables, char *word) {
     return 1;
 }
 
-/**
- * @brief A Função devolve um array com o range de elementos de 0 a @param{range}
- * A Função recebe um valor @param{range} e devolve num array todos os elementos de 0 a @param{range}
- * Estes valores são todos longs e são postos na stack em forma de array
- * @param stack A Stack para onde vamos devolver o range do elemento
- */
 void create_range_array_operation(Stack *stack, long range) {
     Stack *array = create_stack(INITIAL_ARRAY_CAPACITY);
     for (int i = 0; i < range; i++) {
@@ -138,12 +132,10 @@ static void split_string_char_by_char(Stack *stack, char *string) {
 }
 
 /**
- * @brief A função separa string @param{string} de acordo com um separador @param{delimiters}
- * A função separa a string @param{string} em substrings de acordo com um separador @param{delimiters} e da 
- * push a estas substrings para a @param{stack}
- * @param stack A stack que vai receber as substrings geradas pela função
- * @param string A string que irá será separada em substrings
- * @param delimiters O elemento que vai funcionar como separador
+ * @brief Divide uma string em strings através de mais que um delimitador 
+ * @param stack receiver
+ * @param string target
+ * @param delimiters delimitador
  */
 static void split_string_by_multiple_delimiters(Stack *stack, char *string, const char *delimiters) {
     string = strtok(string, delimiters);
@@ -154,12 +146,10 @@ static void split_string_by_multiple_delimiters(Stack *stack, char *string, cons
 }
 
 /**
- * @brief A função separa string @param{string} de acordo com uma substring que funciona como separador @param{delimeters}
- * A função separa a string @param{string} em substrings de acordo com a substring @param{delimiters} e
- * da push a estas substring, geradas pela @param{string}, para a @param{stack}
- * @param stack A stack que vai receber as substrings geradas pela função
- * @param string A string que irá será separada em substrings
- * @param delimiters O substring que vai funcionar como separador 
+ * @brief Divide uma string em duas strings usando uma substring
+ * @param stack receiver
+ * @param string target
+ * @param delimiters substring
  */
 static void split_string_by_substring(Stack *stack, char *string, const char *delimiters) {
     long substring_length = (long) strlen(delimiters);
@@ -179,10 +169,10 @@ static void split_string_by_substring(Stack *stack, char *string, const char *de
 }
 
 /**
- * @brief Separa os caracteres da string do topo da stack conforme a substring recebida e coloca o resultado numa array na stack
+ * @brief Separa uma string em string dependendo de o número de delimitadores
  * @param stack target
- * @param substring_string string para dar substring
- * @param multiple_delimiters 1 ou 0 se é para tratar a @param{substring_string} como multiplos delimitadores
+ * @param substring_string string
+ * @param multiple_delimiters número de delimitadores
  */
 void separate_string_by_substring(Stack *stack, const char *substring_string, int multiple_delimiters) {
     StackElement target_element = pop(stack);

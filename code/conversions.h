@@ -2,18 +2,24 @@
 
 #define MAX_CONVERT_TO_STRING_SIZE 100
 
+/**
+ * @file conversions.h
+ * @brief Headers das conversões de tipo 
+ */
 
 /**
- * @brief Tenta converter a string num inteiro e coloca-o no @param[to}. @returns retorna 1 se conseguiu converter 0 caso contrario
- * @param word O elemento que vai ser transformado num inteiro
- * @param to Resultado da função
+ * @brief Dá parse a @param{word} para um long
+ * @param word target
+ * @param to result
+ * @return int 
  */
 int parse_long(char word[], long *to);
 
 /**
- * @brief Tenta converter a string num double e coloca-o no @param[to}. @returns retorna 1 se conseguiu converter 0 caso contrario
- * @param word O elemento que vai ser transformado num double
- * @param to Resultado da função
+ * @brief Dá parse a @param{word} para um double
+ * @param word target
+ * @param to result
+ * @return double 
  */
 int parse_double(char word[], double *to);
 

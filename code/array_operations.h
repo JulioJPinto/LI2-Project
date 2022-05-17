@@ -3,40 +3,33 @@
 #include "stack.h"
 
 /**
- * @brief Tenta dar parse a uma array que está em string no @param{word} e dá push para a stack
- * A função tenta dar parse a @param{word} para o tipo array, caso consiga esta devolve 1
- * e da push ao novo array @param{stack}, levando também em conta o @param{variables}
- * @returns 1 caso a word é uma array, 0 caso contrário
- */
+* @brief Dá parse a um array e da push a este para a stack
+* @param stack target
+*/
 int parse_array(Stack *stack, StackElement *variables, char *word);
 
 /**
- * @brief A Função devolve o tamanho da string/array ou um array com todos os elementos até esta caso seja um long
- * Dependendo do valor de @param{x}, elemento no topo da Stack, está função realizará diferentes operações
- * Caso @param{x} seja do tipo long esta realizará a função create_range_array_operation para este
- * e devolve um array com a range até ao elemento. Caso esta seja do tipo array/string irá devolver
- * o seu tamanho 
- * @param stack A Stack onde vamos buscar os elemento para a função
- */
+* @brief Devolve o tamanho de um array/string ou então devolve um array com o range até este valor caso seja long
+* @param stack target
+*/
 void size_range_operation(Stack *stack);
 
 /**
- * @brief A função copia a string @param{times} e da push a todas as cópias para a @param{stack}
- */
+* @brief Copia uma string e da push a esta para a stack
+* @param stack target
+*/
 void repeat_string_operation(Stack *stack);
 
 /**
- * @brief A função copia a string @param{string_element} @param{times} vezes e da push a todas as cópias para a @param{stack}
- * @param stack A Stack onde vamos buscar os elemento para a função e recebe as cópias de @param{string_element}
- */
+* @brief Copia um array e da push a estes para a stack
+* @param stack target
+*/
 void repeat_array_operation(Stack *stack);
 
 /**
- * @brief A função da push para @param{stack} de todos os elementos guardados no array @param{element}
- * A função retira do array @param{element} e da push para @param{stack} de todos os elementos encontrados
- * no array
- * @param stack A Stack para onde vamos devolver os elementos do array
- */
+* @brief Dá push a todos os elemenentos de array para a stack
+* @param stack target
+*/
 void push_all_elements_from_array_operation(Stack *stack);
 
 /**

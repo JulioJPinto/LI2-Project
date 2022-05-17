@@ -4,6 +4,11 @@
 #include "conversions.h"
 #include "logger.h"
 
+/**
+ * @file conversion.c
+ * @brief Implementação das conversões de tipo 
+ */
+
 int parse_long(char word[], long *to) {
     char *remainder;
     long result = strtol(word, &remainder, 10);
@@ -26,6 +31,11 @@ int parse_double(char word[], double *to) {
     return 0;
 }
 
+/**
+ * @brief Converte um elemento para caractere
+ * @param stack_element target
+ * @return char result
+ */
 char convert_element_to_char(StackElement *stack_element) {
     long l;
 
@@ -49,8 +59,9 @@ char convert_element_to_char(StackElement *stack_element) {
 }
 
 /**
- * @brief Função que vai transformar um elemento na stack no tipo double.
- * Esta Função vai receber o @param{*stack_element} e vai transformá-lo num double, double este que é devolvido.
+ * @brief Converte um elemento para double
+ * @param stack_element target
+ * @return double result
  */
 double convert_element_to_double(StackElement *stack_element) {
     double x;
@@ -73,8 +84,9 @@ double convert_element_to_double(StackElement *stack_element) {
 }
 
 /**
- * @brief Função que vai transformar um elemento na stack no tipo long.
- * Esta Função vai receber o @param{*stack_element} e vai transformá-lo num long, long este que é devolvido.
+ * @brief Converte um elemento para um inteiro
+ * @param stack_element target
+ * @return long result
  */
 long convert_element_to_long(StackElement *stack_element) {
     long x;
@@ -97,7 +109,9 @@ long convert_element_to_long(StackElement *stack_element) {
 }
 
 /**
- * @brief Converte um array para uma string
+ * @brief Convertes um array para string
+ * @param array_stack target
+ * @param dest result
  */
 static void convert_array_to_string(Stack *array_stack, char *dest) {
     *dest = '\0';
@@ -114,6 +128,11 @@ static void convert_array_to_string(Stack *array_stack, char *dest) {
     }
 }
 
+/**
+ * @brief Converte um elemento para string
+ * @param stack_element target
+ * @param dest result
+ */
 void convert_element_to_string(StackElement *stack_element, char *dest) {
     switch ((*stack_element).type) {
         case DOUBLE_TYPE:

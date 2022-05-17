@@ -240,8 +240,8 @@ void filter_block_string_operation(Stack *stack, StackElement *variables) {
 
 /**
 * @brief Compara o tipo dos elementos da stack
-* @param a
-* @param b
+* @param a target
+* @param b target
 */
 int compare_elements(StackElement a, StackElement b) {
     if (a.type == STRING_TYPE && b.type == STRING_TYPE) {
@@ -262,7 +262,7 @@ int compare_elements(StackElement a, StackElement b) {
 * @param length array length
 * @param block_element block to execute
 * @param variables value of variables
-* @param compare_function
+* @param compare_function 
 */
 void insertion_sort(StackElement array[], int length, StackElement block_element, StackElement *variables,
                     int compare_function(StackElement *, StackElement, StackElement, StackElement)) {
