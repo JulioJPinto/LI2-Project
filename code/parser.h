@@ -1,3 +1,8 @@
+/**
+ * @file parser.h
+ * @brief Responsável de converter o input para objetos do programa
+ */
+
 #pragma once
 
 #include "stack.h"
@@ -11,8 +16,8 @@
 void tokenize_and_parse(Stack *stack, StackElement *variables, char *input);
 
 /**
- * Dá parse_word a uma word.
- * Transforma a word no seu devido tipo e coloca-o na stack.
+ * @brief Dá parse_word a uma word.
+ * @brief Transforma a word no seu devido valor e coloca-o na stack, ou executa-o se for uma operação.
  * @param stack target
  * @param variables variáveis
  * @param word word para transformar

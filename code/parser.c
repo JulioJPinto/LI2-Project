@@ -1,3 +1,8 @@
+/**
+ * @file parser.c
+ * @brief Implemetação do parser
+ */
+
 #include <ctype.h>
 #include <string.h>
 #include "parser.h"
@@ -9,10 +14,17 @@
 #include "array_operations.h"
 #include "block_operations.h"
 
+/**
+ * @brief O parse state atual (O que é que está a dar parse)
+ */
 enum parseState {
+    /** @brief A parsear elementos normais */
     PARSING_NORMAL_TEXT,
+    /** @brief A parsear dentro de aspas */
     PARSING_INSIDE_QUOTE,
+    /** @brief A parsear dentro de parentesis retos */
     PARSING_INSIDE_BRACKETS,
+    /** @brief A parsear dentro de parentesis curvos */
     PARSING_INSIDE_CURLY_BRACKETS
 };
 
@@ -66,7 +78,13 @@ void parse_word(Stack *stack, StackElement *variables, char word[]) {
     execute_operation(operation, stack, variables);
 }
 
-enum parseState was_success_set_state_from_open_char(char c, enum parseState *target) {
+/**
+ * @brief Retorna o novo state do parser conforme um caractere
+ * @param c o caractere
+ * @param target o pointer para onde o novo state irá ficar
+ * @return 1 se o tal caractere é um caractere de começar um novo state, 0 caso contrário
+ */
+int was_success_set_state_from_open_char(char c, enum parseState *target) {
     if (c == '[') {
         *target = PARSING_INSIDE_BRACKETS;
         return 1;
@@ -106,6 +124,14 @@ char get_close_char(enum parseState state) {
     return -1;
 }
 
+/**
+ * @brief Calcula o novo número de brackets conforme um char
+ * @param bracket_count O número de brackets atuais
+ * @param current_char O caractere para calcular o novo número
+ * @param open_bracket O caractere de abrir bracket
+ * @param close_bracket O caractere de fechar bracket
+ * @return O novo número de brackets
+ */
 int get_new_bracket_count(int bracket_count, char current_char, char open_bracket, char close_bracket) {
     if (current_char == close_bracket) {
         bracket_count--;
