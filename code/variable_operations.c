@@ -1,30 +1,70 @@
+/**
+ * @file variable_operations.c
+ * @brief Implementação das variáveis globais
+ */
+
 #include <stdlib.h>
 #include <string.h>
 #include "stack.h"
 #include "variable_operations.h"
 
+/** @brief O número de variáveis existentes */
 #define VARIABLE_COUNT 26
 
+/**
+ * Retorna o indice da variável para aceder ao array de variáveis globais
+ * @param key O caractere da variável (EM UPPER CASE)
+ * @return O indice da variável na array
+ */
 static int get_variable_index(const char key) {
     return key - 'A';
 }
 
+/**
+ * Verifica se o caractere é uma chave de variável
+ * @param variable caractere
+ * @return 1 se é chave, 0 caso contrário
+ */
 static int is_variable_key(const char variable) {
     return variable >= 'A' && variable <= 'Z';
 }
 
+/**
+ * Altera o valor da variável para um elemento
+ * @param variables Array das variáveis globais
+ * @param key O caractere da variável (EM UPPER CASE)
+ * @param value O novo elemento da variável
+ */
 void set_variable_element(StackElement *variables, char key, StackElement element) {
     variables[get_variable_index(key)] = element;
 }
 
+/**
+ * Altera o valor da variável para um long
+ * @param variables Array das variáveis globais
+ * @param key O caractere da variável (EM UPPER CASE)
+ * @param value O novo long da variável
+ */
 void set_long_variable(StackElement *variables, char key, long value) {
     set_variable_element(variables, key, create_long_element(value));
 }
 
+/**
+ * Altera o valor da variável para um caractere
+ * @param variables Array das variáveis globais
+ * @param key O caractere da variável (EM UPPER CASE)
+ * @param value O novo caractere da variável
+ */
 void set_char_variable(StackElement *variables, char key, char value) {
     set_variable_element(variables, key, create_char_element(value));
 }
 
+/**
+ * Get ao valor da variável
+ * @param variables Array das variáveis globais
+ * @param key O caractere da variável (EM UPPER CASE)
+ * @return O valor da variável
+ */
 StackElement get_variable_value(StackElement *variables, char key) {
     return variables[get_variable_index(key)];
 }
@@ -53,8 +93,8 @@ int parse_set_variable(Stack *stack, StackElement *variables, const char *input)
 }
 
 /**
- * @brief Declaração de variáveis e dos seus respetivos valores por omissão
- * @param stack A Stack onde poderemos encontrar estas variáveis
+ * Inicializa os valores das variáveis globais com os valores defaults
+ * @param variables
  */
 static void init_variables(StackElement *variables) {
     set_long_variable(variables, 'A', 10);

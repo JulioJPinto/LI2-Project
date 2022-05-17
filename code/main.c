@@ -1,3 +1,8 @@
+/**
+ * @file main.c
+ * Ficheiro main do programa
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "stack.h"
@@ -9,7 +14,9 @@
 #include "parser.h"
 #include "variable_operations.h"
 
+/** Tamanho do buffer de input */
 #define INPUT_BUFFER_SIZE 10001
+/** Capacidade inicial da stack main */
 #define INITIAL_STACK_CAPACITY 10
 
 /**
