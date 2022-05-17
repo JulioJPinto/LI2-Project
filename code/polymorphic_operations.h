@@ -1,3 +1,8 @@
+/**
+ * @file polymorphic_operations.h
+ * @brief Ficheiro para controlar operações com o mesmo operador
+ * @brief Executa a operação pretendida conforme os tipos presentes na stack
+ */
 #pragma once
 
 #include "stack.h"
@@ -8,7 +13,6 @@
  * @param variables
  */
 void asterisk_operation(Stack *stack, StackElement *variables);
-
 
 /**
  * @brief Executa a operação que tem simbolo '~' associado ao tipo correspondente

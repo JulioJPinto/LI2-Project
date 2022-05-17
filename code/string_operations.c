@@ -1,3 +1,8 @@
+/**
+ * @file string_operations.c
+ * @brief Implementação das operações das strings
+ */
+
 #include <string.h>
 #include "string_operations.h"
 
@@ -23,7 +28,6 @@ int parse_string(Stack *stack, char *word) {
  * @return int a diferença entre os valores das strings
  */
 int string_compare_base(Stack *stack) {
-
     StackElement fst_element = pop(stack);
     StackElement snd_element = pop(stack);
 
